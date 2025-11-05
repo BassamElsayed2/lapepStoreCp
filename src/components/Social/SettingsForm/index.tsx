@@ -76,7 +76,7 @@ const SettingsForm: React.FC = () => {
           throw new Error("فشل رفع الصورة");
         }
 
-        image_url = url;
+        image_url = url || undefined;
       }
 
       const profileData = {
