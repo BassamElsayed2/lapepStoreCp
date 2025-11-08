@@ -4,6 +4,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import { useBanners, useDeleteBanner } from "../../../../hooks/useBanners";
 
 export default function BannersPage() {
@@ -11,16 +12,43 @@ export default function BannersPage() {
   const deleteBannerMutation = useDeleteBanner();
 
   const handleDelete = async (id: number) => {
-    if (!confirm("هل أنت متأكد من حذف هذا البانر؟")) {
-      return;
-    }
-
-    try {
-      await deleteBannerMutation.mutateAsync(id);
-    } catch (error) {
-      console.error("Error deleting banner:", error);
-      alert("حدث خطأ أثناء حذف البانر");
-    }
+    // Create a confirmation toast
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-3">
+          <p className="text-gray-900 dark:text-white font-medium">
+            هل أنت متأكد من حذف هذا البانر؟
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  await deleteBannerMutation.mutateAsync(id);
+                  toast.success("تم حذف البانر بنجاح");
+                } catch (error) {
+                  console.error("Error deleting banner:", error);
+                  toast.error("حدث خطأ أثناء حذف البانر");
+                }
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors"
+            >
+              حذف
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors"
+            >
+              إلغاء
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+        position: "top-center",
+      }
+    );
   };
 
   if (isLoading) {
@@ -119,9 +147,9 @@ export default function BannersPage() {
                   >
                     {/* Banner Image */}
                     <div className="mb-4">
-                      {banner.image_url ? (
+                      {banner.image ? (
                         <Image
-                          src={banner.image_url}
+                          src={banner.image}
                           alt="Banner"
                           width={400}
                           height={128}
@@ -169,9 +197,11 @@ export default function BannersPage() {
                     <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         تم الإنشاء:{" "}
-                        {banner.created_at ? new Date(banner.created_at).toLocaleDateString(
-                          "ar-EG"
-                        ) : "-"}
+                        {banner.created_at
+                          ? new Date(banner.created_at).toLocaleDateString(
+                              "ar-EG"
+                            )
+                          : "-"}
                       </p>
                     </div>
                   </div>

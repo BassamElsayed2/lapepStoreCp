@@ -186,7 +186,7 @@ export async function uploadBranchImage(file: File): Promise<string> {
     const filePath = `branches/${fileName}`;
 
     const { error } = await supabase.storage
-      .from("images")
+      .from("branches")
       .upload(filePath, file, {
         cacheControl: "3600",
         upsert: false,
@@ -198,7 +198,7 @@ export async function uploadBranchImage(file: File): Promise<string> {
 
     const {
       data: { publicUrl },
-    } = supabase.storage.from("images").getPublicUrl(filePath);
+    } = supabase.storage.from("branches").getPublicUrl(filePath);
 
     return publicUrl;
   } catch (error) {
@@ -220,7 +220,9 @@ export async function deleteBranchImage(imageUrl: string): Promise<void> {
     }
     const filePath = pathParts[1];
 
-    const { error } = await supabase.storage.from("images").remove([filePath]);
+    const { error } = await supabase.storage
+      .from("branches")
+      .remove([filePath]);
 
     if (error) {
       throw new Error(`فشل حذف الصورة: ${error.message}`);

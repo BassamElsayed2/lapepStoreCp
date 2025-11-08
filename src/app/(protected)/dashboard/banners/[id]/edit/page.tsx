@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
+import toast from "react-hot-toast";
 import {
   useBanner,
   useUpdateBanner,
@@ -42,9 +43,11 @@ export default function EditBannerPage() {
   const deleteImageMutation = useDeleteBannerImage();
 
   const [formData, setFormData] = useState<UpdateBannerData>({
-    description_ar: "",
-    description_en: "",
-    image_url: "",
+    desc_ar: "",
+    desc_en: "",
+    image: "",
+    display_order: 0,
+    is_active: true,
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -60,14 +63,16 @@ export default function EditBannerPage() {
   useEffect(() => {
     if (banner) {
       setFormData({
-        description_ar: banner.description_ar || "",
-        description_en: banner.description_en || "",
-        image_url: banner.image_url || "",
+        desc_ar: banner.desc_ar || "",
+        desc_en: banner.desc_en || "",
+        image: banner.image || "",
+        display_order: banner.display_order || 0,
+        is_active: banner.is_active !== undefined ? banner.is_active : true,
       });
-      setOriginalImage(banner.image_url || "");
-      setEditorAr(banner.description_ar || "اكتب وصف البانر بالعربية...");
+      setOriginalImage(banner.image || "");
+      setEditorAr(banner.desc_ar || "اكتب وصف البانر بالعربية...");
       setEditorEn(
-        banner.description_en || "Write the banner description in English..."
+        banner.desc_en || "Write the banner description in English..."
       );
     }
   }, [banner]);
@@ -76,7 +81,7 @@ export default function EditBannerPage() {
   useEffect(() => {
     if (error) {
       console.error("Error fetching banner:", error);
-      alert("حدث خطأ أثناء تحميل البانر");
+      toast.error("حدث خطأ أثناء تحميل البانر");
       router.push("/dashboard/banners");
     }
   }, [error, router]);
@@ -97,7 +102,7 @@ export default function EditBannerPage() {
     e.preventDefault();
 
     try {
-      let imageUrl = formData.image_url;
+      let imageUrl = formData.image;
 
       // Upload new image if provided
       if (imageFile) {
@@ -110,31 +115,44 @@ export default function EditBannerPage() {
           }
         }
 
-        imageUrl = await uploadImageMutation.mutateAsync(imageFile);
+        const uploadPromise = uploadImageMutation.mutateAsync(imageFile);
+        toast.promise(uploadPromise, {
+          loading: "جاري رفع الصورة...",
+          success: "تم رفع الصورة بنجاح",
+          error: "فشل رفع الصورة",
+        });
+        imageUrl = await uploadPromise;
       }
 
       // Update banner
       const bannerData: UpdateBannerData = {
-        description_ar:
+        desc_ar:
           editorAr && editorAr !== "اكتب وصف البانر بالعربية..."
             ? editorAr
             : undefined,
-        description_en:
+        desc_en:
           editorEn && editorEn !== "Write the banner description in English..."
             ? editorEn
             : undefined,
-        image_url: imageUrl || undefined,
+        image: imageUrl || undefined,
+        display_order: formData.display_order,
+        is_active: formData.is_active,
       };
 
-      await updateBannerMutation.mutateAsync({
+      const updatePromise = updateBannerMutation.mutateAsync({
         id: bannerId,
         data: bannerData,
+      });
+
+      await toast.promise(updatePromise, {
+        loading: "جاري تحديث البانر...",
+        success: "تم تحديث البانر بنجاح",
+        error: "حدث خطأ أثناء تحديث البانر",
       });
 
       router.push("/dashboard/banners");
     } catch (error) {
       console.error("Error updating banner:", error);
-      alert("حدث خطأ أثناء تحديث البانر");
     }
   };
 
@@ -221,13 +239,13 @@ export default function EditBannerPage() {
                     </div>
                   )}
 
-                  {formData.image_url && !imagePreview && (
+                  {formData.image && !imagePreview && (
                     <div className="mt-4">
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                         الصورة الحالية:
                       </p>
                       <Image
-                        src={formData.image_url}
+                        src={formData.image}
                         alt="Current"
                         width={400}
                         height={192}

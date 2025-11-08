@@ -71,7 +71,9 @@ const ProfileMenu: React.FC = () => {
           <div className="flex items-center border-b border-gray-100 dark:border-[#172036] pb-[12px] mx-[20px] mb-[10px]">
             <Image
               src={
-                profile?.avatar_url || profile?.image_url || "/images/admin.png"
+                profile?.avatar_url ||
+                profile?.image_url ||
+                "/images/admin.png "
               }
               className="rounded-full w-[31px] h-[31px] ltr:mr-[9px] rtl:ml-[9px] border-2 border-primary-200 inline-block object-cover"
               alt="admin-image"

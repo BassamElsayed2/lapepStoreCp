@@ -42,44 +42,28 @@ async function apiFetch<T>(
 
 export interface Banner {
   id: number;
-  title_ar?: string;
-  title_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  image_url: string;
-  link_url?: string;
+  desc_ar?: string;
+  desc_en?: string;
+  image: string;
   display_order?: number;
   is_active?: boolean;
-  starts_at?: string | null;
-  ends_at?: string | null;
   created_at?: string;
-  updated_at?: string;
 }
 
 export interface CreateBannerData {
-  title_ar?: string;
-  title_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  image_url?: string;
-  link_url?: string;
+  desc_ar?: string;
+  desc_en?: string;
+  image?: string;
   display_order?: number;
   is_active?: boolean;
-  starts_at?: string | null;
-  ends_at?: string | null;
 }
 
 export interface UpdateBannerData {
-  title_ar?: string;
-  title_en?: string;
-  description_ar?: string;
-  description_en?: string;
-  image_url?: string;
-  link_url?: string;
+  desc_ar?: string;
+  desc_en?: string;
+  image?: string;
   display_order?: number;
   is_active?: boolean;
-  starts_at?: string | null;
-  ends_at?: string | null;
 }
 
 /**
@@ -185,8 +169,8 @@ export async function uploadBannerImage(file: File): Promise<string> {
     const fileName = `${Date.now()}_${file.name}`;
     const filePath = `banners/${fileName}`;
 
-    const { data, error } = await supabase.storage
-      .from("images")
+    const { error } = await supabase.storage
+      .from("banners-images")
       .upload(filePath, file, {
         cacheControl: "3600",
         upsert: false,
@@ -198,7 +182,7 @@ export async function uploadBannerImage(file: File): Promise<string> {
 
     const {
       data: { publicUrl },
-    } = supabase.storage.from("images").getPublicUrl(filePath);
+    } = supabase.storage.from("banners-images").getPublicUrl(filePath);
 
     return publicUrl;
   } catch (error) {
@@ -220,7 +204,9 @@ export async function deleteBannerImage(imageUrl: string): Promise<void> {
     }
     const filePath = pathParts[1];
 
-    const { error } = await supabase.storage.from("images").remove([filePath]);
+    const { error } = await supabase.storage
+      .from("banners-images")
+      .remove([filePath]);
 
     if (error) {
       throw new Error(`فشل حذف الصورة: ${error.message}`);

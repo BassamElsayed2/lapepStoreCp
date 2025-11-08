@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import {
   useBanners,
   useCreateBanner,
@@ -36,9 +37,11 @@ export default function CreateBannerPage() {
   const uploadImageMutation = useUploadBannerImage();
 
   const [formData] = useState<CreateBannerData>({
-    description_ar: "",
-    description_en: "",
-    image_url: "",
+    desc_ar: "",
+    desc_en: "",
+    image: "",
+    display_order: 0,
+    is_active: true,
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -67,36 +70,48 @@ export default function CreateBannerPage() {
     try {
       // Check if we already have 3 banners
       if (banners.length >= 3) {
-        alert("لا يمكن إضافة أكثر من 3 بانرات");
+        toast.error("لا يمكن إضافة أكثر من 3 بانرات");
         return;
       }
 
-      let imageUrl = formData.image_url;
+      let imageUrl = formData.image;
 
       // Upload image if provided
       if (imageFile) {
-        imageUrl = await uploadImageMutation.mutateAsync(imageFile);
+        const uploadPromise = uploadImageMutation.mutateAsync(imageFile);
+        toast.promise(uploadPromise, {
+          loading: "جاري رفع الصورة...",
+          success: "تم رفع الصورة بنجاح",
+          error: "فشل رفع الصورة",
+        });
+        imageUrl = await uploadPromise;
       }
 
       // Create banner
       const bannerData: CreateBannerData = {
-        description_ar:
+        desc_ar:
           editorAr && editorAr !== "اكتب وصف البانر بالعربية..."
             ? editorAr
             : undefined,
-        description_en:
+        desc_en:
           editorEn && editorEn !== "Write the banner description in English..."
             ? editorEn
             : undefined,
-        image_url: imageUrl || undefined,
+        image: imageUrl || undefined,
+        display_order: formData.display_order,
+        is_active: formData.is_active,
       };
 
-      await createBannerMutation.mutateAsync(bannerData);
+      const createPromise = createBannerMutation.mutateAsync(bannerData);
+      await toast.promise(createPromise, {
+        loading: "جاري إنشاء البانر...",
+        success: "تم إنشاء البانر بنجاح",
+        error: "حدث خطأ أثناء إنشاء البانر",
+      });
 
       router.push("/dashboard/banners");
     } catch (error) {
       console.error("Error creating banner:", error);
-      alert("حدث خطأ أثناء إنشاء البانر");
     }
   };
 
@@ -187,14 +202,14 @@ export default function CreateBannerPage() {
                         </div>
                       )}
 
-                      {formData.image_url && !imagePreview && (
+                      {formData.image && !imagePreview && (
                         <div className="mt-[15px]">
                           <h6 className="text-black dark:text-white font-medium mb-3">
                             الصورة الحالية
                           </h6>
                           <div className="relative w-full max-w-md h-48 rounded-md overflow-hidden border border-gray-200 dark:border-[#172036]">
                             <Image
-                              src={formData.image_url}
+                              src={formData.image}
                               alt="Current Banner"
                               fill
                               className="object-cover"
