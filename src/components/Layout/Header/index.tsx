@@ -8,6 +8,8 @@ import Fullscreen from "./Fullscreen";
 
 import ProfileMenu from "./ProfileMenu";
 
+import NotificationBell from "./NotificationBell";
+
 interface HeaderProps {
   toggleActive: () => void;
 }
@@ -54,6 +56,8 @@ const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
             <DarkMode />
 
             <Fullscreen />
+
+            <NotificationBell />
 
             <ProfileMenu />
           </div>

@@ -101,8 +101,39 @@ const OrderDetailsPage: React.FC = () => {
       paypal: "PayPal",
       stripe: "Stripe",
       cod: "الدفع عند الاستلام",
+      easykash: "EasyKash",
     };
     return methodMap[method as keyof typeof methodMap] || method;
+  };
+
+  // Helper function to get payment status display
+  const getPaymentStatusDisplay = (status: string) => {
+    const statusMap = {
+      pending: {
+        text: "قيد الانتظار",
+        color:
+          "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+      },
+      completed: {
+        text: "مكتمل",
+        color:
+          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      },
+      failed: {
+        text: "فشل",
+        color: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+      },
+      cancelled: {
+        text: "ملغي",
+        color: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200",
+      },
+    };
+    return (
+      statusMap[status as keyof typeof statusMap] || {
+        text: status,
+        color: "bg-gray-100 text-gray-800",
+      }
+    );
   };
 
   if (isPending) {
@@ -300,7 +331,7 @@ const OrderDetailsPage: React.FC = () => {
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
                     <span className="text-gray-600 dark:text-gray-400">
-                      المدينة:
+                      المحافظة:
                     </span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {order.customer_city || "غير محدد"}
@@ -308,7 +339,7 @@ const OrderDetailsPage: React.FC = () => {
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
                     <span className="text-gray-600 dark:text-gray-400">
-                      المنطقة/المحافظة:
+                      المدينة :
                     </span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {order.customer_state || "غير محدد"}
@@ -327,7 +358,7 @@ const OrderDetailsPage: React.FC = () => {
               {/* Order Items */}
               <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <h4 className="font-medium text-gray-900 dark:text-white mb-4">
-                  منتجات الطلب
+                  المنتج
                 </h4>
                 <div className="space-y-3">
                   {order.order_items && order.order_items.length > 0 ? (
@@ -357,35 +388,39 @@ const OrderDetailsPage: React.FC = () => {
                             >
                               <td className="py-3">
                                 <div className="flex items-center">
-                                  {item.products?.image_url &&
-                                  item.products.image_url[0] ? (
-                                    <Image
-                                      src={item.products.image_url[0]}
-                                      alt={item.products?.name_ar || "منتج"}
-                                      width={40}
-                                      height={40}
-                                      className="object-cover rounded-md mr-3"
-                                    />
-                                  ) : (
-                                    <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-md mr-3 flex items-center justify-center">
-                                      <i className="material-symbols-outlined text-gray-400 text-sm">
-                                        image
-                                      </i>
-                                    </div>
-                                  )}
+                                  {(() => {
+                                    // Get product data
+                                    const products = item.products;
+                                    const images = products?.image_url;
+                                    const imageUrl: string | undefined =
+                                      Array.isArray(images) && images[0]
+                                        ? images[0]
+                                        : typeof images === 'string' 
+                                        ? images
+                                        : undefined;
+                                    return imageUrl ? (
+                                      <Image
+                                        src={imageUrl}
+                                        alt={products?.name_ar || "منتج"}
+                                        width={40}
+                                        height={40}
+                                        className="object-cover rounded-md mr-3"
+                                      />
+                                    ) : (
+                                      <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-md mr-3 flex items-center justify-center">
+                                        <i className="material-symbols-outlined text-gray-400 text-sm">
+                                          image
+                                        </i>
+                                      </div>
+                                    );
+                                  })()}
                                   <div>
-                                    <p className="font-medium text-gray-900 dark:text-white text-sm">
+                                    <p className="font-medium text-gray-900 dark:text-white text-sm mr-5">
                                       {item.products?.name_ar ||
                                         item.products?.name_en ||
                                         `منتج (ID: ${item.product_id})`}
                                     </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                      {item.products?.name_en &&
-                                      item.products?.name_ar !==
-                                        item.products?.name_en
-                                        ? item.products.name_en
-                                        : item.product_id}
-                                    </p>
+
                                     {!item.products && (
                                       <p className="text-xs text-red-500 dark:text-red-400">
                                         تفاصيل المنتج غير متوفرة
@@ -413,6 +448,51 @@ const OrderDetailsPage: React.FC = () => {
                           ))}
                         </tbody>
                         <tfoot>
+                          <tr className="border-t border-gray-200 dark:border-gray-700">
+                            <td
+                              colSpan={3}
+                              className="py-2 text-right text-sm text-gray-600 dark:text-gray-400"
+                            >
+                              المجموع الفرعي:
+                            </td>
+                            <td className="py-2 text-right">
+                              <span className="text-sm font-medium text-gray-900 dark:text-white">
+                                $
+                                {order.order_items
+                                  ? order.order_items
+                                      .reduce(
+                                        (sum, item) =>
+                                          sum + item.price * item.quantity,
+                                        0
+                                      )
+                                      .toFixed(2)
+                                  : "0.00"}
+                              </span>
+                            </td>
+                          </tr>
+                          <tr className="border-t border-gray-200 dark:border-gray-700">
+                            <td
+                              colSpan={3}
+                              className="py-2 text-right text-sm text-gray-600 dark:text-gray-400"
+                            >
+                              رسوم الشحن:
+                            </td>
+                            <td className="py-2 text-right">
+                              <span className="text-sm font-medium text-gray-900 dark:text-white">
+                                $
+                                {order.order_items
+                                  ? (
+                                      order.total_price -
+                                      order.order_items.reduce(
+                                        (sum, item) =>
+                                          sum + item.price * item.quantity,
+                                        0
+                                      )
+                                    ).toFixed(2)
+                                  : "0.00"}
+                              </span>
+                            </td>
+                          </tr>
                           <tr className="border-t-2 border-gray-200 dark:border-gray-700">
                             <td
                               colSpan={3}
@@ -447,70 +527,119 @@ const OrderDetailsPage: React.FC = () => {
                       <table className="w-full">
                         <thead>
                           <tr className="border-b border-gray-200 dark:border-gray-700">
-                            <th className=" py-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            <th className="text-right py-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                               طريقة الدفع
+                            </th>
+                            <th className="text-right py-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                              الحالة
                             </th>
                             <th className="text-center py-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                               المبلغ
                             </th>
-
                             <th className="text-right py-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                               التاريخ
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {order.payments.map((payment, index) => (
-                            <tr
-                              key={payment.id || index}
-                              className="border-b border-gray-100 dark:border-gray-700"
-                            >
-                              <td className="py-3">
-                                <div className="flex items-center justify-center gap-1">
-                                  <i className="material-symbols-outlined mr-2 text-gray-500">
-                                    {payment.payment_method === "paypal"
-                                      ? "payments"
-                                      : payment.payment_method === "stripe"
-                                      ? "credit_card"
-                                      : payment.payment_method === "cod"
-                                      ? "local_shipping"
-                                      : "payments"}
-                                  </i>
-                                  <span className="font-medium text-gray-900 dark:text-white text-sm">
-                                    {getPaymentMethodDisplay(
-                                      payment.payment_method
-                                    )}
+                          {order.payments
+                            .filter(
+                              (payment, index, self) =>
+                                index ===
+                                self.findIndex(
+                                  (p) =>
+                                    p.id === payment.id ||
+                                    (p.order_id === payment.order_id &&
+                                      p.payment_method ===
+                                        payment.payment_method &&
+                                      p.amount === payment.amount &&
+                                      Math.abs(
+                                        new Date(p.created_at || "").getTime() -
+                                          new Date(
+                                            payment.created_at || ""
+                                          ).getTime()
+                                      ) < 1000)
+                                )
+                            )
+                            .map((payment, index) => (
+                              <tr
+                                key={payment.id || index}
+                                className="border-b border-gray-100 dark:border-gray-700"
+                              >
+                                <td className="py-3">
+                                  <div className="flex items-center gap-2">
+                                    <i className="material-symbols-outlined text-gray-500 text-sm">
+                                      {payment.payment_method === "paypal"
+                                        ? "payments"
+                                        : payment.payment_method === "stripe"
+                                        ? "credit_card"
+                                        : payment.payment_method === "cod"
+                                        ? "local_shipping"
+                                        : payment.payment_method === "easykash"
+                                        ? "account_balance_wallet"
+                                        : "payments"}
+                                    </i>
+                                    <span className="font-medium text-gray-900 dark:text-white text-sm">
+                                      {getPaymentMethodDisplay(
+                                        payment.payment_method
+                                      )}
+                                    </span>
+                                  </div>
+                                  {typeof (payment as unknown as Record<string, unknown>).easykash_ref === 'string' && (
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                      Ref:{" "}
+                                      {((payment as unknown as Record<string, unknown>).easykash_ref as string).slice(
+                                        0,
+                                        8
+                                      )}
+                                      ...
+                                    </p>
+                                  )}
+                                </td>
+                                <td className="py-3">
+                                  <span
+                                    className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                      getPaymentStatusDisplay(
+                                        ((payment as unknown as Record<string, unknown>).payment_status as string) ||
+                                          "pending"
+                                      ).color
+                                    }`}
+                                  >
+                                    {
+                                      getPaymentStatusDisplay(
+                                        ((payment as unknown as Record<string, unknown>).payment_status as string) ||
+                                          "pending"
+                                      ).text
+                                    }
                                   </span>
-                                </div>
-                              </td>
-                              <td className="py-3 text-center">
-                                <span className="text-sm font-semibold text-green-600 dark:text-green-400">
-                                  ${payment.amount}
-                                </span>
-                              </td>
-
-                              <td className="py-3 text-right">
-                                <span className="text-sm text-gray-600 dark:text-gray-400">
-                                  {payment.created_at
-                                    ? new Date(
-                                        payment.created_at
-                                      ).toLocaleDateString("ar-EG", {
-                                        year: "numeric",
-                                        month: "short",
-                                        day: "numeric",
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })
-                                    : "غير متوفر"}
-                                </span>
-                              </td>
-                            </tr>
-                          ))}
+                                </td>
+                                <td className="py-3 text-center">
+                                  <span className="text-sm font-semibold text-green-600 dark:text-green-400">
+                                    ${payment.amount}
+                                  </span>
+                                </td>
+                                <td className="py-3 text-right">
+                                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                                    {payment.created_at
+                                      ? new Date(
+                                          payment.created_at
+                                        ).toLocaleDateString("ar-EG", {
+                                          year: "numeric",
+                                          month: "short",
+                                          day: "numeric",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })
+                                      : "غير متوفر"}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
                         </tbody>
                         <tfoot>
                           <tr className="border-t-2 border-gray-200 dark:border-gray-700">
                             <td
-                              colSpan={1}
+                              colSpan={2}
                               className="py-3 text-right font-medium text-gray-900 dark:text-white"
                             >
                               إجمالي المدفوع:
@@ -519,6 +648,26 @@ const OrderDetailsPage: React.FC = () => {
                               <span className="text-lg font-bold text-green-600 dark:text-green-400">
                                 $
                                 {order.payments
+                                  .filter(
+                                    (payment, index, self) =>
+                                      index ===
+                                      self.findIndex(
+                                        (p) =>
+                                          p.id === payment.id ||
+                                          (p.order_id === payment.order_id &&
+                                            p.payment_method ===
+                                              payment.payment_method &&
+                                            p.amount === payment.amount &&
+                                            Math.abs(
+                                              new Date(
+                                                p.created_at || ""
+                                              ).getTime() -
+                                                new Date(
+                                                  payment.created_at || ""
+                                                ).getTime()
+                                            ) < 1000)
+                                      )
+                                  )
                                   .reduce(
                                     (sum, payment) => sum + payment.amount,
                                     0
@@ -526,7 +675,7 @@ const OrderDetailsPage: React.FC = () => {
                                   .toFixed(2)}
                               </span>
                             </td>
-                            <td colSpan={3}></td>
+                            <td></td>
                           </tr>
                         </tfoot>
                       </table>
@@ -774,93 +923,6 @@ const OrderDetailsPage: React.FC = () => {
                   </h4>
                   <p className="text-yellow-800 dark:text-yellow-300 text-sm">
                     💬 {order.order_notes}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Payment Summary */}
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md mt-6">
-            <div className="trezo-card-header mb-[20px] md:mb-[25px]">
-              <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
-                ملخص الدفع
-              </h6>
-            </div>
-
-            <div className="space-y-4">
-              {order.payments && order.payments.length > 0 ? (
-                <>
-                  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                      إجمالي المدفوع
-                    </h4>
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      $
-                      {order.payments
-                        .reduce((sum, payment) => sum + payment.amount, 0)
-                        .toFixed(2)}
-                    </p>
-                  </div>
-
-                  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                      آخر معاملة
-                    </h4>
-                    <div className="space-y-2">
-                      {order.payments
-                        .sort(
-                          (a, b) =>
-                            new Date(b.created_at || "").getTime() -
-                            new Date(a.created_at || "").getTime()
-                        )
-                        .slice(0, 1)
-                        .map((payment, index) => (
-                          <div key={payment.id || index} className="space-y-1">
-                            <div className="flex items-center">
-                              <i className="material-symbols-outlined mr-1 text-gray-500 text-sm">
-                                {payment.payment_method === "paypal"
-                                  ? "payments"
-                                  : payment.payment_method === "stripe"
-                                  ? "credit_card"
-                                  : payment.payment_method === "cod"
-                                  ? "local_shipping"
-                                  : "payments"}
-                              </i>
-                              <span className="text-sm font-medium text-gray-900 dark:text-white">
-                                {getPaymentMethodDisplay(
-                                  payment.payment_method
-                                )}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              ${payment.amount}
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-500">
-                              {payment.created_at
-                                ? new Date(
-                                    payment.created_at
-                                  ).toLocaleDateString("ar-EG", {
-                                    year: "numeric",
-                                    month: "short",
-                                    day: "numeric",
-                                  })
-                                : "غير متوفر"}
-                            </p>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-6">
-                  <div className="mb-3">
-                    <i className="material-symbols-outlined text-3xl text-gray-400">
-                      payments
-                    </i>
-                  </div>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">
-                    لا توجد معلومات دفع متاحة
                   </p>
                 </div>
               )}

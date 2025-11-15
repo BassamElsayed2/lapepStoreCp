@@ -20,8 +20,8 @@ const OrdersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
-  // Tab states for status filtering
-  const [activeTab, setActiveTab] = useState<string>("all");
+  // Status filter (instead of tabs)
+  const [statusFilter, setStatusFilter] = useState<string>("");
 
   // Add debounce effect for search
   useEffect(() => {
@@ -32,43 +32,27 @@ const OrdersPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Map tab to status filter
-  const getStatusFromTab = (tab: string) => {
-    switch (tab) {
-      case "unpaid":
-        return "pending"; // غير مدفوع
-      case "confirmed":
-        return "paid"; // تأكيد
-      case "shipped":
-        return "shipped"; // تم الشحن
-      case "delivered":
-        return "delivered"; // تم التوصيل
-      case "cancelled":
-        return "cancelled"; // ملغي
-      default:
-        return "";
-    }
-  };
-
   const { isPending, data } = useQuery({
     queryKey: [
       "orders",
       currentPage,
-      activeTab,
+      statusFilter,
       debouncedSearchQuery,
       dateFilter,
     ],
     queryFn: () =>
       getOrders(currentPage, pageSize, {
-        status: getStatusFromTab(activeTab),
+        status: statusFilter,
         search: debouncedSearchQuery,
         date: dateFilter,
       }),
+    refetchInterval: 10000, // Auto-refresh every 10 seconds
   });
 
   const { data: stats } = useQuery({
     queryKey: ["orderStats"],
     queryFn: getOrderStats,
+    refetchInterval: 10000, // Auto-refresh every 10 seconds
   });
 
   const orders = useMemo(() => data?.orders || [], [data?.orders]);
@@ -81,7 +65,7 @@ const OrdersPage: React.FC = () => {
     mutationFn: ({ id, status }: { id: string; status: string }) =>
       updateOrderStatus(
         id,
-        status as "pending" | "paid" | "shipped" | "delivered" | "cancelled"
+        status as "pending" | "paid" | "confirmed" | "shipped" | "delivered" | "cancelled"
       ),
     onSuccess: (updatedOrder, variables) => {
       console.log("Order status updated successfully:", updatedOrder);
@@ -128,7 +112,7 @@ const OrdersPage: React.FC = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeTab, searchQuery, dateFilter]);
+  }, [statusFilter, searchQuery, dateFilter]);
 
   // Test search functionality
   useEffect(() => {
@@ -147,6 +131,10 @@ const OrdersPage: React.FC = () => {
           "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
       },
       paid: {
+        text: "مدفوع",
+        color: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+      },
+      confirmed: {
         text: "مدفوع",
         color: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
       },
@@ -174,14 +162,6 @@ const OrdersPage: React.FC = () => {
   };
 
   // Helper function to get payment method display
-  const getPaymentMethodDisplay = (method: string) => {
-    const methodMap = {
-      paypal: "PayPal",
-      stripe: "Stripe",
-      cod: "الدفع عند الاستلام",
-    };
-    return methodMap[method as keyof typeof methodMap] || method;
-  };
 
   if (isPending)
     return (
@@ -214,7 +194,7 @@ const OrdersPage: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
           <div className="flex items-center justify-between">
             <div>
@@ -236,27 +216,9 @@ const OrdersPage: React.FC = () => {
         <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                في الانتظار
-              </p>
-              <p className="text-2xl font-bold text-yellow-600">
-                {stats?.pending || 0}
-              </p>
-            </div>
-            <div className="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-full">
-              <i className="material-symbols-outlined text-yellow-600 dark:text-yellow-400">
-                pending
-              </i>
-            </div>
-          </div>
-        </div>
-
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
-          <div className="flex items-center justify-between">
-            <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">مدفوع</p>
               <p className="text-2xl font-bold text-blue-600">
-                {stats?.paid || 0}
+                {(stats?.paid || 0) + (stats?.confirmed || 0)}
               </p>
             </div>
             <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-full">
@@ -302,22 +264,6 @@ const OrdersPage: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">ملغي</p>
-              <p className="text-2xl font-bold text-red-600">
-                {stats?.cancelled || 0}
-              </p>
-            </div>
-            <div className="p-2 bg-red-100 dark:bg-red-900 rounded-full">
-              <i className="material-symbols-outlined text-red-600 dark:text-red-400">
-                cancel
-              </i>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
@@ -327,92 +273,7 @@ const OrdersPage: React.FC = () => {
           </h6>
         </div>
 
-        {/* Status Tabs */}
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setActiveTab("all")}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 whitespace-nowrap border-2 ${
-                activeTab === "all"
-                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/25 transform scale-105"
-                  : "bg-white dark:bg-[#0c1427] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-[#172036] hover:border-blue-300 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-md hover:scale-102"
-              }`}
-            >
-              <i className="material-symbols-outlined text-base">
-                shopping_cart
-              </i>
-              جميع الطلبات
-            </button>
-
-            <button
-              onClick={() => setActiveTab("unpaid")}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 whitespace-nowrap border-2 ${
-                activeTab === "unpaid"
-                  ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-yellow-500 shadow-lg shadow-yellow-500/25 transform scale-105"
-                  : "bg-white dark:bg-[#0c1427] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-[#172036] hover:border-yellow-300 hover:text-yellow-600 dark:hover:text-yellow-400 hover:shadow-md hover:scale-102"
-              }`}
-            >
-              <i className="material-symbols-outlined text-base">pending</i>
-              في الانتظار
-            </button>
-
-            <button
-              onClick={() => setActiveTab("confirmed")}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 whitespace-nowrap border-2 ${
-                activeTab === "confirmed"
-                  ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-500 shadow-lg shadow-green-500/25 transform scale-105"
-                  : "bg-white dark:bg-[#0c1427] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-[#172036] hover:border-green-300 hover:text-green-600 dark:hover:text-green-400 hover:shadow-md hover:scale-102"
-              }`}
-            >
-              <i className="material-symbols-outlined text-base">
-                check_circle
-              </i>
-              تأكيد
-            </button>
-
-            <button
-              onClick={() => setActiveTab("shipped")}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 whitespace-nowrap border-2 ${
-                activeTab === "shipped"
-                  ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white border-purple-500 shadow-lg shadow-purple-500/25 transform scale-105"
-                  : "bg-white dark:bg-[#0c1427] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-[#172036] hover:border-purple-300 hover:text-purple-600 dark:hover:text-purple-400 hover:shadow-md hover:scale-102"
-              }`}
-            >
-              <i className="material-symbols-outlined text-base">
-                local_shipping
-              </i>
-              تم الشحن
-            </button>
-
-            <button
-              onClick={() => setActiveTab("delivered")}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 whitespace-nowrap border-2 ${
-                activeTab === "delivered"
-                  ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-teal-500 shadow-lg shadow-teal-500/25 transform scale-105"
-                  : "bg-white dark:bg-[#0c1427] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-[#172036] hover:border-teal-300 hover:text-teal-600 dark:hover:text-teal-400 hover:shadow-md hover:scale-102"
-              }`}
-            >
-              <i className="material-symbols-outlined text-base">
-                delivery_dining
-              </i>
-              تم التوصيل
-            </button>
-
-            <button
-              onClick={() => setActiveTab("cancelled")}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 whitespace-nowrap border-2 ${
-                activeTab === "cancelled"
-                  ? "bg-gradient-to-r from-red-500 to-pink-500 text-white border-red-500 shadow-lg shadow-red-500/25 transform scale-105"
-                  : "bg-white dark:bg-[#0c1427] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-[#172036] hover:border-red-300 hover:text-red-600 dark:hover:text-red-400 hover:shadow-md hover:scale-102"
-              }`}
-            >
-              <i className="material-symbols-outlined text-base">cancel</i>
-              ملغي
-            </button>
-          </div>
-        </div>
-
-        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Search Bar */}
           <div className="relative">
             <input
@@ -434,6 +295,20 @@ const OrdersPage: React.FC = () => {
               </button>
             )}
           </div>
+
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full p-2 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
+          >
+            <option value="">جميع الطلبات</option>
+            <option value="paid">مدفوع</option>
+            <option value="confirmed">مدفوع</option>
+            <option value="shipped">تم الشحن</option>
+            <option value="delivered">تم التوصيل</option>
+            <option value="cancelled">ملغي</option>
+          </select>
 
           {/* Date Filter */}
           <select
@@ -459,7 +334,7 @@ const OrdersPage: React.FC = () => {
                     "اسم العميل",
                     "المنتجات",
                     "الحالة",
-                    "طريقة الدفع",
+
                     "السعر الإجمالي",
                     "تاريخ الطلب",
                     "الإجراءات",
@@ -553,29 +428,6 @@ const OrdersPage: React.FC = () => {
                       </td>
 
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                        {order.payments && order.payments.length > 0 ? (
-                          <div className="space-y-1">
-                            {order.payments.map((payment, index) => (
-                              <div
-                                key={payment.id || index}
-                                className="flex items-center gap-2"
-                              >
-                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                  {getPaymentMethodDisplay(
-                                    payment.payment_method
-                                  )}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <span className="text-gray-500 dark:text-gray-400 text-sm">
-                            لا توجد معلومات دفع
-                          </span>
-                        )}
-                      </td>
-
-                      <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                         <span className="font-medium text-green-600 dark:text-green-400">
                           ${order.total_price}
                         </span>
@@ -607,6 +459,7 @@ const OrdersPage: React.FC = () => {
                             >
                               <option value="pending">في الانتظار</option>
                               <option value="paid">مدفوع</option>
+                              <option value="confirmed">مدفوع</option>
                               <option value="shipped">تم الشحن</option>
                               <option value="delivered">تم التوصيل</option>
                               <option value="cancelled">ملغي</option>

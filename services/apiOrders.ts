@@ -66,15 +66,20 @@ export interface Payment {
   payment_method: string;
   payment_provider?: string;
   amount: number;
-  payment_status: 'pending' | 'completed' | 'failed';
+  payment_status: 'pending' | 'completed' | 'failed' | 'cancelled' | 'refunded';
   transaction_id?: string;
+  easykash_ref?: string;
+  easykash_product_code?: string;
+  voucher?: string;
+  customer_reference?: string;
   created_at: string;
+  updated_at: string;
 }
 
 export interface Order {
   id: string;
   user_id?: string | null;
-  status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
+  status: 'pending' | 'paid' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
   total_price: number;
   // Guest customer fields
   customer_first_name?: string;
@@ -250,6 +255,7 @@ export async function getOrderStats(): Promise<{
   total: number;
   pending: number;
   paid: number;
+  confirmed: number;
   shipped: number;
   delivered: number;
   cancelled: number;
@@ -261,6 +267,7 @@ export async function getOrderStats(): Promise<{
         total: number;
         pending: number;
         paid: number;
+        confirmed: number;
         shipped: number;
         delivered: number;
         cancelled: number;
@@ -274,6 +281,7 @@ export async function getOrderStats(): Promise<{
       total: 0,
       pending: 0,
       paid: 0,
+      confirmed: 0,
       shipped: 0,
       delivered: 0,
       cancelled: 0,

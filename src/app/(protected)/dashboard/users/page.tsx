@@ -3,12 +3,11 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUsers, deleteUser } from "../../../../../services/apiUsers";
-import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+import { getUsers } from "../../../../../services/apiUsers";
 
 const UsersPage: React.FC = () => {
-  const [selectedRole, setSelectedRole] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<"admin" | "user">("admin");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
   const [dateFilter, setDateFilter] = useState<string>("");
@@ -28,13 +27,13 @@ const UsersPage: React.FC = () => {
     queryKey: [
       "users",
       currentPage,
-      selectedRole,
+      activeTab,
       debouncedSearchQuery,
       dateFilter,
     ],
     queryFn: () =>
       getUsers(currentPage, pageSize, {
-        role: selectedRole,
+        role: activeTab,
         search: debouncedSearchQuery,
         date: dateFilter,
       }),
@@ -46,26 +45,11 @@ const UsersPage: React.FC = () => {
   const total = data?.total || 0;
   const totalPages = Math.ceil(total / pageSize);
 
-  const queryClient = useQueryClient();
-
-  const { mutate: deleteUserMutation } = useMutation({
-    mutationFn: deleteUser,
-    onSuccess: () => {
-      toast.success("تم حذف المستخدم بنجاح");
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["userStats"] });
-    },
-    onError: (err) => {
-      toast.error("حدث خطأ أثناء حذف المستخدم");
-      console.error(err);
-    },
-  });
-
   const endIndex = Math.min(currentPage * pageSize, total);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedRole, searchQuery, dateFilter]);
+  }, [activeTab, searchQuery, dateFilter]);
 
   if (isPending)
     return (
@@ -98,47 +82,70 @@ const UsersPage: React.FC = () => {
       </div>
 
       <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
-            <Link
-              href="/dashboard/add-user"
-              className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
-            >
-              <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
-                <i className="material-symbols-outlined !text-[22px] absolute ltr:-left-[4px] rtl:-right-[4px] top-1/2 -translate-y-1/2">
-                  add
-                </i>
-                أضف مستخدم جديد
-              </span>
-            </Link>
-          </div>
+        <div className="trezo-card-header mb-[20px] md:mb-[25px]">
+          <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
+            قائمة المستخدمين
+          </h6>
         </div>
 
-        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Tabs */}
+        <div className="mb-6 border-b border-gray-200 dark:border-gray-700">
+          <nav className="flex gap-4">
+            <button
+              onClick={() => setActiveTab("admin")}
+              className={`pb-3 px-4 font-medium transition-all ${
+                activeTab === "admin"
+                  ? "border-b-2 border-primary-500 text-primary-500"
+                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <i className="material-symbols-outlined !text-[20px]">
+                  admin_panel_settings
+                </i>
+                مستخدمي الداشبورد
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveTab("user")}
+              className={`pb-3 px-4 font-medium transition-all ${
+                activeTab === "user"
+                  ? "border-b-2 border-primary-500 text-primary-500"
+                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <i className="material-symbols-outlined !text-[20px]">
+                  people
+                </i>
+                مستخدمي التطبيق
+              </span>
+            </button>
+          </nav>
+        </div>
+
+        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Search Bar */}
           <div className="relative">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="ابحث عن مستخدم..."
+              placeholder="ابحث باسم المستخدم، الإيميل، أو رقم الهاتف..."
               className="w-full p-2 pr-10 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
             />
             <i className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
               search
             </i>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                <i className="material-symbols-outlined text-sm">close</i>
+              </button>
+            )}
           </div>
-
-          {/* Role Filter */}
-          <select
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value)}
-            className="w-full p-2 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
-          >
-            <option value="">جميع الأدوار</option>
-            <option value="admin">مدير</option>
-            <option value="user">مستخدم</option>
-          </select>
 
           {/* Date Filter */}
           <select
@@ -160,11 +167,10 @@ const UsersPage: React.FC = () => {
               <thead className="text-black dark:text-white">
                 <tr>
                   {[
-                    "اسم المستخدم",
-                    "الرقم",
-                    "المحافظة",
+                    "الاسم",
+                    "الإيميل",
+                    "رقم الهاتف",
                     "تاريخ التسجيل",
-                    "الإجراءات",
                   ].map((header) => (
                     <th
                       key={header}
@@ -179,131 +185,50 @@ const UsersPage: React.FC = () => {
               <tbody className="text-black dark:text-white">
                 {users?.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="text-center py-8 text-gray-500">
-                      لا يوجد مستخدمين متاحين
+                    <td colSpan={4} className="text-center py-8 text-gray-500">
+                      {activeTab === "admin"
+                        ? "لا يوجد مستخدمين للداشبورد"
+                        : "لا يوجد مستخدمين للتطبيق"}
                     </td>
                   </tr>
                 ) : (
                   users?.map((user) => (
                     <tr key={user.id}>
+                      {/* Name */}
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                        <div className="flex items-center text-black dark:text-white transition-all hover:text-primary-500">
-                          <span className="block text-[15px] font-medium ltr:ml-[12px] rtl:mr-[12px]">
-                            {user.full_name || "غير محدد"}
+                        <div className="flex items-center text-black dark:text-white">
+                          <span className="block text-[15px] font-medium">
+                            {user.full_name || user.name || "غير محدد"}
                           </span>
                         </div>
                       </td>
 
-                      <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                        <span className="text-gray-600 dark:text-gray-300">
-                          {user.phone}
+                      {/* Email */}
+                      <td className="ltr:text-left rtl:text-right px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                        <span className="text-gray-600 dark:text-gray-300 text-sm">
+                          {user.email || "غير محدد"}
                         </span>
                       </td>
 
+                      {/* Phone */}
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                         <span className="text-gray-600 dark:text-gray-300">
-                          غير محدد
+                          {user.phone || "غير محدد"}
                         </span>
                       </td>
 
+                      {/* Registration Date */}
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                        {new Date(user.created_at as string).toLocaleDateString(
-                          "ar-EG",
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )}
-                      </td>
-
-                      <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                        <div className="flex items-center gap-[9px]">
-                          {/* Edit */}
-                          <div className="relative group">
-                            <Link
-                              href={`/dashboard/users/${user.id}`}
-                              className="text-gray-500 leading-none"
-                              type="button"
-                            >
-                              <i className="material-symbols-outlined !text-md">
-                                edit
-                              </i>
-                            </Link>
-
-                            {/* Tooltip */}
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              تعديل
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                            </div>
-                          </div>
-
-                          {/* Delete */}
-                          <div className="relative group">
-                            <button
-                              onClick={() => {
-                                toast(
-                                  (t) => (
-                                    <span>
-                                      هل أنت متأكد أنك تريد حذف هذا المستخدم؟
-                                      <div
-                                        style={{
-                                          marginTop: 8,
-                                          display: "flex",
-                                          gap: 8,
-                                        }}
-                                      >
-                                        <button
-                                          onClick={() => {
-                                            deleteUserMutation(user.id!);
-                                            toast.dismiss(t.id);
-                                          }}
-                                          style={{
-                                            background: "#ef4444",
-                                            color: "white",
-                                            border: "none",
-                                            padding: "4px 12px",
-                                            borderRadius: 4,
-                                            marginRight: 8,
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          نعم
-                                        </button>
-                                        <button
-                                          onClick={() => toast.dismiss(t.id)}
-                                          style={{
-                                            background: "#e5e7eb",
-                                            color: "#111827",
-                                            border: "none",
-                                            padding: "4px 12px",
-                                            borderRadius: 4,
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          إلغاء
-                                        </button>
-                                      </div>
-                                    </span>
-                                  ),
-                                  { duration: 6000 }
-                                );
-                              }}
-                              disabled={isPending}
-                              className="text-danger-500 leading-none"
-                            >
-                              <i className="material-symbols-outlined !text-md">
-                                delete
-                              </i>
-                            </button>
-
-                            {/* Tooltip */}
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              مسح
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                            </div>
-                          </div>
-                        </div>
+                        <span className="text-sm text-gray-600 dark:text-gray-300">
+                          {new Date(user.created_at as string).toLocaleDateString(
+                            "ar-EG",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </span>
                       </td>
                     </tr>
                   ))
