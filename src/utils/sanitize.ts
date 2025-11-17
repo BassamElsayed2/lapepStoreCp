@@ -5,6 +5,14 @@
 
 import DOMPurify from 'isomorphic-dompurify';
 
+type SanitizeConfig = {
+  ALLOWED_TAGS?: string[];
+  ALLOWED_ATTR?: string[];
+  ALLOW_DATA_ATTR?: boolean;
+  ALLOWED_URI_REGEXP?: RegExp;
+  [key: string]: unknown;
+};
+
 /**
  * Sanitize HTML content to prevent XSS attacks
  * @param dirty - Potentially unsafe HTML string
@@ -13,14 +21,14 @@ import DOMPurify from 'isomorphic-dompurify';
  */
 export function sanitizeHtml(
   dirty: string,
-  config?: DOMPurify.Config
+  config?: SanitizeConfig
 ): string {
   if (!dirty || typeof dirty !== 'string') {
     return '';
   }
 
   // Default configuration - allow most HTML but remove dangerous attributes
-  const defaultConfig: DOMPurify.Config = {
+  const defaultConfig: SanitizeConfig = {
     ALLOWED_TAGS: [
       'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
       'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'code', 'pre',

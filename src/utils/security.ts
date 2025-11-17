@@ -10,15 +10,17 @@
 export function isSafeUrl(url: string, allowedDomains: string[] = []): boolean {
   try {
     const parsedUrl = new URL(url, window.location.origin);
-    
+
     // Allow same origin
     if (parsedUrl.origin === window.location.origin) {
       return true;
     }
-    
+
     // Check against whitelist
-    return allowedDomains.some(domain => 
-      parsedUrl.hostname === domain || parsedUrl.hostname.endsWith(`.${domain}`)
+    return allowedDomains.some(
+      (domain) =>
+        parsedUrl.hostname === domain ||
+        parsedUrl.hostname.endsWith(`.${domain}`)
     );
   } catch {
     // If URL parsing fails, it's not safe
@@ -29,11 +31,15 @@ export function isSafeUrl(url: string, allowedDomains: string[] = []): boolean {
 /**
  * Safely redirect to a URL (prevents open redirect)
  */
-export function safeRedirect(url: string, fallbackUrl: string = '/', allowedDomains: string[] = []) {
+export function safeRedirect(
+  url: string,
+  fallbackUrl: string = "/",
+  allowedDomains: string[] = []
+) {
   if (isSafeUrl(url, allowedDomains)) {
     window.location.href = url;
   } else {
-    console.warn('Unsafe redirect blocked:', url);
+    console.warn("Unsafe redirect blocked:", url);
     window.location.href = fallbackUrl;
   }
 }
@@ -43,12 +49,12 @@ export function safeRedirect(url: string, fallbackUrl: string = '/', allowedDoma
  */
 export function escapeHtml(text: string): string {
   const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#x27;',
-    '/': '&#x2F;',
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#x27;",
+    "/": "&#x2F;",
   };
   return text.replace(/[&<>"'/]/g, (char) => map[char]);
 }
@@ -58,14 +64,16 @@ export function escapeHtml(text: string): string {
  */
 export function generateSecureToken(length: number = 32): string {
   const array = new Uint8Array(length);
-  if (typeof window !== 'undefined' && window.crypto) {
+  if (typeof window !== "undefined" && window.crypto) {
     window.crypto.getRandomValues(array);
   } else {
     for (let i = 0; i < length; i++) {
       array[i] = Math.floor(Math.random() * 256);
     }
   }
-  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
+    ""
+  );
 }
 
 /**
@@ -88,8 +96,14 @@ export function validateFile(
 ): FileValidationResult {
   const {
     maxSize = 10 * 1024 * 1024, // 10MB default for admin
-    allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
-    allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'],
+    allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/svg+xml",
+    ],
+    allowedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"],
   } = options;
 
   if (file.size > maxSize) {
@@ -106,7 +120,9 @@ export function validateFile(
     };
   }
 
-  const extension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+  const extension = file.name
+    .toLowerCase()
+    .substring(file.name.lastIndexOf("."));
   if (!allowedExtensions.includes(extension)) {
     return {
       isValid: false,
@@ -123,19 +139,23 @@ export function validateFile(
 export class AdminRateLimiter {
   private actions: Map<string, number[]> = new Map();
 
-  canPerform(actionId: string, maxAttempts: number = 10, windowMs: number = 60000): boolean {
+  canPerform(
+    actionId: string,
+    maxAttempts: number = 10,
+    windowMs: number = 60000
+  ): boolean {
     const now = Date.now();
     const attempts = this.actions.get(actionId) || [];
-    
-    const recentAttempts = attempts.filter(time => now - time < windowMs);
-    
+
+    const recentAttempts = attempts.filter((time) => now - time < windowMs);
+
     if (recentAttempts.length >= maxAttempts) {
       return false;
     }
-    
+
     recentAttempts.push(now);
     this.actions.set(actionId, recentAttempts);
-    
+
     return true;
   }
 
@@ -151,14 +171,14 @@ export interface AuditLogEntry {
   action: string;
   timestamp: Date;
   userId?: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 export class AuditLogger {
   private logs: AuditLogEntry[] = [];
   private maxLogs = 100;
 
-  log(action: string, userId?: string, details?: any) {
+  log(action: string, userId?: string, details?: Record<string, unknown>) {
     const entry: AuditLogEntry = {
       action,
       timestamp: new Date(),
@@ -167,15 +187,15 @@ export class AuditLogger {
     };
 
     this.logs.unshift(entry);
-    
+
     // Keep only recent logs
     if (this.logs.length > this.maxLogs) {
       this.logs = this.logs.slice(0, this.maxLogs);
     }
 
     // Also log to console in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔒 Admin Action:', entry);
+    if (process.env.NODE_ENV === "development") {
+      console.log("🔒 Admin Action:", entry);
     }
   }
 
@@ -195,7 +215,6 @@ export const auditLogger = new AuditLogger();
  * Check if the application is running in a secure context
  */
 export function isSecureContext(): boolean {
-  if (typeof window === 'undefined') return true;
+  if (typeof window === "undefined") return true;
   return window.isSecureContext;
 }
-

@@ -41,55 +41,8 @@ const SignUpForm: React.FC = () => {
                   Sign Up to Trezo Dashboard
                 </h1>
                 <p className="font-medium lg:text-md text-[#445164] dark:text-gray-400">
-                  Sign Up with social account or enter your details
+                  Enter your details to create an account
                 </p>
-              </div>
-
-              <div className="flex items-center justify-between mb-[20px] md:mb-[23px] gap-[12px]">
-                <div className="grow">
-                  <button
-                    type="button"
-                    className="block text-center w-full rounded-md transition-all py-[8px] md:py-[10.5px] px-[15px] md:px-[25px] text-black dark:text-white border border-[#D6DAE1] bg-white dark:bg-[#0a0e19] dark:border-[#172036] shadow-sm hover:border-primary-500"
-                  >
-                    <Image
-                      src="/images/icons/google.svg"
-                      className="inline-block"
-                      alt="google"
-                      width={25}
-                      height={25}
-                    />
-                  </button>
-                </div>
-
-                <div className="grow">
-                  <button
-                    type="button"
-                    className="block text-center w-full rounded-md transition-all py-[8px] md:py-[10.5px] px-[15px] md:px-[25px] text-black dark:text-white border border-[#D6DAE1] bg-white dark:bg-[#0a0e19] dark:border-[#172036] shadow-sm hover:border-primary-500"
-                  >
-                    <Image
-                      src="/images/icons/facebook2.svg"
-                      className="inline-block"
-                      alt="google"
-                      width={25}
-                      height={25}
-                    />
-                  </button>
-                </div>
-
-                <div className="grow">
-                  <button
-                    type="button"
-                    className="block text-center w-full rounded-md transition-all py-[8px] md:py-[10.5px] px-[15px] md:px-[25px] text-black dark:text-white border border-[#D6DAE1] bg-white dark:bg-[#0a0e19] dark:border-[#172036] shadow-sm hover:border-primary-500"
-                  >
-                    <Image
-                      src="/images/icons/apple.svg"
-                      className="inline-block"
-                      alt="google"
-                      width={25}
-                      height={25}
-                    />
-                  </button>
-                </div>
               </div>
 
               <div className="mb-[15px] relative">
