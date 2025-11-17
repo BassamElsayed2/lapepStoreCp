@@ -20,6 +20,7 @@
     "@tanstack/react-query-devtools": "^5.76.1",
     "apexcharts": "^4.7.0",
     "base64-arraybuffer": "^1.0.2",
+    "isomorphic-dompurify": "^2.32.0",
     "material-symbols": "^0.31.2",
     "next": "15.3.1",
     "react": "^19.0.0",

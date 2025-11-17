@@ -656,7 +656,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Link
           href="/dashboard/news/create-news"
           className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
@@ -720,7 +720,7 @@ export default function DashboardPage() {
           </div>
         </Link>
 
-        <Link
+        {/* <Link
           href="/dashboard/site-settings"
           className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
         >
@@ -739,7 +739,7 @@ export default function DashboardPage() {
               </p>
             </div>
           </div>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

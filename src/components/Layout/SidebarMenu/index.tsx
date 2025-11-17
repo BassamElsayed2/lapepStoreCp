@@ -249,7 +249,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               </div>
             </div>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
+            {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <button
                 className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
                   openIndex === 6 ? "open" : ""
@@ -303,7 +303,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                   </div>
                 </ul>
               </div>
-            </div>
+            </div> */}
 
             <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <button
@@ -377,7 +377,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <Link
               href="/dashboard/users"
               className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                pathname === "/dashboard/users" || pathname === "/dashboard/users/"
+                pathname === "/dashboard/users" ||
+                pathname === "/dashboard/users/"
                   ? "active"
                   : ""
               }`}

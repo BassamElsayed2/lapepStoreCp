@@ -6,6 +6,7 @@ import React from "react";
 import { getAboutUs } from "../../../../../services/apiAboutUs";
 import type { SiteSettings } from "../../../../../services/apiAboutUs";
 import Image from "next/image";
+import { sanitizeRichText } from "@/utils/sanitize";
 
 export default function SiteSettings() {
   const { data: site_settings } = useQuery<SiteSettings>({
@@ -90,7 +91,7 @@ export default function SiteSettings() {
           <div>
             <div
               dangerouslySetInnerHTML={{
-                __html: site_settings?.about_us_ar || "",
+                __html: sanitizeRichText(site_settings?.about_us_ar || ""),
               }}
               className="text-black dark:text-white font-medium"
             />
@@ -103,7 +104,7 @@ export default function SiteSettings() {
           <div>
             <div
               dangerouslySetInnerHTML={{
-                __html: site_settings?.about_us_en || "",
+                __html: sanitizeRichText(site_settings?.about_us_en || ""),
               }}
               className="text-black dark:text-white font-medium"
             />
