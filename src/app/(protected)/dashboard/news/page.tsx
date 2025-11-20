@@ -134,8 +134,9 @@ const ProductListTable: React.FC = () => {
       toast.success("تم حذف المنتج بنجاح");
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: (err) => {
-      toast.error("حدث خطأ أثناء حذف المنتج");
+    onError: (err: Error) => {
+      const errorMessage = err?.message || "حدث خطأ أثناء حذف المنتج";
+      toast.error(errorMessage);
       console.error(err);
     },
   });
@@ -335,7 +336,8 @@ const ProductListTable: React.FC = () => {
                               height={40}
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
-                                target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='12' fill='%23999'%3E؟%3C/text%3E%3C/svg%3E";
+                                target.src =
+                                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='12' fill='%23999'%3E؟%3C/text%3E%3C/svg%3E";
                               }}
                             />
                           </div>

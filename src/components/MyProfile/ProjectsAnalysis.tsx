@@ -21,7 +21,14 @@ const ProjectsAnalysis: React.FC = () => {
   const [isChartLoaded, setChartLoaded] = useState(false);
 
   useEffect(() => {
-    setChartLoaded(true);
+    // Ensure we're on the client side and DOM is ready
+    if (typeof window !== "undefined") {
+      // Use a small delay to ensure DOM is fully rendered
+      const timer = setTimeout(() => {
+        setChartLoaded(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const series = [

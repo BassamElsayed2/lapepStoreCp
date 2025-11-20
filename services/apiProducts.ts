@@ -8,31 +8,37 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Backend API URL
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Helper function للاتصال بـ Backend API
 async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
-  
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+
   const config: RequestInit = {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
   };
 
   const response = await fetch(`${API_URL}${endpoint}`, config);
-  
+
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({
-      message: 'حدث خطأ في الاتصال بالخادم',
+      message: "حدث خطأ في الاتصال بالخادم",
     }));
-    throw new Error(errorData.message || `خطأ في الخادم: ${response.status}`);
+    // Backend returns error in 'error' field, but also check 'message' for compatibility
+    throw new Error(
+      errorData.error ||
+        errorData.message ||
+        `خطأ في الخادم: ${response.status}`
+    );
   }
 
   return response.json();
@@ -86,38 +92,49 @@ export async function getProducts(
       limit: limit.toString(),
       ...(filters?.categoryId && { categoryId: filters.categoryId }),
       ...(filters?.search && { search: filters.search }),
-      ...(filters?.isBestSeller !== undefined && { isBestSeller: filters.isBestSeller.toString() }),
-      ...(filters?.limitedTimeOffer !== undefined && { limitedTimeOffer: filters.limitedTimeOffer.toString() }),
+      ...(filters?.isBestSeller !== undefined && {
+        isBestSeller: filters.isBestSeller.toString(),
+      }),
+      ...(filters?.limitedTimeOffer !== undefined && {
+        limitedTimeOffer: filters.limitedTimeOffer.toString(),
+      }),
     });
 
-    const response = await apiFetch<{ 
-      success: boolean; 
+    const response = await apiFetch<{
+      success: boolean;
       data: Product[];
-      pagination: { total: number; totalPages: number; page: number; limit: number };
+      pagination: {
+        total: number;
+        totalPages: number;
+        page: number;
+        limit: number;
+      };
     }>(`/products?${params}`);
-    
+
     // Map images to image_url for backward compatibility
-    const products = (response.data || []).map(product => ({
+    const products = (response.data || []).map((product) => ({
       ...product,
       image_url: product.images || product.image_url, // Ensure compatibility
       stock: product.stock_quantity || product.quantity, // Map stock_quantity to stock
     }));
-    
+
     return {
       products,
       total: response.pagination?.total || 0,
     };
   } catch (error: any) {
-    console.error('❌ خطأ في جلب المنتجات:', error);
-    throw new Error(error.message || 'تعذر تحميل المنتجات');
+    console.error("❌ خطأ في جلب المنتجات:", error);
+    throw new Error(error.message || "تعذر تحميل المنتجات");
   }
 }
 
 export async function getProductById(id: string): Promise<Product> {
   try {
-    const response = await apiFetch<{ success: boolean; data: Product }>(`/products/${id}`);
+    const response = await apiFetch<{ success: boolean; data: Product }>(
+      `/products/${id}`
+    );
     const product = response.data;
-    
+
     // Map for backward compatibility
     return {
       ...product,
@@ -126,8 +143,8 @@ export async function getProductById(id: string): Promise<Product> {
       description: product.description_ar || product.description_en,
     };
   } catch (error: any) {
-    console.error('❌ خطأ في جلب المنتج:', error);
-    throw new Error(error.message || 'تعذر تحميل المنتج');
+    console.error("❌ خطأ في جلب المنتج:", error);
+    throw new Error(error.message || "تعذر تحميل المنتج");
   }
 }
 
@@ -138,13 +155,18 @@ export async function createProduct(productData: Product): Promise<Product> {
       name_ar: productData.name_ar,
       name_en: productData.name_en,
       price: Number(productData.price),
-      stock_quantity: Number(productData.quantity || productData.stock_quantity || 0),
+      stock_quantity: Number(
+        productData.quantity || productData.stock_quantity || 0
+      ),
       is_best_seller: productData.is_best_seller ?? false,
       limited_time_offer: productData.limited_time_offer ?? false,
     };
 
     // Only add optional fields if they have values
-    if (productData.offer_price !== null && productData.offer_price !== undefined) {
+    if (
+      productData.offer_price !== null &&
+      productData.offer_price !== undefined
+    ) {
       payload.offer_price = Number(productData.offer_price);
     }
     if (productData.images) {
@@ -160,16 +182,18 @@ export async function createProduct(productData: Product): Promise<Product> {
       payload.category_id = parseInt(productData.category_id);
     }
 
-    const response = await apiFetch<{ success: boolean; data: Product }>('/products', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
-    
-    console.log('✅ Product created successfully:', response.data);
+    const response = await apiFetch<{ success: boolean; data: Product }>(
+      "/products",
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+      }
+    );
+
     return response.data;
   } catch (error: any) {
-    console.error('❌ خطأ في إنشاء المنتج:', error);
-    throw new Error(error.message || 'تعذر إنشاء المنتج');
+    console.error("❌ خطأ في إنشاء المنتج:", error);
+    throw new Error(error.message || "تعذر إنشاء المنتج");
   }
 }
 
@@ -249,13 +273,13 @@ export async function deleteProduct(id: string) {
 
     // Delete the product from SQL Server
     await apiFetch<{ success: boolean }>(`/products/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
-    
-    console.log('✅ تم حذف المنتج بنجاح');
+
+    console.log("✅ تم حذف المنتج بنجاح");
   } catch (error: any) {
-    console.error('❌ خطأ في حذف المنتج:', error);
-    throw new Error(error.message || 'حدث خطأ أثناء حذف المنتج');
+    console.error("❌ خطأ في حذف المنتج:", error);
+    throw new Error(error.message || "حدث خطأ أثناء حذف المنتج");
   }
 }
 
@@ -276,7 +300,10 @@ export async function updateProduct(
     if (updateData.price !== undefined) {
       updateData.price = Number(updateData.price);
     }
-    if (updateData.offer_price !== undefined && updateData.offer_price !== null) {
+    if (
+      updateData.offer_price !== undefined &&
+      updateData.offer_price !== null
+    ) {
       updateData.offer_price = Number(updateData.offer_price);
     }
     if (updateData.stock_quantity !== undefined) {
@@ -284,7 +311,7 @@ export async function updateProduct(
     }
 
     // Clean up undefined and null values
-    Object.keys(updateData).forEach(key => {
+    Object.keys(updateData).forEach((key) => {
       if (updateData[key] === undefined || updateData[key] === null) {
         delete updateData[key];
       }
@@ -295,15 +322,17 @@ export async function updateProduct(
       updateData.category_id = parseInt(updateData.category_id);
     }
 
-    const response = await apiFetch<{ success: boolean; data: Product }>(`/products/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(updateData),
-    });
+    const response = await apiFetch<{ success: boolean; data: Product }>(
+      `/products/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(updateData),
+      }
+    );
 
-    console.log('✅ Product updated successfully:', response.data);
     return response.data;
   } catch (error: any) {
-    console.error('❌ خطأ في تحديث المنتج:', error);
-    throw new Error(error.message || 'تعذر تحديث المنتج');
+    console.error("❌ خطأ في تحديث المنتج:", error);
+    throw new Error(error.message || "تعذر تحديث المنتج");
   }
 }
