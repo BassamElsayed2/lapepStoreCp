@@ -66,7 +66,14 @@ export default function DashboardPage() {
   const [isChartLoaded, setChartLoaded] = useState(false);
 
   useEffect(() => {
-    setChartLoaded(true);
+    // Ensure we're on the client side and DOM is ready
+    if (typeof window !== "undefined") {
+      // Use a small delay to ensure DOM is fully rendered
+      const timer = setTimeout(() => {
+        setChartLoaded(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   useEffect(() => {
@@ -206,7 +213,7 @@ export default function DashboardPage() {
       },
     },
     xaxis: {
-      categories: chartData.labels,
+      categories: chartData.labels || [],
       labels: {
         style: { colors: "#64748B", fontFamily: "inherit" },
       },
@@ -238,7 +245,7 @@ export default function DashboardPage() {
       },
     },
     xaxis: {
-      categories: chartData.labels,
+      categories: chartData.labels || [],
       labels: {
         style: { colors: "#64748B", fontFamily: "inherit" },
       },
@@ -513,7 +520,7 @@ export default function DashboardPage() {
               <span>آخر 7 أيام</span>
             </div>
           </div>
-          {isChartLoaded && (
+          {isChartLoaded && chartData.salesData && chartData.salesData.length > 0 && (
             <Chart
               options={salesChartOptions}
               series={[{ name: "المبيعات", data: chartData.salesData }]}
@@ -532,10 +539,10 @@ export default function DashboardPage() {
             <Chart
               options={statusPieChartOptions}
               series={[
-                stats.paidOrders,
-                stats.shippedOrders,
-                stats.deliveredOrders,
-                stats.cancelledOrders,
+                stats.paidOrders || 0,
+                stats.shippedOrders || 0,
+                stats.deliveredOrders || 0,
+                stats.cancelledOrders || 0,
               ]}
               type="donut"
               height={280}
@@ -554,7 +561,7 @@ export default function DashboardPage() {
             <span>آخر 7 أيام</span>
           </div>
         </div>
-        {isChartLoaded && (
+        {isChartLoaded && chartData.ordersData && chartData.ordersData.length > 0 && (
           <Chart
             options={ordersChartOptions}
             series={[{ name: "الطلبات", data: chartData.ordersData }]}
