@@ -202,7 +202,7 @@ export default function DashboardPage() {
     },
     dataLabels: { enabled: false },
     stroke: { curve: "smooth", width: 3 },
-    colors: ["#10B981"],
+    colors: ["#5A3FFF"],
     fill: {
       type: "gradient",
       gradient: {
@@ -210,25 +210,43 @@ export default function DashboardPage() {
         opacityFrom: 0.7,
         opacityTo: 0.2,
         stops: [0, 90, 100],
+        colorStops: [
+          { offset: 0, color: "#5A3FFF", opacity: 0.7 },
+          { offset: 100, color: "#8A63FF", opacity: 0.2 },
+        ],
       },
     },
     xaxis: {
       categories: chartData.labels || [],
       labels: {
-        style: { colors: "#64748B", fontFamily: "inherit" },
+        style: { 
+          colors: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
+            ? "#9CA3AF" 
+            : "#6B6B6B", 
+          fontFamily: "inherit" 
+        },
       },
     },
     yaxis: {
       labels: {
-        style: { colors: "#64748B", fontFamily: "inherit" },
+        style: { 
+          colors: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
+            ? "#9CA3AF" 
+            : "#6B6B6B", 
+          fontFamily: "inherit" 
+        },
         formatter: (value) => `$${value.toFixed(0)}`,
       },
     },
     tooltip: {
-      theme: "dark",
+      theme: typeof window !== "undefined" && document.documentElement.classList.contains("dark") ? "dark" : "light",
       y: { formatter: (value) => `$${value.toFixed(2)}` },
     },
-    grid: { borderColor: "#e2e8f0" },
+    grid: { 
+      borderColor: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
+        ? "#374151" 
+        : "#E8E8E8" 
+    },
   };
 
   const ordersChartOptions: ApexOptions = {
@@ -237,7 +255,7 @@ export default function DashboardPage() {
       toolbar: { show: false },
     },
     dataLabels: { enabled: false },
-    colors: ["#3B82F6"],
+    colors: ["#5A3FFF"],
     plotOptions: {
       bar: {
         borderRadius: 8,
@@ -247,16 +265,32 @@ export default function DashboardPage() {
     xaxis: {
       categories: chartData.labels || [],
       labels: {
-        style: { colors: "#64748B", fontFamily: "inherit" },
+        style: { 
+          colors: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
+            ? "#9CA3AF" 
+            : "#6B6B6B", 
+          fontFamily: "inherit" 
+        },
       },
     },
     yaxis: {
       labels: {
-        style: { colors: "#64748B", fontFamily: "inherit" },
+        style: { 
+          colors: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
+            ? "#9CA3AF" 
+            : "#6B6B6B", 
+          fontFamily: "inherit" 
+        },
       },
     },
-    tooltip: { theme: "dark" },
-    grid: { borderColor: "#e2e8f0" },
+    tooltip: { 
+      theme: typeof window !== "undefined" && document.documentElement.classList.contains("dark") ? "dark" : "light" 
+    },
+    grid: { 
+      borderColor: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
+        ? "#374151" 
+        : "#E8E8E8" 
+    },
   };
 
   const statusPieChartOptions: ApexOptions = {
@@ -264,11 +298,13 @@ export default function DashboardPage() {
       type: "donut",
     },
     labels: ["مدفوع", "تم الشحن", "تم التوصيل", "ملغي"],
-    colors: ["#3B82F6", "#8B5CF6", "#10B981", "#EF4444"],
+    colors: ["#5A3FFF", "#8A63FF", "#7ED85F", "#EF4444"],
     legend: {
       position: "bottom",
       labels: {
-        colors: "#64748B",
+        colors: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
+          ? "#9CA3AF" 
+          : "#6B6B6B",
       },
     },
     dataLabels: {
@@ -276,7 +312,7 @@ export default function DashboardPage() {
       formatter: (val: number) => `${val.toFixed(0)}%`,
     },
     tooltip: {
-      theme: "dark",
+      theme: typeof window !== "undefined" && document.documentElement.classList.contains("dark") ? "dark" : "light",
     },
   };
 
@@ -303,7 +339,7 @@ export default function DashboardPage() {
       delivered: {
         text: "تم التوصيل",
         color:
-          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+          "bg-[#DFF3E3] text-[#2A5B47] dark:bg-green-900 dark:text-green-200",
       },
       cancelled: {
         text: "ملغي",
@@ -322,8 +358,8 @@ export default function DashboardPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#5A3FFF] dark:border-[#8A63FF] mx-auto mb-4"></div>
+          <p className="text-[#6B6B6B] dark:text-gray-400 text-lg">
             جاري تحميل البيانات...
           </p>
         </div>
@@ -332,19 +368,19 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-base font-semibold text-[#1A1A1A] dark:text-white">
             لوحة التحكم
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-[#6B6B6B] dark:text-gray-400 mt-1">
             مرحباً بك، إليك نظرة عامة على نشاطك
           </p>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-          <i className="material-symbols-outlined text-lg">calendar_today</i>
+        <div className="flex items-center gap-2 text-sm text-[#6B6B6B] dark:text-gray-400">
+          <i className="material-symbols-outlined text-lg text-[#5A3FFF]">calendar_today</i>
           <span>
             {new Date().toLocaleDateString("ar-EG", {
               weekday: "long",
@@ -362,7 +398,7 @@ export default function DashboardPage() {
         <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 shadow-lg text-white transform hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-white/20 rounded-lg">
-              <i className="material-symbols-outlined text-3xl">
+              <i className="material-symbols-outlined text-xl">
                 shopping_cart
               </i>
             </div>
@@ -370,8 +406,8 @@ export default function DashboardPage() {
               إجمالي
             </span>
           </div>
-          <h3 className="text-sm font-medium opacity-90">إجمالي الطلبات</h3>
-          <p className="text-4xl font-bold mt-2">{stats.totalOrders}</p>
+          <h3 className="text-xs font-normal opacity-90">إجمالي الطلبات</h3>
+          <p className="text-xl font-bold mt-2">{stats.totalOrders}</p>
           <div className="mt-4 flex items-center gap-2 text-sm opacity-90">
             <span>اليوم: {stats.todayOrders}</span>
           </div>
@@ -381,14 +417,14 @@ export default function DashboardPage() {
         <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 shadow-lg text-white transform hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-white/20 rounded-lg">
-              <i className="material-symbols-outlined text-3xl">attach_money</i>
+              <i className="material-symbols-outlined text-xl">attach_money</i>
             </div>
             <span className="text-sm bg-white/20 px-3 py-1 rounded-full">
               مبيعات
             </span>
           </div>
-          <h3 className="text-sm font-medium opacity-90">إجمالي المبيعات</h3>
-          <p className="text-4xl font-bold mt-2">
+          <h3 className="text-xs font-normal opacity-90">إجمالي المبيعات</h3>
+          <p className="text-xl font-bold mt-2">
             ${stats.totalSales.toFixed(2)}
           </p>
           <div className="mt-4 flex items-center gap-2 text-sm opacity-90">
@@ -397,20 +433,20 @@ export default function DashboardPage() {
         </div>
 
         {/* Total Products */}
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 shadow-lg text-white transform hover:scale-105 transition-all duration-300">
+        <div className="bg-gradient-to-r from-[#5A3FFF] to-[#8A63FF] rounded-xl p-6 shadow-lg text-white transform hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-white/20 rounded-lg">
-              <i className="material-symbols-outlined text-3xl">inventory_2</i>
+              <i className="material-symbols-outlined text-xl">inventory_2</i>
             </div>
             <span className="text-sm bg-white/20 px-3 py-1 rounded-full">
               منتجات
             </span>
           </div>
-          <h3 className="text-sm font-medium opacity-90">إجمالي المنتجات</h3>
-          <p className="text-4xl font-bold mt-2">{stats.totalProducts}</p>
+          <h3 className="text-xs font-normal opacity-90">إجمالي المنتجات</h3>
+          <p className="text-xl font-bold mt-2">{stats.totalProducts}</p>
           <Link
             href="/dashboard/news"
-            className="mt-4 flex items-center gap-1 text-sm opacity-90 hover:opacity-100"
+            className="mt-4 flex items-center gap-1 text-sm opacity-90 hover:opacity-100 transition-all duration-200 ease-in-out hover:text-white/100"
           >
             <span>عرض الكل</span>
             <i className="material-symbols-outlined text-sm">arrow_back</i>
@@ -421,14 +457,14 @@ export default function DashboardPage() {
         <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 shadow-lg text-white transform hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-white/20 rounded-lg">
-              <i className="material-symbols-outlined text-3xl">people</i>
+              <i className="material-symbols-outlined text-xl">people</i>
             </div>
             <span className="text-sm bg-white/20 px-3 py-1 rounded-full">
               مستخدمين
             </span>
           </div>
-          <h3 className="text-sm font-medium opacity-90">إجمالي المستخدمين</h3>
-          <p className="text-4xl font-bold mt-2">{stats.totalUsers}</p>
+          <h3 className="text-xs font-normal opacity-90">إجمالي المستخدمين</h3>
+          <p className="text-xl font-bold mt-2">{stats.totalUsers}</p>
           <div className="mt-4 flex items-center gap-2 text-sm opacity-90">
             <span>أدمنز: {stats.totalAdmins}</span>
           </div>
@@ -437,47 +473,47 @@ export default function DashboardPage() {
 
       {/* Secondary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">مدفوع</p>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-sm text-[#6B6B6B] dark:text-gray-400">مدفوع</p>
+              <p className="text-xl font-bold text-[#5A3FFF]">
                 {stats.paidOrders}
               </p>
             </div>
-            <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
-              <i className="material-symbols-outlined text-blue-600 dark:text-blue-400">
+            <div className="p-3 bg-[#5A3FFF]/10 rounded-lg">
+              <i className="material-symbols-outlined text-[#5A3FFF]">
                 payments
               </i>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-[#6B6B6B] dark:text-gray-400">
                 تم الشحن
               </p>
-              <p className="text-2xl font-bold text-purple-600">
+              <p className="text-xl font-bold text-[#5A3FFF]">
                 {stats.shippedOrders}
               </p>
             </div>
-            <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
-              <i className="material-symbols-outlined text-purple-600 dark:text-purple-400">
+            <div className="p-3 bg-[#5A3FFF]/10 rounded-lg">
+              <i className="material-symbols-outlined text-[#5A3FFF]">
                 local_shipping
               </i>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-[#6B6B6B] dark:text-gray-400">
                 تم التوصيل
               </p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-xl font-bold text-green-600">
                 {stats.deliveredOrders}
               </p>
             </div>
@@ -489,18 +525,18 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-[#6B6B6B] dark:text-gray-400">
                 متوسط الطلب
               </p>
-              <p className="text-2xl font-bold text-indigo-600">
+              <p className="text-xl font-bold text-[#5A3FFF]">
                 ${stats.averageOrderValue.toFixed(2)}
               </p>
             </div>
-            <div className="p-3 bg-indigo-100 dark:bg-indigo-900 rounded-lg">
-              <i className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">
+            <div className="p-3 bg-[#5A3FFF]/10 rounded-lg">
+              <i className="material-symbols-outlined text-[#5A3FFF]">
                 analytics
               </i>
             </div>
@@ -511,12 +547,12 @@ export default function DashboardPage() {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Sales Chart */}
-        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-xl">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-sm font-medium text-[#1A1A1A] dark:text-white">
               المبيعات الأسبوعية
             </h2>
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-[#6B6B6B] dark:text-gray-400">
               <span>آخر 7 أيام</span>
             </div>
           </div>
@@ -531,8 +567,8 @@ export default function DashboardPage() {
         </div>
 
         {/* Status Distribution */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-xl">
+          <h2 className="text-sm font-medium text-[#1A1A1A] dark:text-white mb-6">
             توزيع حالة الطلبات
           </h2>
           {isChartLoaded && (
@@ -552,12 +588,12 @@ export default function DashboardPage() {
       </div>
 
       {/* Orders Chart */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-sm font-medium text-[#1A1A1A] dark:text-white">
             عدد الطلبات اليومية
           </h2>
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-[#6B6B6B] dark:text-gray-400">
             <span>آخر 7 أيام</span>
           </div>
         </div>
@@ -572,14 +608,14 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Orders Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-[#E8E8E8] dark:border-gray-700 transition-all duration-200 ease-in-out hover:shadow-xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-sm font-medium text-[#1A1A1A] dark:text-white">
             أحدث الطلبات
           </h2>
           <Link
             href="/dashboard/orders"
-            className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
+            className="text-sm text-[#5A3FFF] dark:text-[#8A63FF] hover:text-[#5A3FFF] dark:hover:text-[#8A63FF] flex items-center gap-1 transition-all duration-200 ease-in-out"
           >
             <span>عرض الكل</span>
             <i className="material-symbols-outlined text-sm">arrow_back</i>
@@ -588,23 +624,23 @@ export default function DashboardPage() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-right py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+              <tr className="border-b border-[#E8E8E8] dark:border-gray-700">
+                <th className="text-right py-3 px-4 text-sm font-medium text-[#6B6B6B] dark:text-gray-400">
                   رقم الطلب
                 </th>
-                <th className="text-right py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                <th className="text-right py-3 px-4 text-sm font-medium text-[#6B6B6B] dark:text-gray-400">
                   العميل
                 </th>
-                <th className="text-right py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                <th className="text-right py-3 px-4 text-sm font-medium text-[#6B6B6B] dark:text-gray-400">
                   المبلغ
                 </th>
-                <th className="text-right py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                <th className="text-right py-3 px-4 text-sm font-medium text-[#6B6B6B] dark:text-gray-400">
                   الحالة
                 </th>
-                <th className="text-right py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                <th className="text-right py-3 px-4 text-sm font-medium text-[#6B6B6B] dark:text-gray-400">
                   التاريخ
                 </th>
-                <th className="text-center py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                <th className="text-center py-3 px-4 text-sm font-medium text-[#6B6B6B] dark:text-gray-400">
                   الإجراءات
                 </th>
               </tr>
@@ -613,15 +649,15 @@ export default function DashboardPage() {
               {recentOrders.slice(0, 5).map((order) => (
                 <tr
                   key={order.id}
-                  className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                  className="border-b border-[#E8E8E8] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200 ease-in-out"
                 >
                   <td className="py-3 px-4">
-                    <span className="font-mono text-sm text-gray-900 dark:text-white">
+                    <span className="font-mono text-sm text-[#1A1A1A] dark:text-white">
                       #{order.id?.slice(0, 8)}
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <p className="font-medium text-gray-900 dark:text-white">
+                    <p className="font-medium text-[#1A1A1A] dark:text-white">
                       {getCustomerName(order)}
                     </p>
                   </td>
@@ -639,7 +675,7 @@ export default function DashboardPage() {
                       {getStatusDisplay(order.status).text}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
+                  <td className="py-3 px-4 text-sm text-[#6B6B6B] dark:text-gray-400">
                     {new Date(order.created_at as string).toLocaleDateString(
                       "ar-EG"
                     )}
@@ -647,7 +683,7 @@ export default function DashboardPage() {
                   <td className="py-3 px-4 text-center">
                     <Link
                       href={`/dashboard/orders/${order.id}`}
-                      className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 text-sm"
+                      className="inline-flex items-center gap-1 text-[#5A3FFF] dark:text-[#8A63FF] hover:text-[#5A3FFF] dark:hover:text-[#8A63FF] text-sm transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#5A3FFF] dark:focus:ring-[#8A63FF] focus:ring-offset-1 rounded px-2 py-1"
                     >
                       <i className="material-symbols-outlined text-sm">
                         visibility
@@ -666,19 +702,19 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Link
           href="/dashboard/news/create-news"
-          className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
+          className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-[#E8E8E8] dark:border-gray-700 hover:shadow-lg transition-all duration-200 ease-in-out group dashboard-card-gradient focus:outline-none focus:ring-2 focus:ring-[#5A3FFF] dark:focus:ring-[#8A63FF] focus:ring-offset-1"
         >
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg group-hover:scale-110 transition-transform">
-              <i className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl">
+            <div className="p-3 bg-[#5A3FFF]/10 rounded-lg group-hover:scale-110 transition-transform">
+              <i className="material-symbols-outlined text-[#5A3FFF] text-2xl">
                 add_circle
               </i>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xs font-medium text-[#1A1A1A] dark:text-white">
                 إضافة منتج
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-[#6B6B6B] dark:text-gray-400">
                 منتج جديد
               </p>
             </div>
@@ -687,7 +723,7 @@ export default function DashboardPage() {
 
         <Link
           href="/dashboard/orders"
-          className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
+          className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-[#E8E8E8] dark:border-gray-700 hover:shadow-lg transition-all duration-200 ease-in-out group dashboard-card-gradient focus:outline-none focus:ring-2 focus:ring-[#5A3FFF] dark:focus:ring-[#8A63FF] focus:ring-offset-1"
         >
           <div className="flex items-center gap-4">
             <div className="p-3 bg-green-100 dark:bg-green-900 rounded-lg group-hover:scale-110 transition-transform">
@@ -696,10 +732,10 @@ export default function DashboardPage() {
               </i>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xs font-medium text-[#1A1A1A] dark:text-white">
                 إدارة الطلبات
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-[#6B6B6B] dark:text-gray-400">
                 عرض الطلبات
               </p>
             </div>
@@ -708,19 +744,19 @@ export default function DashboardPage() {
 
         <Link
           href="/dashboard/users"
-          className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all group"
+          className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-[#E8E8E8] dark:border-gray-700 hover:shadow-lg transition-all duration-200 ease-in-out group dashboard-card-gradient focus:outline-none focus:ring-2 focus:ring-[#5A3FFF] dark:focus:ring-[#8A63FF] focus:ring-offset-1"
         >
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg group-hover:scale-110 transition-transform">
-              <i className="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl">
+            <div className="p-3 bg-[#5A3FFF]/10 rounded-lg group-hover:scale-110 transition-transform">
+              <i className="material-symbols-outlined text-[#5A3FFF] text-2xl">
                 group
               </i>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xs font-medium text-[#1A1A1A] dark:text-white">
                 المستخدمين
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-[#6B6B6B] dark:text-gray-400">
                 إدارة المستخدمين
               </p>
             </div>

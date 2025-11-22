@@ -151,9 +151,9 @@ const CreateNewsForm: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -170,7 +170,7 @@ const CreateNewsForm: React.FC = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" gap-[25px]">
           <div className="lg:col-span-2">
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
               <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
                 <div className="trezo-card-title">
                   <h5 className="!mb-0">أضف مقال</h5>
@@ -185,7 +185,7 @@ const CreateNewsForm: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                       placeholder="يجب الايزيد عن 100 حرف"
                       id="title_ar"
                       {...register("title_ar", {
@@ -208,7 +208,7 @@ const CreateNewsForm: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                       placeholder="يجب الايزيد عن 100 حرف"
                       id="title_en"
                       {...register("title_en", {
@@ -313,7 +313,7 @@ const CreateNewsForm: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                       placeholder="th0VZq9lNhR"
                       id="yt_code"
                       {...register("yt_code")}
@@ -326,7 +326,7 @@ const CreateNewsForm: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                       placeholder="اسم الناشر"
                       id="author"
                       {...register("author", {
@@ -352,7 +352,7 @@ const CreateNewsForm: React.FC = () => {
                     <div id="fileUploader">
                       <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
                         <div className="flex flex-col items-center justify-center text-center">
-                          <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg mb-3">
+                          <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg mb-3">
                             <i className="ri-upload-2-line"></i>
                           </div>
                           <p className="leading-[1.5] mb-2">
@@ -417,8 +417,9 @@ const CreateNewsForm: React.FC = () => {
 
         <div className="trezo-card mb-[25px]">
           <div className="trezo-card-content">
-            <button
-              type="reset"
+          <button
+              type="button"
+              onClick={() => router.push("/dashboard/blog")}
               className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
             >
               ألغاء
@@ -427,7 +428,7 @@ const CreateNewsForm: React.FC = () => {
             <button
               type="submit"
               disabled={isPending || isUploadingImages}
-              className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
                 {isUploadingImages ? (

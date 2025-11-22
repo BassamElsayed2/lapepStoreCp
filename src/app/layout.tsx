@@ -8,7 +8,7 @@ import "swiper/css/bundle";
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_Arabic } from "next/font/google";
 
 import QueryProvider from "@/providers/QueryProvider";
 
@@ -17,6 +17,12 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
+});
+
+const notoSansArabic = Noto_Sans_Arabic({
+  variable: "--font-arabic",
+  subsets: ["arabic"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -31,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="rtl">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${notoSansArabic.variable} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
         <Toaster position="top-center" />
       </body>

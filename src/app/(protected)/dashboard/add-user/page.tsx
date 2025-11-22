@@ -41,10 +41,10 @@ export default function SignUpForm() {
 
   const submit = async (data: SignUpData) => {
     setIsLoading(true);
-    
+
     try {
-      // 1. رفع الصورة إن وجدت (Supabase Storage فقط)
       let imageUrl = "";
+
       if (profilePicture) {
         const fileExt = profilePicture.name.split(".").pop();
         const fileName = `${uuidv4()}.${fileExt}`;
@@ -63,23 +63,22 @@ export default function SignUpForm() {
         imageUrl = url;
       }
 
-      // 2. إنشاء المستخدم عبر Backend API
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-      const token = localStorage.getItem('admin_token');
+      const API_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      const token = localStorage.getItem("admin_token");
 
       const response = await fetch(`${API_URL}/admin/users/create-admin`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({
           email: data.email,
           password: data.password,
-          name: data.full_name || data.email.split('@')[0],
+          name: data.full_name || data.email.split("@")[0],
           phone: data.phone,
           image_url: imageUrl,
-          // Additional profile data
           job_title: data.job_title,
           address: data.address,
           about: data.about,
@@ -88,9 +87,9 @@ export default function SignUpForm() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
-          message: 'فشل إنشاء المستخدم',
+          message: "فشل إنشاء المستخدم",
         }));
-        throw new Error(errorData.message || 'فشل إنشاء المستخدم');
+        throw new Error(errorData.message || "فشل إنشاء المستخدم");
       }
 
       toast.success("تم إنشاء الحساب بنجاح");
@@ -111,24 +110,45 @@ export default function SignUpForm() {
       <form onSubmit={handleSubmit(submit)}>
         <div className="gap-[25px]">
           <div className="xl:col-span-3 2xl:col-span-2">
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div
+              className="
+                trezo-card 
+                mb-[25px] p-[20px] md:p-[25px] rounded-md 
+                bg-[linear-gradient(90deg,rgba(158,130,255,0.08),rgba(67,38,204,0.12))] 
+                dark:bg-[#141414]
+                border border-[#6A4CFF33] shadow-md
+              "
+            >
               <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
                 <div className="trezo-card-title">
-                  <h5 className="!mb-0">تسجيل حساب جديد</h5>
+                  <h5 className="!mb-0 text-[#2a2266] dark:text-white font-semibold">
+                    تسجيل حساب جديد
+                  </h5>
                 </div>
               </div>
+
+              {/* المحتوى */}
               <div className="trezo-card-content">
                 <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
-                  {/* Email */}
+                  {/* عنصر إدخال عام (مختصر) */}
+                  {/** ———————— EMAIL ———————— */}
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] block font-medium text-black dark:text-white">
                       البريد الإلكتروني *
                     </label>
+
                     <input
                       type="email"
                       {...register("email")}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                      className="
+                        h-[55px] rounded-md text-black dark:text-white
+                        border border-gray-300 dark:border-[#2a2a2a]
+                        bg-white dark:bg-[#1d1d1d]
+                        px-[17px] block w-full outline-0 transition-all
+                        focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+                      "
                     />
+
                     {errors.email && (
                       <p className="text-red-500 text-sm mt-1">
                         {errors.email.message}
@@ -136,16 +156,24 @@ export default function SignUpForm() {
                     )}
                   </div>
 
-                  {/* Password */}
+                  {/** ———————— PASSWORD ———————— */}
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] block font-medium text-black dark:text-white">
                       كلمة المرور *
                     </label>
+
                     <input
                       type="password"
                       {...register("password")}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                      className="
+                        h-[55px] rounded-md text-black dark:text-white
+                        border border-gray-300 dark:border-[#2a2a2a]
+                        bg-white dark:bg-[#1d1d1d]
+                        px-[17px] block w-full outline-0 transition-all
+                        focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+                      "
                     />
+
                     {errors.password && (
                       <p className="text-red-500 text-sm mt-1">
                         {errors.password.message}
@@ -153,16 +181,24 @@ export default function SignUpForm() {
                     )}
                   </div>
 
-                  {/* Phone */}
+                  {/** ———————— PHONE ———————— */}
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] block font-medium text-black dark:text-white">
                       رقم الهاتف *
                     </label>
+
                     <input
                       type="text"
                       {...register("phone")}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                      className="
+                        h-[55px] rounded-md text-black dark:text-white
+                        border border-gray-300 dark:border-[#2a2a2a]
+                        bg-white dark:bg-[#1d1d1d]
+                        px-[17px] block w-full outline-0 transition-all
+                        focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+                      "
                     />
+
                     {errors.phone && (
                       <p className="text-red-500 text-sm mt-1">
                         {errors.phone.message}
@@ -170,9 +206,7 @@ export default function SignUpForm() {
                     )}
                   </div>
 
-                  {/* Optional Fields */}
-
-                  {/* Full Name */}
+                  {/** ———————— FULL NAME ———————— */}
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] block font-medium text-black dark:text-white">
                       الاسم الكامل *
@@ -180,11 +214,17 @@ export default function SignUpForm() {
                     <input
                       type="text"
                       {...register("full_name")}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                      className="
+                        h-[55px] rounded-md text-black dark:text-white
+                        border border-gray-300 dark:border-[#2a2a2a]
+                        bg-white dark:bg-[#1d1d1d]
+                        px-[17px] block w-full outline-0 transition-all
+                        focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+                      "
                     />
                   </div>
 
-                  {/* Job Title */}
+                  {/** ———————— JOB TITLE ———————— */}
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] block font-medium text-black dark:text-white">
                       الوظيفة
@@ -192,11 +232,17 @@ export default function SignUpForm() {
                     <input
                       type="text"
                       {...register("job_title")}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                      className="
+                        h-[55px] rounded-md text-black dark:text-white
+                        border border-gray-300 dark:border-[#2a2a2a]
+                        bg-white dark:bg-[#1d1d1d]
+                        px-[17px] block w-full outline-0 transition-all
+                        focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+                      "
                     />
                   </div>
 
-                  {/* Address */}
+                  {/** ———————— ADDRESS ———————— */}
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] block font-medium text-black dark:text-white">
                       العنوان
@@ -204,48 +250,68 @@ export default function SignUpForm() {
                     <input
                       type="text"
                       {...register("address")}
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                      className="
+                        h-[55px] rounded-md text-black dark:text-white
+                        border border-gray-300 dark:border-[#2a2a2a]
+                        bg-white dark:bg-[#1d1d1d]
+                        px-[17px] block w-full outline-0 transition-all
+                        focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+                      "
                     />
                   </div>
 
-                  {/* About */}
+                  {/** ———————— ABOUT ———————— */}
                   <div className="sm:col-span-2 mb-[20px] sm:mb-0">
                     <label className="mb-[10px] block font-medium text-black dark:text-white">
                       عنك
                     </label>
                     <textarea
                       {...register("about")}
-                      className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all"
+                      className="
+                        h-[140px] rounded-md text-black dark:text-white
+                        border border-gray-300 dark:border-[#2a2a2a]
+                        bg-white dark:bg-[#1d1d1d]
+                        p-[17px] block w-full outline-0 transition-all
+                        focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+                      "
                     ></textarea>
                   </div>
 
-                  {/* Profile Picture */}
-                  <div className="mb-[20px] sm:mb-0">
-                    <label className="mb-[10px] block font-medium text-black dark:text-white">
+                  {/** ———————— PROFILE PICTURE ———————— */}
+                  <div className="mb-[20px] sm:mb-0 space-y-3">
+                    <label className="block font-medium text-black dark:text-white">
                       صورة الملف الشخصي
                     </label>
-                    <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
-                      <div className="flex items-center justify-center">
-                        <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
+
+                    <div
+                      className="
+      relative flex items-center justify-center overflow-hidden
+      rounded-md py-[88px] px-[20px]
+      border border-[#6A4CFF44]
+      bg-white dark:bg-[#1d1d1d]
+      hover:border-[#6A4CFF] transition-all cursor-pointer
+    "
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="w-[35px] h-[35px] border border-[#6A4CFF] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg">
                           <i className="ri-upload-2-line"></i>
                         </div>
-                        <p className="leading-[1.5]">
-                          <strong className="text-black dark:text-white">
-                            انقر للتحميل
-                          </strong>
+                        <p className="leading-[1.5] text-black dark:text-white">
+                          <strong>انقر للتحميل</strong>
                           <br /> ملفك هنا
                         </p>
                       </div>
+
                       <input
                         type="file"
                         accept="image/*"
-                        className="absolute top-0 left-0 right-0 bottom-0 rounded-md z-[1] opacity-0 cursor-pointer"
+                        className="absolute inset-0 rounded-md opacity-0 cursor-pointer"
                         onChange={handleProfilePictureChange}
                       />
                     </div>
 
                     {profilePicture && (
-                      <div className="mt-[10px]">
+                      <div className="pt-2">
                         <div className="relative w-[80px] h-[80px]">
                           <Image
                             src={URL.createObjectURL(profilePicture)}
@@ -256,7 +322,12 @@ export default function SignUpForm() {
                           />
                           <button
                             type="button"
-                            className="absolute top-[-5px] right-[-5px] bg-orange-500 text-white w-[20px] h-[20px] flex items-center justify-center rounded-full text-xs rtl:right-auto rtl:left-[-5px]"
+                            className="
+            absolute -top-2 -right-2 
+            bg-red-500 text-white 
+            w-[20px] h-[20px] flex items-center justify-center 
+            rounded-full text-xs
+          "
                             onClick={handleRemoveProfilePicture}
                           >
                             ✕
@@ -267,13 +338,20 @@ export default function SignUpForm() {
                   </div>
                 </div>
 
+                {/* زر الإنشاء */}
                 <div className="mt-[20px] sm:mt-[25px]">
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="font-medium inline-block transition-all rounded-md 2xl:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="
+                      font-medium inline-block transition-all rounded-md
+                      py-[10px] md:py-[12px] px-[20px] md:px-[22px]
+                      bg-[#6A4CFF] text-white hover:bg-[#5436ff]
+                      shadow-lg shadow-[#6A4CFF40]
+                      disabled:opacity-50 disabled:cursor-not-allowed
+                    "
                   >
-                    {isLoading ? 'جارٍ الإنشاء...' : 'إنشاء حساب'}
+                    {isLoading ? "جارٍ الإنشاء..." : "إنشاء حساب"}
                   </button>
                 </div>
               </div>

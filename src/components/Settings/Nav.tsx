@@ -13,9 +13,9 @@ const Nav: React.FC = () => {
         <li className="inline-block mb-[15px] ltr:mr-[11px] rtl:ml-[11px] ltr:last:mr-0 rtl:last:ml-0">
           <Link
             href="/dashboard/my-profile/edit/"
-            className={`block rounded-md font-medium py-[8.5px] px-[15px] text-primary-500 border border-primary-500 transition-all  ${
+            className={`block rounded-md font-medium py-[8.5px] px-[15px] text-[#6A4CFF] border border-[#6A4CFF] transition-all  ${
               pathname === "/dashboard/my-profile/edit/"
-                ? "bg-primary-500 text-white"
+                ? "bg-[#6A4CFF] text-white"
                 : ""
             }`}
           >
@@ -26,9 +26,9 @@ const Nav: React.FC = () => {
         <li className="inline-block mb-[15px] ltr:mr-[11px] rtl:ml-[11px] ltr:last:mr-0 rtl:last:ml-0">
           <Link
             href="/dashboard/my-profile/change-password/"
-            className={`block rounded-md font-medium py-[8.5px] px-[15px] text-primary-500 border border-primary-500 transition-all  ${
+            className={`block rounded-md font-medium py-[8.5px] px-[15px] text-[#6A4CFF] border border-[#6A4CFF] transition-all  ${
               pathname === "/dashboard/my-profile/change-password/"
-                ? "bg-primary-500 text-white"
+                ? "bg-[#6A4CFF] text-white"
                 : ""
             }`}
           >

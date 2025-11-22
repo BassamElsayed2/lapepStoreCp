@@ -140,7 +140,7 @@ const ProjectsAnalysis: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
           <div className="trezo-card-title">
             <h5 className="!mb-0">Projects Analysis</h5>
@@ -148,7 +148,7 @@ const ProjectsAnalysis: React.FC = () => {
 
           <div className="trezo-card-subtitle">
             <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all hover:text-primary-500">
+              <MenuButton className="trezo-card-dropdown-btn inline-block transition-all hover:text-[#6A4CFF]">
                 <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
                   {selectedOption}
                   <i className="ri-arrow-down-s-line text-lg absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2"></i>

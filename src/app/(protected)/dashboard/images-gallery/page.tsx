@@ -19,7 +19,7 @@ const ProductsGrid: React.FC = () => {
         {gallery?.map((image) => (
           <div key={image.id} className="md:mb-[10px] lg:mb-[17px]">
             <div className="relative">
-              <span className="block ltr:right-0 rtl:left-0 bottom-0 w-[65px] h-[65px] absolute ltr:rounded-tl-md rtl:rounded-tr-md bg-white dark:bg-[#0c1427]"></span>
+              <span className="block ltr:right-0 rtl:left-0 bottom-0 w-[65px] h-[65px] absolute ltr:rounded-tl-md rtl:rounded-tr-md bg-white dark:bg-[#1d1d1d]"></span>
 
               <Link
                 href={`/dashboard/images-gallery/${image.id}`}
@@ -36,7 +36,7 @@ const ProductsGrid: React.FC = () => {
               </Link>
 
               <button
-                className="rounded-md transition-all z-[1] inline-block absolute ltr:right-0 rtl:left-0 bottom-0 w-[60px] h-[60px] bg-primary-500 text-white hover:bg-primary-400 flex items-center justify-center overflow-hidden"
+                className="rounded-md transition-all z-[1] inline-block absolute ltr:right-0 rtl:left-0 bottom-0 w-[60px] h-[60px] bg-[#6A4CFF] text-white hover:bg-primary-400 flex items-center justify-center overflow-hidden"
                 type="button"
               >
                 <Image
@@ -53,7 +53,7 @@ const ProductsGrid: React.FC = () => {
               <h6 className="!text-md !font-normal">
                 <Link
                   href={`/dashboard/images-gallery/${image.id}`}
-                  className="transition-all hover:text-primary-500"
+                  className="transition-all hover:text-[#6A4CFF]"
                 >
                   {image.title_ar}
                 </Link>
@@ -64,7 +64,7 @@ const ProductsGrid: React.FC = () => {
       </div>
 
       {/* Pagination */}
-      {/* <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      {/* <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-content">
           <div className="sm:flex sm:items-center justify-between">
             <p className="!mb-0">
@@ -84,7 +84,7 @@ const ProductsGrid: React.FC = () => {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
+                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-[#6A4CFF] hover:text-white hover:border-[#6A4CFF]"
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
@@ -102,8 +102,8 @@ const ProductsGrid: React.FC = () => {
                     onClick={() => handlePageChange(index + 1)}
                     className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${
                       currentPage === index + 1
-                        ? "bg-primary-500 text-white"
-                        : "border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white hover:border-primary-500"
+                        ? "bg-[#6A4CFF] text-white"
+                        : "border-gray-100 dark:border-[#172036] hover:bg-[#6A4CFF] hover:text-white hover:border-[#6A4CFF]"
                     }`}
                   >
                     {index + 1}
@@ -115,7 +115,7 @@ const ProductsGrid: React.FC = () => {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
+                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-[#6A4CFF] hover:text-white hover:border-[#6A4CFF]"
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">

@@ -182,18 +182,18 @@ export default function CategoriesPage() {
 
       <main role="main" aria-label="صفحة إدارة التصنيفات">
         <header className="mb-[25px] md:flex items-center justify-between">
-          <h1 className="!mb-0 text-2xl font-bold">التصنيفات</h1>
+          <h5 className="!mb-0">التصنيفات</h5>
 
           <nav aria-label="مسار التنقل">
             <ol className="breadcrumb mt-[12px] md:mt-0 rtl:flex-row-reverse">
               <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
                 <Link
                   href="/dashboard"
-                  className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+                  className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
                   aria-label="العودة للصفحة الرئيسية"
                 >
                   <i
-                    className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2"
+                    className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2"
                     aria-hidden="true"
                   >
                     home
@@ -209,14 +209,14 @@ export default function CategoriesPage() {
         </header>
 
         <section
-          className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md"
+          className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md"
           aria-label="قائمة التصنيفات"
         >
           <header className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
             <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-[#6A4CFF] border border-[#6A4CFF] hover:bg-[#6A4CFF] hover:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 aria-label="إضافة تصنيف جديد"
               >
                 <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
@@ -244,7 +244,7 @@ export default function CategoriesPage() {
                     {["التصنيف", "الاجرائات"].map((header) => (
                       <th
                         key={header}
-                        className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
+                        className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-[#6A4CFF] text-white dark:bg-[#21123da7] dark:text-white whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
                         scope="col"
                       >
                         {header}
@@ -265,9 +265,13 @@ export default function CategoriesPage() {
                     </tr>
                   ) : (
                     categories?.map((cat) => (
-                      <tr key={cat.id}>
+                      <tr 
+                        key={cat.id}
+                        className="hover:bg-purple-100 dark:hover:bg-[#21123da7] transition-colors cursor-pointer"
+                        onClick={() => openEditModal(cat)}
+                      >
                         <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                          <div className="flex items-center text-black dark:text-white transition-all hover:text-primary-500">
+                          <div className="flex items-center text-black dark:text-white transition-all hover:text-[#6A4CFF]">
                             <div className="relative w-[40px] h-[40px]">
                               {cat.image_url ? (
                                 <Image
@@ -279,7 +283,7 @@ export default function CategoriesPage() {
                                 />
                               ) : (
                                 <div
-                                  className="w-full h-full bg-gray-100 dark:bg-[#15203c] rounded-md flex items-center justify-center"
+                                  className="w-full h-full bg-gray-100 dark:bg-[#21123da7] rounded-md flex items-center justify-center"
                                   aria-label="لا توجد صورة"
                                 >
                                   <i
@@ -302,12 +306,18 @@ export default function CategoriesPage() {
                           </div>
                         </td>
 
-                        <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                        <td 
+                          className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <div className="flex items-center gap-[9px]">
                             <div className="relative group">
                               <button
-                                onClick={() => openEditModal(cat)}
-                                className="text-gray-500 leading-none focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 rounded"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openEditModal(cat);
+                                }}
+                                className="text-gray-500 leading-none hover:text-[#6A4CFF] transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 rounded"
                                 type="button"
                                 aria-label={`تعديل التصنيف: ${cat.name_ar}`}
                               >
@@ -321,13 +331,13 @@ export default function CategoriesPage() {
 
                               {/* Tooltip */}
                               <div
-                                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#4326CC] text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
                                 role="tooltip"
                               >
                                 تعديل
                                 {/* Arrow */}
                                 <div
-                                  className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"
+                                  className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4326CC]"
                                   aria-hidden="true"
                                 ></div>
                               </div>
@@ -335,8 +345,11 @@ export default function CategoriesPage() {
 
                             <div className="relative group">
                               <button
-                                onClick={() => openDeleteModal(cat)}
-                                className="text-danger-500 leading-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 rounded"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openDeleteModal(cat);
+                                }}
+                                className="text-danger-500 leading-none hover:text-danger-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 rounded"
                                 aria-label={`حذف التصنيف: ${cat.name_ar}`}
                               >
                                 <i
@@ -349,13 +362,13 @@ export default function CategoriesPage() {
 
                               {/* Tooltip */}
                               <div
-                                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#4326CC] text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
                                 role="tooltip"
                               >
                                 مسح
                                 {/* Arrow */}
                                 <div
-                                  className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"
+                                  className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4326CC]"
                                   aria-hidden="true"
                                 ></div>
                               </div>
@@ -378,15 +391,15 @@ export default function CategoriesPage() {
               aria-modal="true"
               aria-labelledby="edit-modal-title"
             >
-              <div className="bg-white dark:bg-[#0c1427] rounded-xl shadow-2xl p-8 w-full max-w-md mx-4">
+              <div className="bg-white dark:bg-[#1d1d1d] rounded-xl shadow-2xl p-8 w-full max-w-md mx-4">
                 <h2
                   id="edit-modal-title"
-                  className="text-2xl font-bold mb-6 text-gray-800 dark:text-white"
+                  className="text-2xl font-bold mb-6 text-black dark:text-white"
                 >
                   تعديل التصنيف
                 </h2>
                 <div className="mb-6">
-                  <label className="block text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium mb-3 text-black dark:text-white">
                     الصورة
                   </label>
                   <div className="flex items-center gap-4">
@@ -396,14 +409,14 @@ export default function CategoriesPage() {
                         alt="معاينة الصورة"
                         width={96}
                         height={96}
-                        className="w-24 h-24 object-cover rounded-lg shadow-sm"
+                        className="w-24 h-24 object-cover rounded-lg shadow-sm border border-[#6A4CFF]"
                       />
                     )}
                     <input
                       type="file"
                       accept="image/*"
                       onChange={(e) => handleImageChange(e, false)}
-                      className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-[#15203c] dark:file:text-primary-400 transition-all duration-200"
+                      className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#6A4CFF] file:text-white hover:file:bg-[#5a3ce6] transition-all duration-200"
                       aria-label="اختر صورة جديدة"
                     />
                   </div>
@@ -411,7 +424,7 @@ export default function CategoriesPage() {
                 <input
                   type="text"
                   placeholder="الاسم بالعربية"
-                  className="w-full mb-4 px-4 py-3 border border-gray-300 dark:border-[#172036] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  className="w-full mb-4 px-4 py-3 border border-[#6A4CFF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6A4CFF]/20 transition-all duration-200 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   value={editAr}
                   onChange={(e) => setEditAr(e.target.value)}
                   disabled={isUpdating}
@@ -420,7 +433,7 @@ export default function CategoriesPage() {
                 <input
                   type="text"
                   placeholder="الاسم بالإنجليزية"
-                  className="w-full mb-6 px-4 py-3 border border-gray-300 dark:border-[#172036] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  className="w-full mb-6 px-4 py-3 border border-[#6A4CFF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6A4CFF]/20 transition-all duration-200 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   value={editEn}
                   onChange={(e) => setEditEn(e.target.value)}
                   disabled={isUpdating}
@@ -430,7 +443,7 @@ export default function CategoriesPage() {
                   <button
                     onClick={closeEditModal}
                     disabled={isUpdating}
-                    className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-[#15203c] dark:hover:bg-[#1a2942] text-gray-700 dark:text-gray-200 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                    className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-[#21123da7] dark:hover:bg-[#1a2942] text-gray-700 dark:text-gray-200 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                     aria-label="إلغاء التعديل"
                   >
                     إلغاء
@@ -438,7 +451,7 @@ export default function CategoriesPage() {
                   <button
                     onClick={handleEditSave}
                     disabled={isUpdating || !editAr.trim() || !editEn.trim()}
-                    className="px-6 py-3 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    className="px-6 py-3 rounded-lg bg-[#6A4CFF] hover:bg-[#5a3ce6] text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#6A4CFF] focus:ring-offset-2"
                     aria-label="حفظ التغييرات"
                   >
                     {isUpdating ? "جاري الحفظ..." : "حفظ التغييرات"}
@@ -456,9 +469,9 @@ export default function CategoriesPage() {
               aria-modal="true"
               aria-labelledby="delete-modal-title"
             >
-              <div className="bg-white dark:bg-[#0c1427] rounded-xl shadow-2xl p-8 w-full max-w-sm mx-4 text-center">
+              <div className="bg-white dark:bg-[#1d1d1d] rounded-xl shadow-2xl p-8 w-full max-w-sm mx-4 text-center">
                 <div
-                  className="w-16 h-16 bg-red-100 dark:bg-[#15203c] rounded-full flex items-center justify-center mx-auto mb-6"
+                  className="w-16 h-16 bg-red-100 dark:bg-[#21123da7] rounded-full flex items-center justify-center mx-auto mb-6"
                   aria-hidden="true"
                 >
                   <i className="material-symbols-outlined text-red-600 dark:text-red-400 text-3xl">
@@ -467,13 +480,13 @@ export default function CategoriesPage() {
                 </div>
                 <h2
                   id="delete-modal-title"
-                  className="text-xl font-bold mb-4 text-gray-800 dark:text-white"
+                  className="text-xl font-bold mb-4 text-black dark:text-white"
                 >
                   تأكيد الحذف
                 </h2>
                 <p className="mb-8 text-gray-600 dark:text-gray-300">
                   هل أنت متأكد أنك تريد حذف التصنيف{" "}
-                  <span className="font-semibold text-gray-800 dark:text-white">
+                  <span className="font-semibold text-black dark:text-white">
                     {deletingCategory.name_ar}
                   </span>
                   ؟
@@ -482,7 +495,7 @@ export default function CategoriesPage() {
                   <button
                     onClick={closeDeleteModal}
                     disabled={isDeleting}
-                    className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-[#15203c] dark:hover:bg-[#1a2942] text-gray-700 dark:text-gray-200 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                    className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-[#21123da7] dark:hover:bg-[#1a2942] text-gray-700 dark:text-gray-200 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                     aria-label="إلغاء الحذف"
                   >
                     إلغاء
@@ -503,20 +516,20 @@ export default function CategoriesPage() {
           {/* مودال الإضافة */}
           {isAddModalOpen && (
             <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-gray bg-opacity-10 backdrop-blur-sm"
               role="dialog"
               aria-modal="true"
               aria-labelledby="add-modal-title"
             >
-              <div className="bg-white dark:bg-[#0c1427] rounded-xl shadow-2xl p-8 w-full max-w-md mx-4">
+              <div className="bg-white dark:bg-[#1d1d1d] rounded-xl shadow-2xl p-8 w-full max-w-md mx-4">
                 <h2
                   id="add-modal-title"
-                  className="text-2xl font-bold mb-6 text-gray-800 dark:text-white"
+                  className="text-2xl font-bold mb-6 text-black dark:text-white"
                 >
                   إضافة تصنيف جديد
                 </h2>
                 <div className="mb-6">
-                  <label className="block text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium mb-3 text-black dark:text-white">
                     الصورة
                   </label>
                   <div className="flex items-center gap-4">
@@ -526,14 +539,14 @@ export default function CategoriesPage() {
                         alt="معاينة الصورة"
                         width={96}
                         height={96}
-                        className="w-24 h-24 object-cover rounded-lg shadow-sm"
+                        className="w-24 h-24 object-cover rounded-lg shadow-sm border border-[#6A4CFF]"
                       />
                     )}
                     <input
                       type="file"
                       accept="image/*"
                       onChange={(e) => handleImageChange(e, true)}
-                      className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-[#15203c] dark:file:text-primary-400 transition-all duration-200"
+                      className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#6A4CFF] file:text-white hover:file:bg-[#5a3ce6] transition-all duration-200"
                       aria-label="اختر صورة للتصنيف الجديد"
                     />
                   </div>
@@ -541,7 +554,7 @@ export default function CategoriesPage() {
                 <input
                   type="text"
                   placeholder="الاسم بالعربية"
-                  className="w-full mb-4 px-4 py-3 border border-gray-300 dark:border-[#172036] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  className="w-full mb-4 px-4 py-3 border border-[#6A4CFF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6A4CFF]/20 transition-all duration-200 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   value={newAr}
                   onChange={(e) => setNewAr(e.target.value)}
                   disabled={isAdding}
@@ -550,7 +563,7 @@ export default function CategoriesPage() {
                 <input
                   type="text"
                   placeholder="الاسم بالإنجليزية"
-                  className="w-full mb-6 px-4 py-3 border border-gray-300 dark:border-[#172036] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-[#0c1427] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  className="w-full mb-6 px-4 py-3 border border-[#6A4CFF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6A4CFF]/20 transition-all duration-200 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   value={newEn}
                   onChange={(e) => setNewEn(e.target.value)}
                   disabled={isAdding}
@@ -560,7 +573,7 @@ export default function CategoriesPage() {
                   <button
                     onClick={() => setIsAddModalOpen(false)}
                     disabled={isAdding}
-                    className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-[#15203c] dark:hover:bg-[#1a2942] text-gray-700 dark:text-gray-200 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                    className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-[#21123da7] dark:hover:bg-[#1a2942] text-gray-700 dark:text-gray-200 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                     aria-label="إلغاء الإضافة"
                   >
                     إلغاء
@@ -568,7 +581,7 @@ export default function CategoriesPage() {
                   <button
                     onClick={handleAddCategory}
                     disabled={isAdding || !newAr.trim() || !newEn.trim()}
-                    className="px-6 py-3 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    className="px-6 py-3 rounded-lg bg-[#6A4CFF] hover:bg-[#5a3ce6] text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#6A4CFF] focus:ring-offset-2"
                     aria-label="إضافة التصنيف"
                   >
                     {isAdding ? "جاري الإضافة..." : "إضافة التصنيف"}

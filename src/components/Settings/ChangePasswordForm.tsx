@@ -78,62 +78,96 @@ const ChangePasswordForm: React.FC = () => {
 
   return (
     <>
-      <form>
+      <form className="trezo-card mb-[25px] p-[20px] md:p-[25px] rounded-md 
+        bg-[linear-gradient(90deg,rgba(158,130,255,0.08),rgba(67,38,204,0.12))] 
+        dark:bg-[#141414] shadow-md border border-[#6A4CFF22]">
+
         <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
-          <div className="mb-[20px] sm:mb-0 relative" id="passwordHideShow">
+
+          {/* حقل كلمة السر الحالية */}
+          <div className="mb-[20px] sm:mb-0 relative">
             <label className="mb-[10px] text-black dark:text-white font-medium block">
               الرقم السري الحالي
             </label>
+
             <input
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-              id="password"
-              placeholder="Type password"
+              className="
+                h-[55px] rounded-md text-black dark:text-white
+                border border-gray-300 dark:border-[#2a2a2a]
+                bg-white dark:bg-[#1d1d1d]
+                px-[17px] block w-full outline-0 transition-all
+                placeholder:text-gray-500 dark:placeholder:text-gray-400
+                focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+              "
+              placeholder="ادخل كلمة السر الحالية"
             />
           </div>
 
-          <div className="mb-[20px] sm:mb-0 relative" id="passwordHideShow2">
+          {/* حقل كلمة السر الجديدة */}
+          <div className="mb-[20px] sm:mb-0 relative">
             <label className="mb-[10px] text-black dark:text-white font-medium block">
               الرقم السري الجديد
             </label>
+
             <input
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-              id="password2"
-              placeholder="Type password"
+              className="
+                h-[55px] rounded-md text-black dark:text-white
+                border border-gray-300 dark:border-[#2a2a2a]
+                bg-white dark:bg-[#1d1d1d]
+                px-[17px] block w-full outline-0 transition-all
+                placeholder:text-gray-500 dark:placeholder:text-gray-400
+                focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+              "
+              placeholder="ادخل كلمة السر الجديدة"
             />
           </div>
 
-          <div
-            className="sm:col-span-2 mb-[20px] sm:mb-0 relative"
-            id="passwordHideShow3"
-          >
+          {/* تأكيد كلمة السر */}
+          <div className="sm:col-span-2 mb-[20px] sm:mb-0 relative">
             <label className="mb-[10px] text-black dark:text-white font-medium block">
               تاكيد الرقم السري
             </label>
+
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-              id="password3"
-              placeholder="Type password"
+              className="
+                h-[55px] rounded-md text-black dark:text-white
+                border border-gray-300 dark:border-[#2a2a2a]
+                bg-white dark:bg-[#1d1d1d]
+                px-[17px] block w-full outline-0 transition-all
+                placeholder:text-gray-500 dark:placeholder:text-gray-400
+                focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF55]
+              "
+              placeholder="ادخل تاكيد كلمة السر الجديدة"
             />
           </div>
         </div>
 
-        {message && <div className="text-sm text-red-500 mt-4">{message}</div>}
+        {/* رسالة الخطأ */}
+        {message && (
+          <div className="text-sm text-red-500 mt-4">{message}</div>
+        )}
 
+        {/* زر التأكيد */}
         <div className="mt-[20px] md:mt-[25px]">
           <button
             type="button"
             onClick={handleChangePassword}
             disabled={loading}
-            className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400"
+            className="
+              font-medium inline-block transition-all rounded-md 
+              md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] 
+              bg-[#6A4CFF] text-white hover:bg-[#5436ff]
+              shadow-lg shadow-[#6A4CFF40]
+            "
           >
             <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
               <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
@@ -143,6 +177,7 @@ const ChangePasswordForm: React.FC = () => {
             </span>
           </button>
         </div>
+
       </form>
     </>
   );

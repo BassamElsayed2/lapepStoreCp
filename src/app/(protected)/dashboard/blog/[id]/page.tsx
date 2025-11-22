@@ -156,7 +156,7 @@ export default function EditNewsPage() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className=" gap-[25px]">
         <div className="lg:col-span-2">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
             <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
               <div className="trezo-card-title">
                 <h5 className="!mb-0">تعديل مقال</h5>
@@ -176,7 +176,7 @@ export default function EditNewsPage() {
                         message: "يجب ألا يزيد عن 50 حرف",
                       },
                     })}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -184,7 +184,7 @@ export default function EditNewsPage() {
                   <label className="block font-medium mb-2">العنوان (ع)</label>
                   <input
                     {...register("title_ar")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -192,7 +192,7 @@ export default function EditNewsPage() {
                   <label className="block font-medium mb-2">العنوان (EN)</label>
                   <input
                     {...register("title_en")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -204,7 +204,7 @@ export default function EditNewsPage() {
                   <label className="block font-medium mb-2">كود يوتيوب</label>
                   <input
                     {...register("yt_code")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -303,7 +303,7 @@ export default function EditNewsPage() {
                   <div id="fileUploader">
                     <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
                       <div className="flex items-center justify-center">
-                        <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
+                        <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-[12px] rtl:ml-[12px]">
                           <i className="ri-upload-2-line"></i>
                         </div>
                         <p className="leading-[1.5]">
@@ -393,7 +393,7 @@ export default function EditNewsPage() {
           <button
             type="submit"
             disabled={isSubmitting || isUploadingImages}
-            className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
               {isUploadingImages ? (

@@ -15,243 +15,235 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
   const { logout } = useLogout();
 
-  // Initialize openIndex to 0 to open the first item by default
-  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  // Helper function to check if pathname matches exactly or with trailing slash
+  const isActive = (path: string) => {
+    const normalizedPathname = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+    const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
+    return normalizedPathname === normalizedPath;
+  };
+
+  // Initialize openIndex to null (closed by default)
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
+  // Close accordions when navigating to dashboard home page
+  React.useEffect(() => {
+    const normalizedPathname = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+    if (normalizedPathname === '/dashboard') {
+      setOpenIndex(null);
+    } else {
+      // Auto-open accordion based on current path
+      if (normalizedPathname.startsWith('/dashboard/news')) {
+        setOpenIndex(0);
+      } else if (normalizedPathname.startsWith('/dashboard/blog')) {
+        setOpenIndex(2);
+      } else if (normalizedPathname.startsWith('/dashboard/testimonial')) {
+        setOpenIndex(5);
+      } else if (normalizedPathname.startsWith('/dashboard/branches')) {
+        setOpenIndex(3);
+      } else if (normalizedPathname.startsWith('/dashboard/my-profile') || normalizedPathname.startsWith('/dashboard/add-user')) {
+        setOpenIndex(29);
+      } else {
+        setOpenIndex(null);
+      }
+    }
+  }, [pathname]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
+  // Common classes for menu items
+  const menuItemBaseClasses = "rounded-md text-gray-900 dark:text-white mb-[6px] whitespace-nowrap";
+  const menuButtonBaseClasses = "accordion-button toggle flex items-center transition-all duration-200 ease-in-out py-[10px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative text-gray-900 dark:text-white hover-gradient focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-500 focus:ring-offset-1 text-left group";
+  const menuLinkBaseClasses = "sidemenu-link rounded-md flex items-center relative transition-all duration-200 ease-in-out font-medium text-gray-900 dark:text-white py-[10px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover-gradient focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-500 focus:ring-offset-1 w-full text-left group";
+  const subMenuLinkBaseClasses = "sidemenu-link rounded-md flex items-center relative transition-all duration-200 ease-in-out font-medium text-gray-900 dark:text-white py-[10px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover-gradient focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-500 focus:ring-offset-1 w-full text-left group";
+  const iconBaseClasses = "material-symbols-outlined transition-all duration-200 text-purple-600 dark:text-purple-400 ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none flex-shrink-0";
+  const subIconBaseClasses = "material-symbols-outlined transition-all duration-200 text-purple-600 dark:text-purple-400 ltr:mr-[10px] rtl:ml-[10px] !text-[20px] leading-none flex-shrink-0";
+  const sectionTitleClasses = "block relative font-medium uppercase text-purple-500 dark:text-purple-400 mb-[12px] mt-[20px] text-xs tracking-wider";
+
   return (
     <>
-      <div className="sidebar-area bg-white dark:bg-[#0c1427] fixed z-[7] top-0 h-screen transition-all rounded-r-md">
-        <div className="logo bg-white dark:bg-[#0c1427] border-b border-gray-100 dark:border-[#172036] px-[25px] pt-[19px] pb-[15px] absolute z-[2] right-0 top-0 left-0">
+      <div className="sidebar-area bg-gray-50 dark:bg-gray-900 fixed z-[7] top-0 h-screen transition-all rounded-r-md shadow-lg">
+        <div className="logo bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-[#172036] px-[25px] pt-[20px] pb-[18px] absolute z-[2] right-0 top-0 left-0 flex items-center justify-between">
           <Link
             href="/dashboard"
             className="transition-none relative flex items-center outline-none"
           >
             <Image
-              src="/images/logo-icon.svg"
+              src="/images/ENS-copy.png"
               alt="logo-icon"
-              width={26}
-              height={26}
+              width={150}
+              height={150}
+              className="object-contain"
             />
-            <span className="font-bold text-black dark:text-white relative ltr:ml-[8px] rtl:mr-[8px] top-px text-xl">
-              ENS
-            </span>
           </Link>
 
           <button
             type="button"
-            className="burger-menu inline-block absolute z-[3] top-[24px] ltr:right-[25px] rtl:left-[25px] transition-all hover:text-primary-500"
+            className="burger-menu inline-flex items-center justify-center w-[32px] h-[32px] rounded-md transition-all duration-200 hover:text-purple-500 hover:bg-purple-50 dark:hover:bg-[#21123da7] dark:hover:text-purple-400"
             onClick={toggleActive}
+            aria-label="إغلاق القائمة"
           >
-            <i className="material-symbols-outlined">close</i>
+            <i className="material-symbols-outlined text-[24px]">close</i>
           </button>
         </div>
 
-        <div className="pt-[89px] px-[22px] pb-[20px] h-screen overflow-y-scroll sidebar-custom-scrollbar">
-          <div className="accordion">
-            <span className="block relative font-medium uppercase text-gray-400 mb-[8px] text-xs">
+        <div className="pt-[90px] px-[20px] pb-[24px] h-screen overflow-y-auto sidebar-custom-scrollbar">
+          <div className="accordion space-y-1">
+            <span className={sectionTitleClasses} style={{ marginTop: 0 }}>
               رئيسي
             </span>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
+            <div className={menuItemBaseClasses}>
               <button
-                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  openIndex === 0 ? "open" : ""
+                className={`${menuButtonBaseClasses} ${
+                  openIndex === 0 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(0)}
               >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  newspaper
-                </i>
+                <i className={iconBaseClasses}>inventory_2</i>
                 <span className="title leading-none">المنتجات</span>
               </button>
 
-              {/* المنتجات */}
-              <div className="pt-[4px]">
-                <ul className="sidebar-sub-menu">
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 0 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/news"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/news/" ? "active" : ""
-                        }`}
-                      >
-                        <i className="ri-list-check-2  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        قائمة المنتجات
-                      </Link>
-                    </li>
-                  </div>
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 0 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/news/create-news"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/news/create-news"
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        <i className="ri-newspaper-line  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        إنشاء منتج
-                      </Link>
-                    </li>
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/news/categories/"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/news/categories/"
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        <i className="ri-price-tag-3-line  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        تصنيفات
-                      </Link>
-                    </li>
-                  </div>
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
+                openIndex === 0 ? "open block" : "hidden"
+              }`}>
+                <ul className="sidebar-sub-menu pt-[6px] space-y-1">
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/news"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/news") && pathname !== "/dashboard/news/create-news" && pathname !== "/dashboard/news/create-news/" && pathname !== "/dashboard/news/categories" && pathname !== "/dashboard/news/categories/" ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>list</i>
+                      <span>قائمة المنتجات</span>
+                    </Link>
+                  </li>
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/news/create-news"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/news/create-news") ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>add_circle</i>
+                      <span>إنشاء منتج</span>
+                    </Link>
+                  </li>
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/news/categories/"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/news/categories") ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>category</i>
+                      <span>تصنيفات</span>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
 
             <Link
               href="/dashboard/orders"
-              className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                pathname === "/dashboard/orders/" ? "active" : ""
+              className={`${menuLinkBaseClasses} ${
+                pathname === "/dashboard/orders" || pathname === "/dashboard/orders/" ? "active font-medium dark:bg-[#21123da7]" : ""
               }`}
             >
-              <i className="ri-multi-image-fill  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-              قائمة الطلبات
+              <i className={iconBaseClasses}>shopping_cart</i>
+              <span>قائمة الطلبات</span>
             </Link>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
+            <div className={menuItemBaseClasses}>
               <button
-                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  openIndex === 2 ? "open" : ""
+                className={`${menuButtonBaseClasses} ${
+                  openIndex === 2 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(2)}
               >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  auto_stories
-                </i>
+                <i className={iconBaseClasses}>article</i>
                 <span className="title leading-none">مقالات</span>
               </button>
 
-              <div className="pt-[4px]">
-                <ul className="sidebar-sub-menu">
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 2 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/blog"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/blog/" ? "active" : ""
-                        }`}
-                      >
-                        <i className="ri-list-check-2  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        قائمة المقالات
-                      </Link>
-                    </li>
-                  </div>
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 2 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/blog/create-blog"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/blog/create-blog"
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        <i className="ri-newspaper-line  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        إنشاء مقال
-                      </Link>
-                    </li>
-                  </div>
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
+                openIndex === 2 ? "open block" : "hidden"
+              }`}>
+                <ul className="sidebar-sub-menu pt-[6px] space-y-1">
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/blog"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/blog") && pathname !== "/dashboard/blog/create-blog" && pathname !== "/dashboard/blog/create-blog/" ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>list</i>
+                      <span>قائمة المقالات</span>
+                    </Link>
+                  </li>
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/blog/create-blog"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/blog/create-blog") ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>add_circle</i>
+                      <span>إنشاء مقال</span>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
+            <div className={menuItemBaseClasses}>
               <button
-                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  openIndex === 5 ? "open" : ""
+                className={`${menuButtonBaseClasses} ${
+                  openIndex === 5 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(5)}
               >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  auto_stories
-                </i>
+                <i className={iconBaseClasses}>rate_review</i>
                 <span className="title leading-none">توصيات العملاء</span>
               </button>
 
-              <div className="pt-[4px]">
-                <ul className="sidebar-sub-menu">
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 5 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/testimonial"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/testimonial/" ? "active" : ""
-                        }`}
-                      >
-                        <i className="ri-list-check-2  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        قائمة التوصيات
-                      </Link>
-                    </li>
-                  </div>
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 5 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/testimonial/create-testimonial"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname ===
-                          "/dashboard/testimonial/create-testimonial"
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        <i className="ri-newspaper-line  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        إنشاء توصية
-                      </Link>
-                    </li>
-                  </div>
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
+                openIndex === 5 ? "open block" : "hidden"
+              }`}>
+                <ul className="sidebar-sub-menu pt-[6px] space-y-1">
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/testimonial"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/testimonial") && pathname !== "/dashboard/testimonial/create-testimonial" && pathname !== "/dashboard/testimonial/create-testimonial/" ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>list</i>
+                      <span>قائمة التوصيات</span>
+                    </Link>
+                  </li>
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/testimonial/create-testimonial"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/testimonial/create-testimonial") ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>add_circle</i>
+                      <span>إنشاء توصية</span>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
 
             {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <button
-                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
+                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#21123da7] ${
                   openIndex === 6 ? "open" : ""
                 }`}
                 type="button"
@@ -273,7 +265,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <li className="sidemenu-item mb-[4px] last:mb-0">
                       <Link
                         href="/dashboard/banners"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-[#6A4CFF] hover:bg-primary-50 w-full text-left dark:hover:bg-[#21123da7] ${
                           pathname === "/dashboard/banners" ? "active" : ""
                         }`}
                       >
@@ -290,7 +282,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <li className="sidemenu-item mb-[4px] last:mb-0">
                       <Link
                         href="/dashboard/banners/create"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-[#6A4CFF] hover:bg-primary-50 w-full text-left dark:hover:bg-[#21123da7] ${
                           pathname === "/dashboard/banners/create"
                             ? "active"
                             : ""
@@ -305,182 +297,142 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               </div>
             </div> */}
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
+            <div className={menuItemBaseClasses}>
               <button
-                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  openIndex === 3 ? "open" : ""
+                className={`${menuButtonBaseClasses} ${
+                  openIndex === 3 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(3)}
               >
-                <span className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  map
-                </span>
-
+                <i className={iconBaseClasses}>location_on</i>
                 <span className="title leading-none">الفروع</span>
               </button>
 
-              <div className="pt-[4px]">
-                <ul className="sidebar-sub-menu">
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 3 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/branches/"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/branches/" ? "active" : ""
-                        }`}
-                      >
-                        <i className="ri-map-pin-line  transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        قائمة الفروع
-                      </Link>
-                    </li>
-                  </div>
-                  <div
-                    className={`accordion-collapse ${
-                      openIndex === 3 ? "open" : "hidden"
-                    }`}
-                  >
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/branches/create-branch"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/branches/create-branch"
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        <i className="ri-map-pin-add-line transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px"></i>
-                        إنشاء فرع
-                      </Link>
-                    </li>
-                  </div>
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
+                openIndex === 3 ? "open block" : "hidden"
+              }`}>
+                <ul className="sidebar-sub-menu pt-[6px] space-y-1">
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/branches/"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/branches") && pathname !== "/dashboard/branches/create-branch" && pathname !== "/dashboard/branches/create-branch/" ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>list</i>
+                      <span>قائمة الفروع</span>
+                    </Link>
+                  </li>
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/branches/create-branch"
+                      className={`${subMenuLinkBaseClasses} ${
+                        isActive("/dashboard/branches/create-branch") ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>add_location</i>
+                      <span>إنشاء فرع</span>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
 
             <Link
               href="/dashboard/shipping-fees"
-              className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                pathname === "/dashboard/shipping-fees" ? "active" : ""
+              className={`${menuLinkBaseClasses} ${
+                pathname === "/dashboard/shipping-fees" ? "active font-medium dark:bg-[#21123da7]" : ""
               }`}
             >
-              <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                local_shipping
-              </i>
-              أسعار الشحن
+              <i className={iconBaseClasses}>local_shipping</i>
+              <span>أسعار الشحن</span>
             </Link>
 
             <Link
               href="/dashboard/users"
-              className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                pathname === "/dashboard/users" ||
-                pathname === "/dashboard/users/"
-                  ? "active"
-                  : ""
+              className={`${menuLinkBaseClasses} ${
+                pathname === "/dashboard/users" || pathname === "/dashboard/users/" ? "active font-medium dark:bg-[#21123da7]" : ""
               }`}
             >
-              <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                people
-              </i>
-              المستخدمين
+              <i className={iconBaseClasses}>people</i>
+              <span>المستخدمين</span>
             </Link>
 
-            <span className="block relative font-medium uppercase text-gray-400 mb-[8px] text-xs [&:not(:first-child)]:mt-[22px]">
+            <span className={sectionTitleClasses}>
               أخري
             </span>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <Link
-                href="/dashboard/my-profile/"
-                className={`accordion-button flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  pathname === "/dashboard/my-profile/" ? "active" : ""
-                }`}
-              >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  account_circle
-                </i>
-                <span className="title leading-none">ملفي الشخصي</span>
-              </Link>
-            </div>
+            <Link
+              href="/dashboard/my-profile/"
+              className={`${menuLinkBaseClasses} ${
+                pathname === "/dashboard/my-profile" || pathname === "/dashboard/my-profile/" ? "active font-medium dark:bg-[#21123da7]" : ""
+              }`}
+            >
+              <i className={iconBaseClasses}>account_circle</i>
+              <span>ملفي الشخصي</span>
+            </Link>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
+            <div className={menuItemBaseClasses}>
               <button
-                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  openIndex === 29 ? "open" : ""
+                className={`${menuButtonBaseClasses} ${
+                  openIndex === 29 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(29)}
               >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  settings
-                </i>
+                <i className={iconBaseClasses}>settings</i>
                 <span className="title leading-none">إعدادات</span>
               </button>
 
-              <div
-                className={`accordion-collapse ${
-                  openIndex === 29 ? "open" : "hidden"
-                }`}
-              >
-                <div className="pt-[4px]">
-                  <ul className="sidebar-sub-menu">
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/my-profile/edit/"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/my-profile/edit/"
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        إعدادات الحساب
-                      </Link>
-                    </li>
-
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/my-profile/change-password/"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/my-profile/change-password/"
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        تغيير كلمة المرور
-                      </Link>
-                    </li>
-                    <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/dashboard/add-user/"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/dashboard/add-user/" ? "active" : ""
-                        }`}
-                      >
-                        أضف مستخدم
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
+                openIndex === 29 ? "open block" : "hidden"
+              }`}>
+                <ul className="sidebar-sub-menu pt-[6px] space-y-1">
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/my-profile/edit/"
+                      className={`${subMenuLinkBaseClasses} ${
+                        pathname === "/dashboard/my-profile/edit/" ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>edit</i>
+                      <span>إعدادات الحساب</span>
+                    </Link>
+                  </li>
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/my-profile/change-password/"
+                      className={`${subMenuLinkBaseClasses} ${
+                        pathname === "/dashboard/my-profile/change-password/" ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>lock</i>
+                      <span>تغيير كلمة المرور</span>
+                    </Link>
+                  </li>
+                  <li className="sidemenu-item">
+                    <Link
+                      href="/dashboard/add-user/"
+                      className={`${subMenuLinkBaseClasses} ${
+                        pathname === "/dashboard/add-user" || pathname === "/dashboard/add-user/" ? "active font-medium dark:bg-[#21123da7]" : ""
+                      }`}
+                    >
+                      <i className={subIconBaseClasses}>person_add</i>
+                      <span>أضف مستخدم</span>
+                    </Link>
+                  </li>
+                </ul>
               </div>
             </div>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <button
-                onClick={() => logout()}
-                className={`accordion-button flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  pathname === "/" ? "active" : ""
-                }`}
-              >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  logout
-                </i>
-                <span className="title leading-none">تسجيل الخروج</span>
-              </button>
-            </div>
+            <button
+              onClick={() => logout()}
+              className={`${menuLinkBaseClasses} text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/30 hover:shadow-sm font-medium`}
+            >
+              <i className={iconBaseClasses}>logout</i>
+              <span>تسجيل الخروج</span>
+            </button>
           </div>
         </div>
       </div>

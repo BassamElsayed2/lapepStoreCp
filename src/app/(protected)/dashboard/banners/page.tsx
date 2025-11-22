@@ -64,7 +64,7 @@ export default function BannersPage() {
           dir="rtl"
         >
           <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#6A4CFF] mx-auto mb-4"></div>
             <p className="text-gray-600 dark:text-gray-400 text-lg">
               جاري تحميل البانرات...
             </p>
@@ -104,7 +104,7 @@ export default function BannersPage() {
           ) : (
             <Link
               href="/dashboard/banners/create"
-              className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+              className="bg-[#6A4CFF] hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
             >
               <i className="material-symbols-outlined">add</i>
               إضافة بانر جديد
@@ -132,7 +132,7 @@ export default function BannersPage() {
                 </p>
                 <Link
                   href="/dashboard/banners/create"
-                  className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 inline-flex items-center gap-2"
+                  className="bg-[#6A4CFF] hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 inline-flex items-center gap-2"
                 >
                   <i className="material-symbols-outlined">add</i>
                   إضافة بانر جديد

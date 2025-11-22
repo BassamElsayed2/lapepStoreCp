@@ -5,7 +5,7 @@ import React from "react";
 const AdditionalInformation: React.FC = () => {
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
           <div className="trezo-card-title">
             <h5 className="!mb-0">Additional Information</h5>

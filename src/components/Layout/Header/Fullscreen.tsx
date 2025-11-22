@@ -30,7 +30,7 @@ const Fullscreen: React.FC = () => {
       <div className="relative mx-[8px] md:mx-[10px] lg:mx-[12px] ltr:first:ml-0 ltr:last:mr-0 rtl:first:mr-0 rtl:last:ml-0">
         <button
           type="button"
-          className="leading-none inline-block transition-all relative top-[2px] hover:text-primary-500"
+          className="leading-none inline-block transition-all relative top-[2px] hover:text-purple-500 dark:hover:text-purple-400"
           onClick={handleToggleFullscreen}
           aria-label={isFullscreen ? "Exit full screen" : "Enter full screen"}
         >

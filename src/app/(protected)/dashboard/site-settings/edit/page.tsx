@@ -129,7 +129,7 @@ const SiteSettings: React.FC = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
           <div className="trezo-card-content">
             <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
               <div className="mb-[20px] sm:mb-0">
@@ -140,7 +140,7 @@ const SiteSettings: React.FC = () => {
                   type="text"
                   value={siteNameAr}
                   onChange={(e) => setSiteNameAr(e.target.value)}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   placeholder="اسم الموقع"
                 />
               </div>
@@ -153,7 +153,7 @@ const SiteSettings: React.FC = () => {
                   type="text"
                   value={siteNameEn}
                   onChange={(e) => setSiteNameEn(e.target.value)}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   placeholder="Site Name"
                 />
               </div>
@@ -232,7 +232,7 @@ const SiteSettings: React.FC = () => {
               <div id="fileUploader">
                 <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
                   <div className="flex items-center justify-center">
-                    <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
+                    <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-[12px] rtl:ml-[12px]">
                       <i className="ri-upload-2-line"></i>
                     </div>
                     <p className="leading-[1.5]">
@@ -286,7 +286,7 @@ const SiteSettings: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
                   <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">

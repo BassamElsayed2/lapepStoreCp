@@ -60,7 +60,7 @@ const LogoutContent: React.FC = () => {
 
               <Link
                 href="/authentication/sign-in"
-                className="md:text-md block w-full text-center transition-all rounded-md font-medium py-[12px] px-[25px] text-white bg-primary-500 hover:bg-primary-400"
+                className="md:text-md block w-full text-center transition-all rounded-md font-medium py-[12px] px-[25px] text-white bg-[#6A4CFF] hover:bg-primary-400"
               >
                 <span className="flex items-center justify-center gap-[5px]">
                   <i className="material-symbols-outlined">autorenew</i>

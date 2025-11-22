@@ -17,15 +17,50 @@ async function apiFetch<T>(
     },
   };
 
-  const response = await fetch(`${API_URL}${endpoint}`, config);
+  // Check if API_URL is configured
+  if (!API_URL) {
+    throw new Error("عنوان API غير موجود. يرجى التحقق من ملف .env");
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}${endpoint}`, config);
+  } catch (networkError) {
+    throw new Error(
+      "فشل الاتصال بالخادم. يرجى التأكد من أن الخادم يعمل على " + API_URL
+    );
+  }
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({
-      message: "حدث خطأ في الاتصال بالخادم",
-    }));
-    throw new Error(
-      errorData.message || `HTTP error! status: ${response.status}`
-    );
+    let errorMessage = `HTTP error! status: ${response.status}`;
+    
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || errorData.error || errorMessage;
+      
+      // Handle specific error cases
+      if (response.status === 401) {
+        errorMessage = errorData.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+      } else if (response.status === 404) {
+        errorMessage = errorData.message || "المسار المطلوب غير موجود";
+      } else if (response.status === 429) {
+        // Too Many Requests - provide user-friendly message
+        errorMessage = errorData.message || "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
+      } else if (response.status === 500) {
+        errorMessage = errorData.message || "حدث خطأ في الخادم";
+      }
+    } catch {
+      // If response is not JSON, use status text
+      errorMessage = response.statusText || errorMessage;
+      
+      if (response.status === 401) {
+        errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+      } else if (response.status === 429) {
+        errorMessage = "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
+      }
+    }
+    
+    throw new Error(errorMessage);
   }
 
   return response.json();
@@ -80,11 +115,21 @@ export async function login({
   email: string;
   password: string;
 }): Promise<LoginResponse> {
+  // Validate input
+  if (!email || !password) {
+    throw new Error("يجب إدخال البريد الإلكتروني وكلمة المرور");
+  }
+
   try {
     const response = await apiFetch<LoginResponse>("/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
+
+    // Validate response structure
+    if (!response || !response.data || !response.data.user || !response.data.token) {
+      throw new Error("استجابة غير صحيحة من الخادم");
+    }
 
     // Check if user is admin
     if (response.data.user.role !== "admin") {
@@ -97,9 +142,11 @@ export async function login({
 
     return response;
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "فشل تسجيل الدخول";
-    throw new Error(errorMessage);
+    // Re-throw error with its message (already formatted by apiFetch)
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("فشل تسجيل الدخول");
   }
 }
 

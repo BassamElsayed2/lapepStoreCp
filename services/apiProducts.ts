@@ -87,11 +87,18 @@ export async function getProducts(
   }
 ): Promise<{ products: Product[]; total: number }> {
   try {
+    // If search is active, fetch more data to filter on frontend
+    // This is a temporary solution until backend is fixed to search in name_ar/name_en
+    const fetchLimit = filters?.search && filters.search.trim() ? 1000 : limit;
+    const fetchPage = filters?.search && filters.search.trim() ? 1 : page;
+
     const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
+      page: fetchPage.toString(),
+      limit: fetchLimit.toString(),
       ...(filters?.categoryId && { categoryId: filters.categoryId }),
-      ...(filters?.search && { search: filters.search }),
+      // Temporarily disable search parameter to avoid 'title' column error
+      // Backend needs to be fixed to search in name_ar and name_en instead of title
+      // We'll filter on frontend instead
       ...(filters?.isBestSeller !== undefined && {
         isBestSeller: filters.isBestSeller.toString(),
       }),
@@ -112,15 +119,39 @@ export async function getProducts(
     }>(`/products?${params}`);
 
     // Map images to image_url for backward compatibility
-    const products = (response.data || []).map((product) => ({
+    let products = (response.data || []).map((product) => ({
       ...product,
       image_url: product.images || product.image_url, // Ensure compatibility
       stock: product.stock_quantity || product.quantity, // Map stock_quantity to stock
     }));
 
+    // Get total from API pagination (this is the real total count from database)
+    // The API already applies pagination, so we use the total from pagination object
+    let total = response.pagination?.total || 0;
+
+    // Filter by search term on frontend (search in name_ar and name_en)
+    // This is a temporary solution until backend is fixed
+    if (filters?.search && filters.search.trim()) {
+      const searchTerm = filters.search.trim().toLowerCase();
+      products = products.filter((product) => {
+        const nameAr = (product.name_ar || "").toLowerCase();
+        const nameEn = (product.name_en || "").toLowerCase();
+        return nameAr.includes(searchTerm) || nameEn.includes(searchTerm);
+      });
+      // When filtering on frontend, use filtered length as total
+      total = products.length;
+      
+      // Apply pagination after filtering (since we fetched all data for search)
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+      products = products.slice(startIndex, endIndex);
+    }
+    // If no search, API already applied pagination, so we use products as-is
+    // and total from pagination object
+
     return {
-      products,
-      total: response.pagination?.total || 0,
+      products: products,
+      total: total,
     };
   } catch (error: any) {
     console.error("❌ خطأ في جلب المنتجات:", error);

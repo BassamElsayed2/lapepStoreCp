@@ -154,26 +154,47 @@ const BranchesList: React.FC = () => {
   );
 
   return (
-    <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-      <div className="trezo-tabs branches-tabs">
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-[20px] md:mb-[25px] gap-4">
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <div className="relative flex-1 sm:flex-none">
-              <input
-                type="text"
-                placeholder="ابحث عن فرع..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-[#15203c] dark:text-white"
-              />
-              <i className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                search
+    <>
+      <div className="mb-[25px] md:flex items-center justify-between">
+        <h5 className="!mb-0">قائمة الفروع</h5>
+
+        <ol className="breadcrumb mt-[12px] md:mt-0 rtl:flex-row-reverse">
+          <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
+            <Link
+              href="/dashboard"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
+            >
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
+                home
               </i>
+              رئيسية
+            </Link>
+          </li>
+          <li className="breadcrumb-item inline-block  relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
+            الفروع
+          </li>
+        </ol>
+      </div>
+      <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="trezo-tabs branches-tabs">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-[20px] md:mb-[25px] gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <div className="relative flex-1 sm:flex-none">
+                <input
+                  type="text"
+                  placeholder="ابحث عن فرع..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-2 pr-10 border transition border-purple-300 hover:bg-purple-90 rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#21123da7] dark:bg-gray-900 dark:text-white"
+                />
+                <i className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
+                  search
+                </i>
+              </div>
             </div>
-          </div>
           <Link
             href="/dashboard/branches/create-branch"
-            className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
+            className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-[#6A4CFF] border border-[#6A4CFF] hover:bg-[#6A4CFF] hover:text-white"
           >
             <span className="relative pl-6">
               <i className="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2">
@@ -198,80 +219,103 @@ const BranchesList: React.FC = () => {
                 ].map((head, i) => (
                   <th
                     key={i}
-                    className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c]"
+                    className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-[#6A4CFF] text-white dark:bg-[#21123da7] dark:text-white whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
                   >
                     {head}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-black dark:text-white">
               {paginatedBranches.map((branch) => (
                 <tr
                   key={branch.id}
-                  className="border-t border-gray-100 dark:border-gray-800"
+                  className="border-t border-gray-100 dark:border-[#172036] hover:bg-purple-100 dark:hover:bg-[#21123da7] transition-colors"
                 >
-                  <td className="py-3 px-3 font-semibold">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                     <div>
-                      <div className="font-bold">{branch.name_ar}</div>
-                      <div className="text-sm text-gray-500">
+                      <div className="font-bold text-black dark:text-white">{branch.name_ar}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
                         {branch.name_en}
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-3">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                     <div>
-                      <div className="font-medium">{branch.area_ar}</div>
-                      <div className="text-sm text-gray-500">
+                      <div className="font-medium text-black dark:text-white">{branch.area_ar}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
                         {branch.area_en}
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-3">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                     {branch.image ? (
                       <Image
                         src={branch.image}
                         alt={branch.name_ar || "Branch"}
                         width={60}
                         height={40}
-                        className="rounded"
+                        className="rounded-md object-cover"
                       />
                     ) : (
-                      <div className="w-[60px] h-[40px] bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center text-gray-400 text-xs">
+                      <div className="w-[60px] h-[40px] bg-gray-100 dark:bg-[#21123da7] rounded-md flex items-center justify-center text-gray-400 dark:text-gray-500 text-xs">
                         لا توجد صورة
                       </div>
                     )}
                   </td>
-                  <td className="py-3 px-3">{branch.phone || "غير محدد"}</td>
-                  <td className="py-3 px-3">
-                    {new Date(branch.created_at).toLocaleDateString("ar-EG")}
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l text-black dark:text-white">
+                    {branch.phone || "غير محدد"}
                   </td>
-                  <td className="py-3 px-3">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleEditClick(branch)}
-                        className="text-primary-500 leading-none"
-                      >
-                        <i className="material-symbols-outlined !text-md">
-                          edit
-                        </i>
-                      </button>
-                      <button
-                        onClick={() => handleDeleteBranch(branch.id)}
-                        className="text-danger-500 leading-none"
-                      >
-                        <i className="material-symbols-outlined !text-md">
-                          delete
-                        </i>
-                      </button>
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l text-black dark:text-white">
+                    {new Date(branch.created_at).toLocaleDateString("ar-EG", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </td>
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <div className="flex items-center gap-[9px]">
+                      <div className="relative group">
+                        <button
+                          onClick={() => handleEditClick(branch)}
+                          className="text-gray-500 leading-none hover:text-[#6A4CFF] transition-colors"
+                        >
+                          <i className="material-symbols-outlined !text-md">
+                            edit
+                          </i>
+                        </button>
+
+                        {/* Tooltip */}
+                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#4326CC] text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                          تعديل
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4326CC]"></div>
+                        </div>
+                      </div>
+
+                      <div className="relative group">
+                        <button
+                          onClick={() => handleDeleteBranch(branch.id)}
+                          className="text-danger-500 leading-none hover:text-danger-600 transition-colors"
+                        >
+                          <i className="material-symbols-outlined !text-md">
+                            delete
+                          </i>
+                        </button>
+
+                        {/* Tooltip */}
+                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#4326CC] text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                          مسح
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4326CC]"></div>
+                        </div>
+                      </div>
                     </div>
                   </td>
                 </tr>
               ))}
               {paginatedBranches.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="py-5 text-center text-gray-400">
-                    لا توجد فروع.
+                  <td colSpan={6} className="py-8 text-center text-gray-500 dark:text-gray-400">
+                    لا توجد فروع متاحة
                   </td>
                 </tr>
               )}
@@ -281,12 +325,20 @@ const BranchesList: React.FC = () => {
 
         {/* Edit Modal */}
         {isEditModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-[#0c1427] p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gray bg-opacity-10 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-modal-title"
+          >
+            <div className="bg-white dark:bg-[#1d1d1d] rounded-xl shadow-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto mx-4">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-semibold text-black dark:text-white">
+                <h2
+                  id="edit-modal-title"
+                  className="text-2xl font-bold text-black dark:text-white"
+                >
                   تعديل الفرع
-                </h3>
+                </h2>
                 <button
                   onClick={() => {
                     setIsEditModalOpen(false);
@@ -295,7 +347,8 @@ const BranchesList: React.FC = () => {
                     setPreviewImage(null);
                     setSelectedBranch(null);
                   }}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                  aria-label="إغلاق النافذة"
                 >
                   <i className="material-symbols-outlined">close</i>
                 </button>
@@ -315,7 +368,7 @@ const BranchesList: React.FC = () => {
                           message: "الاسم يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.name_ar && (
                       <p className="text-red-500 mt-1">
@@ -336,7 +389,7 @@ const BranchesList: React.FC = () => {
                           message: "الاسم يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.name_en && (
                       <p className="text-red-500 mt-1">
@@ -357,7 +410,7 @@ const BranchesList: React.FC = () => {
                           message: "اسم المنطقة يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.area_ar && (
                       <p className="text-red-500 mt-1">
@@ -378,7 +431,7 @@ const BranchesList: React.FC = () => {
                           message: "اسم المنطقة يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.area_en && (
                       <p className="text-red-500 mt-1">
@@ -399,7 +452,7 @@ const BranchesList: React.FC = () => {
                           message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.address_ar && (
                       <p className="text-red-500 mt-1">
@@ -420,7 +473,7 @@ const BranchesList: React.FC = () => {
                           message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.address_en && (
                       <p className="text-red-500 mt-1">
@@ -437,11 +490,11 @@ const BranchesList: React.FC = () => {
                       {...register("works_hours", {
                         required: true,
                         minLength: {
-                          value: 3,
-                          message: "ساعات العمل يجب أن تكون 3 أحرف على الأقل",
+                          value: 1,
+                          message: "ساعات العمل يجب أن تكون 1 ساعة على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.works_hours && (
                       <p className="text-red-500 mt-1">
@@ -462,7 +515,7 @@ const BranchesList: React.FC = () => {
                           message: "رقم الهاتف يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.phone && (
                       <p className="text-red-500 mt-1">
@@ -483,7 +536,7 @@ const BranchesList: React.FC = () => {
                           message: "الرابط يجب أن يكون 3 أحرف على الأقل",
                         },
                       })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-4 block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                     />
                     {errors.google_map && (
                       <p className="text-red-500 mt-1">
@@ -496,9 +549,9 @@ const BranchesList: React.FC = () => {
                     <label className="mb-2 block font-medium text-black dark:text-white">
                       الصورة
                     </label>
-                    <div className="relative flex items-center justify-center overflow-hidden rounded-md py-8 px-4 border border-gray-200 dark:border-[#172036]">
+                    <div className="relative flex items-center justify-center overflow-hidden rounded-md py-8 px-4 border border-[#6A4CFF]">
                       <div className="flex items-center justify-center">
-                        <div className="w-8 h-8 border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-3 rtl:ml-3">
+                        <div className="w-8 h-8 border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-3 rtl:ml-3">
                           <i className="ri-upload-2-line"></i>
                         </div>
                         <p className="text-black dark:text-white">
@@ -522,7 +575,7 @@ const BranchesList: React.FC = () => {
                             alt="preview"
                             width={50}
                             height={50}
-                            className="rounded-md"
+                            className="rounded-md border border-[#6A4CFF]"
                           />
                           <button
                             type="button"
@@ -540,7 +593,7 @@ const BranchesList: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 flex justify-end gap-3">
+                <div className="mt-6 flex justify-end gap-4">
                   <button
                     type="button"
                     onClick={() => {
@@ -550,16 +603,19 @@ const BranchesList: React.FC = () => {
                       setPreviewImage(null);
                       setSelectedBranch(null);
                     }}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    disabled={loading}
+                    className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-[#21123da7] dark:hover:bg-[#1a2942] text-gray-700 dark:text-gray-200 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="إلغاء التعديل"
                   >
                     إلغاء
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="px-4 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 disabled:opacity-50"
+                    className="px-6 py-3 rounded-lg bg-[#6A4CFF] hover:bg-[#5a3ce6] text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#6A4CFF] focus:ring-offset-2"
+                    aria-label="حفظ التغييرات"
                   >
-                    {loading ? "جارٍ الحفظ..." : "حفظ التغييرات"}
+                    {loading ? "جاري الحفظ..." : "حفظ التغييرات"}
                   </button>
                 </div>
               </form>
@@ -569,24 +625,43 @@ const BranchesList: React.FC = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center gap-2 mt-4">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1 border border-gray-100 dark:border-[#172036] rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors"
+              aria-label="الصفحة السابقة"
+            >
+              السابق
+            </button>
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className={`px-3 py-1 rounded-md mx-1 text-sm ${
+                className={`px-3 py-1 border border-gray-100 dark:border-[#172036] rounded transition-colors ${
                   currentPage === i + 1
-                    ? "bg-primary-500 text-white"
-                    : "bg-gray-200"
+                    ? "bg-[#6A4CFF] text-white border-[#6A4CFF]"
+                    : "hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625]"
                 }`}
+                aria-label={`الصفحة ${i + 1}`}
+                aria-current={currentPage === i + 1 ? "page" : undefined}
               >
                 {i + 1}
               </button>
             ))}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 border border-gray-100 dark:border-[#172036] rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors"
+              aria-label="الصفحة التالية"
+            >
+              التالي
+            </button>
           </div>
         )}
       </div>
     </div>
+    </>
   );
 };
 

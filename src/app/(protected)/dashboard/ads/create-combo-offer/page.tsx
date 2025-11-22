@@ -114,7 +114,7 @@ export default function CreateComboOffer() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="gap-[25px]">
         <div className="xl:col-span-3 2xl:col-span-2">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
             <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
               <div className="trezo-card-title">
                 <h5 className="!mb-0">إنشاء عرض جديد</h5>
@@ -134,7 +134,7 @@ export default function CreateComboOffer() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all"
                 />
                 {errors.title_ar && (
                   <p className="text-red-500 mt-1">{errors.title_ar.message}</p>
@@ -153,7 +153,7 @@ export default function CreateComboOffer() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all"
                 />
                 {errors.title_en && (
                   <p className="text-red-500 mt-1">{errors.title_en.message}</p>
@@ -167,7 +167,7 @@ export default function CreateComboOffer() {
                 <textarea
                   {...register("description_ar")}
                   rows={3}
-                  className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] py-[12px] block w-full outline-0 transition-all"
+                  className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] py-[12px] block w-full outline-0 transition-all"
                   placeholder="وصف العرض باللغة العربية..."
                 />
               </div>
@@ -179,7 +179,7 @@ export default function CreateComboOffer() {
                 <textarea
                   {...register("description_en")}
                   rows={3}
-                  className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] py-[12px] block w-full outline-0 transition-all"
+                  className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] py-[12px] block w-full outline-0 transition-all"
                   placeholder="وصف العرض باللغة الإنجليزية..."
                 />
               </div>
@@ -198,7 +198,7 @@ export default function CreateComboOffer() {
                       message: "السعر يجب أن يكون أكبر من صفر",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all"
                   placeholder="0.00"
                 />
                 {errors.total_price && (
@@ -215,7 +215,7 @@ export default function CreateComboOffer() {
                 <input
                   type="date"
                   {...register("starts_at")}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all"
                 />
               </div>
 
@@ -226,7 +226,7 @@ export default function CreateComboOffer() {
                 <input
                   type="date"
                   {...register("ends_at")}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all"
                 />
               </div>
 
@@ -236,7 +236,7 @@ export default function CreateComboOffer() {
                 </label>
                 <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[65px] px-[20px] border border-gray-200 dark:border-[#172036]">
                   <div className="flex items-center justify-center">
-                    <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
+                    <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-[12px] rtl:ml-[12px]">
                       <i className="ri-upload-2-line"></i>
                     </div>
                     <p className="text-black dark:text-white">
@@ -285,7 +285,7 @@ export default function CreateComboOffer() {
               <button
                 type="submit"
                 disabled={createMutation.isPending}
-                className="font-medium inline-block transition-all rounded-md 2xl:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50"
+                className="font-medium inline-block transition-all rounded-md 2xl:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-primary-400 disabled:opacity-50"
               >
                 {createMutation.isPending ? "جارٍ الإرسال..." : "إنشاء العرض"}
               </button>

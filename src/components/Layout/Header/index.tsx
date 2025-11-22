@@ -37,14 +37,14 @@ const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
     <>
       <div
         id="header"
-        className="header-area bg-white dark:bg-[#0c1427] py-[13px] px-[20px] md:px-[25px] fixed top-0 z-[6] rounded-b-md transition-all"
+        className="header-area bg-white dark:bg-[#1d1d1d] py-[13px] px-[20px] md:px-[25px] fixed top-0 z-[6] rounded-b-md transition-all"
       >
         <div className="md:flex md:items-center md:justify-between">
           <div className="flex items-center justify-center md:justify-normal">
             <div className="relative leading-none top-px ltr:mr-[13px] ltr:md:mr-[18px] ltr:lg:mr-[23px] rtl:ml-[13px] rtl:md:ml-[18px] rtl:lg:ml-[23px]">
               <button
                 type="button"
-                className="hide-sidebar-toggle transition-all inline-block hover:text-primary-500"
+                className="hide-sidebar-toggle transition-all inline-block hover:text-purple-500 dark:hover:text-purple-400"
                 onClick={toggleActive}
               >
                 <i className="material-symbols-outlined !text-[20px]">menu</i>

@@ -40,7 +40,7 @@ export default function Settings() {
         <button
           type="button"
           onClick={handleDropdownToggle}
-          className={`leading-none inline-block transition-all relative top-[2px] hover:text-primary-500 ${
+          className={`leading-none inline-block transition-all relative top-[2px] hover:text-purple-500 dark:hover:text-purple-400 ${
             active ? "active" : ""
           }`}
         >
@@ -50,7 +50,7 @@ export default function Settings() {
         </button>
 
         {active && ( // Conditionally render the dropdown based on the `active` state
-          <div className="settings-menu-dropdown bg-white dark:bg-[#0c1427] transition-all shadow-3xl dark:shadow-none p-[20px] absolute mt-[17px] md:mt-[20px] w-[195px] z-[1] top-full ltr:right-0 rtl:left-0 rounded-md">
+          <div className="settings-menu-dropdown bg-white dark:bg-[#1d1d1d] transition-all shadow-3xl dark:shadow-none p-[20px] absolute mt-[17px] md:mt-[20px] w-[195px] z-[1] top-full ltr:right-0 rtl:left-0 rounded-md">
             <RTLMode />
           </div>
         )}

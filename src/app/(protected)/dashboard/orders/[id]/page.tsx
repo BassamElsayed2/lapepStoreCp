@@ -80,7 +80,7 @@ const OrderDetailsPage: React.FC = () => {
       delivered: {
         text: "تم التوصيل",
         color:
-          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+          "bg-[#DFF3E3] text-[#2A5B47] dark:bg-green-900 dark:text-green-200",
       },
       cancelled: {
         text: "ملغي",
@@ -117,7 +117,7 @@ const OrderDetailsPage: React.FC = () => {
       completed: {
         text: "مكتمل",
         color:
-          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+          "bg-[#DFF3E3] text-[#2A5B47] dark:bg-green-900 dark:text-green-200",
       },
       failed: {
         text: "فشل",
@@ -139,7 +139,7 @@ const OrderDetailsPage: React.FC = () => {
   if (isPending) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6A4CFF]"></div>
       </div>
     );
   }
@@ -153,7 +153,7 @@ const OrderDetailsPage: React.FC = () => {
           </h3>
           <Link
             href="/dashboard/orders"
-            className="text-primary-500 hover:text-primary-600"
+            className="text-[#6A4CFF] hover:text-primary-600"
           >
             العودة إلى قائمة الطلبات
           </Link>
@@ -171,9 +171,9 @@ const OrderDetailsPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -182,7 +182,7 @@ const OrderDetailsPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard/orders"
-              className="transition-all hover:text-primary-500"
+              className="transition-all hover:text-[#6A4CFF]"
             >
               الطلبات
             </Link>
@@ -196,7 +196,7 @@ const OrderDetailsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Order Details */}
         <div className="lg:col-span-2">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md">
             <div className="trezo-card-header mb-[20px] md:mb-[25px]">
               <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
                 معلومات الطلب
@@ -788,7 +788,7 @@ const OrderDetailsPage: React.FC = () => {
 
         {/* Customer Information */}
         <div className="lg:col-span-1">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md">
             <div className="trezo-card-header mb-[20px] md:mb-[25px]">
               <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
                 معلومات العميل
@@ -824,7 +824,7 @@ const OrderDetailsPage: React.FC = () => {
                   <div className="mt-2 flex gap-2">
                     <a
                       href={`tel:${order.customer_phone}`}
-                      className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
+                      className="inline-flex items-center px-2 py-1 text-xs font-medium bg-[#DFF3E3] text-[#2A5B47] dark:bg-green-900 dark:text-green-200 rounded hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
                     >
                       📞 اتصال
                     </a>
@@ -835,7 +835,7 @@ const OrderDetailsPage: React.FC = () => {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
+                      className="inline-flex items-center px-2 py-1 text-xs font-medium bg-[#DFF3E3] text-[#2A5B47] dark:bg-green-900 dark:text-green-200 rounded hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
                     >
                       💬 واتساب
                     </a>
@@ -930,7 +930,7 @@ const OrderDetailsPage: React.FC = () => {
           </div>
 
           {/* Actions */}
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md mt-6">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md mt-6">
             <div className="trezo-card-header mb-[20px] md:mb-[25px]">
               <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
                 الإجراءات
