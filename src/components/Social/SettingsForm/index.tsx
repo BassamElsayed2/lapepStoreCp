@@ -75,12 +75,13 @@ const SettingsForm: React.FC = () => {
         avatar_url: image_url,
       };
 
-      const updatedProfile = await updateAdminProfile(profileData);
+      await updateAdminProfile(profileData);
 
       router.refresh();
       router.push("/dashboard/my-profile");
-    } catch (error: any) {
-      alert(`Error: ${error.message}`);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف";
+      alert(`Error: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -143,7 +144,7 @@ const SettingsForm: React.FC = () => {
                       <input
                         type="text"
                         id={field.id}
-                        {...register(field.id as any)}
+                        {...register(field.id as keyof z.infer<typeof profileSchema>)}
                         className="
                           h-[55px] rounded-lg text-black dark:text-white
                           border border-[#dcd6ff] dark:border-[#342a66]
