@@ -28,26 +28,26 @@ const SignInForm: React.FC = () => {
 
   return (
     <>
-      <div 
-        className="auth-main-content relative h-screen overflow-hidden flex items-center"
+      <div
+        className="auth-main-content relative h-screen  flex items-center"
         style={{
-          backgroundImage: 'url(/images/bgsign.png)',
-          backgroundRepeat: 'repeat',
-          backgroundSize: '200px 200px',
-          backgroundPosition: 'center',
+          backgroundImage: "url(/images/bgsign.png)",
+          backgroundRepeat: "repeat",
+          backgroundSize: "200px 200px",
+          backgroundPosition: "center",
         }}
       >
         <DarkMode />
         <div className="absolute inset-0 bg-white/50 dark:bg-[#0a0e19]/60 pointer-events-none"></div>
-        
+
         <div className="relative z-10 mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px] w-full py-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-stretch">
-            <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1 relative overflow-hidden shadow-2xl min-h-[500px] lg:min-h-[600px]">
-              <div className="relative w-full h-full rounded-[25px] overflow-hidden bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20">
+            <div className="hidden lg:block xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1 relative overflow-hidden shadow-2xl min-h-[500px] lg:min-h-[600px]">
+              <div className="relative w-full h-full rounded-[25px]  bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20">
                 <Image
                   src="/images/hi.gif"
                   alt="sign-in-image"
-                  className="rounded-[25px] object-cover w-full h-full"
+                  className="rounded-[25px] object-cover w-full h-full "
                   width={646}
                   height={804}
                   priority
@@ -66,7 +66,7 @@ const SignInForm: React.FC = () => {
                     height={32}
                   />
                   <span className="font-bold font-serif text-[#1A1A1A] dark:text-white relative ltr:ml-[10px] rtl:mr-[10px] top-px text-2xl">
-                   Lapip Store
+                    Lapip Store
                   </span>
                 </button>
 
@@ -114,7 +114,9 @@ const SignInForm: React.FC = () => {
                       className="absolute text-lg ltr:right-[24px] rtl:left-[24px] bottom-[14px] transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400"
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+                      aria-label={
+                        showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"
+                      }
                     >
                       <i
                         className={`ri-${
@@ -135,16 +137,16 @@ const SignInForm: React.FC = () => {
                     disabled={isPending}
                     className="text-lg block w-full text-center transition-all rounded-lg font-medium mt-[30px] md:mt-[36px] py-[18px] px-[30px] text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     style={{
-                      backgroundColor: '#ACCCA7',
+                      backgroundColor: "#ACCCA7",
                     }}
                     onMouseEnter={(e) => {
                       if (!isPending) {
-                        e.currentTarget.style.backgroundColor = '#9BB896';
+                        e.currentTarget.style.backgroundColor = "#9BB896";
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isPending) {
-                        e.currentTarget.style.backgroundColor = '#ACCCA7';
+                        e.currentTarget.style.backgroundColor = "#ACCCA7";
                       }
                     }}
                   >
