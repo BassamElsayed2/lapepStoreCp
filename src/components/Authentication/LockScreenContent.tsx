@@ -37,7 +37,7 @@ const LockScreenContent: React.FC = () => {
 
               <div className="my-[17px] md:my-[25px]">
                 <h1 className="!font-semibold !text-[22px] md:!text-xl lg:!text-2xl !mb-[5px] md:!mb-[10px]">
-                  Welcome back to Trezo!
+                  Welcome back to ENS!
                 </h1>
                 <p className="font-medium leading-[1.5] lg:text-md text-[#445164] dark:text-gray-400">
                   Enter your password to access the admin.

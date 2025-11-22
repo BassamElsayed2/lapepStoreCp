@@ -8,7 +8,6 @@ import "swiper/css/bundle";
 import "./globals.css";
 
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Noto_Kufi_Arabic } from "next/font/google";
 
 import QueryProvider from "@/providers/QueryProvider";
