@@ -8,19 +8,15 @@ import "swiper/css/bundle";
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_Arabic } from "next/font/google";
+import Script from "next/script";
+import { Noto_Kufi_Arabic } from "next/font/google";
 
 import QueryProvider from "@/providers/QueryProvider";
 
 import { Toaster } from "react-hot-toast";
 
-const inter = Inter({
+const notoKufiArabic = Noto_Kufi_Arabic({
   variable: "--font-body",
-  subsets: ["latin"],
-});
-
-const notoSansArabic = Noto_Sans_Arabic({
-  variable: "--font-arabic",
   subsets: ["arabic"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
@@ -37,7 +33,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="rtl">
-      <body className={`${inter.variable} ${notoSansArabic.variable} antialiased`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet" />
+      </head>
+      <body className={`${notoKufiArabic.variable} antialiased`} style={{ fontFamily: '"Noto Kufi Arabic", sans-serif' }}>
         <QueryProvider>{children}</QueryProvider>
         <Toaster position="top-center" />
       </body>

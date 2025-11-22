@@ -13,16 +13,38 @@ const SignInForm: React.FC = () => {
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{
+    email?: string;
+    password?: string;
+  }>({});
 
   // Custom hook to handle sign-in logic
   const { login, isPending, isError, errorMessage } = useSignIn();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email || !password) {
+    
+    // Reset validation errors
+    setValidationErrors({});
+    
+    // Validate fields
+    const errors: { email?: string; password?: string } = {};
+    
+    if (!email || email.trim() === "") {
+      errors.email = "يجب إدخال عنوان البريد الإلكتروني";
+    }
+    
+    if (!password || password.trim() === "") {
+      errors.password = "يجب إدخال كلمة المرور";
+    }
+    
+    // If there are validation errors, show them and stop
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
 
+    // If validation passes, proceed with login
     login({ email, password });
   };
 
@@ -86,14 +108,33 @@ const SignInForm: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
-                      placeholder="example@trezo.com"
+                      className={`h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 ${
+                        validationErrors.email
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-[#172036]"
+                      } bg-white dark:bg-[#1d1d1d] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base`}
+                      placeholder="example@ENS.com"
                       id="email"
                       autoComplete="email"
                       value={email}
                       disabled={isPending}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        // Clear validation error when user starts typing
+                        if (validationErrors.email) {
+                          setValidationErrors((prev) => ({
+                            ...prev,
+                            email: undefined,
+                          }));
+                        }
+                      }}
                     />
+                    {validationErrors.email && (
+                      <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+                        <i className="ri-error-warning-line"></i>
+                        {validationErrors.email}
+                      </p>
+                    )}
                   </div>
 
                   <div className="mb-[24px] relative" id="passwordHideShow">
@@ -102,16 +143,29 @@ const SignInForm: React.FC = () => {
                     </label>
                     <input
                       type={showPassword ? "text" : "password"}
-                      className="h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
+                      className={`h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 ${
+                        validationErrors.password
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-[#172036]"
+                      } bg-white dark:bg-[#1d1d1d] ltr:pr-[60px] rtl:pl-[60px] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base`}
                       id="password"
                       placeholder="اكتب كلمة المرور"
                       autoComplete="current-password"
                       value={password}
                       disabled={isPending}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        // Clear validation error when user starts typing
+                        if (validationErrors.password) {
+                          setValidationErrors((prev) => ({
+                            ...prev,
+                            password: undefined,
+                          }));
+                        }
+                      }}
                     />
                     <button
-                      className="absolute text-lg ltr:right-[24px] rtl:left-[24px] bottom-[14px] transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400"
+                      className="absolute text-lg ltr:right-[24px] rtl:left-[24px] top-1/2 -translate-y-1/2 transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400 z-10"
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
                       aria-label={
@@ -124,6 +178,12 @@ const SignInForm: React.FC = () => {
                         }`}
                       ></i>
                     </button>
+                    {validationErrors.password && (
+                      <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+                        <i className="ri-error-warning-line"></i>
+                        {validationErrors.password}
+                      </p>
+                    )}
                   </div>
 
                   {isError && errorMessage && (

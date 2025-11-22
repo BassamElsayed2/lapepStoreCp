@@ -22,12 +22,45 @@ async function apiFetch<T>(
     throw new Error("عنوان API غير موجود. يرجى التحقق من ملف .env");
   }
 
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
+
   let response: Response;
   try {
-    response = await fetch(`${API_URL}${endpoint}`, config);
+    response = await fetch(`${API_URL}${endpoint}`, {
+      ...config,
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
   } catch (networkError) {
+    clearTimeout(timeoutId);
+    
+    // Handle different types of network errors
+    if (networkError instanceof Error) {
+      if (networkError.name === 'AbortError') {
+        throw new Error(
+          "انتهت مهلة الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى"
+        );
+      }
+      
+      // Check for CORS errors
+      if (networkError.message.includes('CORS') || networkError.message.includes('Failed to fetch')) {
+        throw new Error(
+          `فشل الاتصال بالخادم. قد تكون هناك مشكلة في إعدادات CORS أو الخادم غير متاح على ${API_URL}`
+        );
+      }
+      
+      // Check for SSL/HTTPS errors
+      if (networkError.message.includes('certificate') || networkError.message.includes('SSL')) {
+        throw new Error(
+          "فشل الاتصال بسبب مشكلة في شهادة SSL. يرجى التحقق من إعدادات الخادم"
+        );
+      }
+    }
+    
     throw new Error(
-      "فشل الاتصال بالخادم. يرجى التأكد من أن الخادم يعمل على " + API_URL
+      `فشل الاتصال بالخادم. يرجى التأكد من أن الخادم يعمل على ${API_URL}. الخطأ: ${networkError instanceof Error ? networkError.message : 'خطأ غير معروف'}`
     );
   }
 
@@ -63,7 +96,13 @@ async function apiFetch<T>(
     throw new Error(errorMessage);
   }
 
-  return response.json();
+  try {
+    return await response.json();
+  } catch (jsonError) {
+    throw new Error(
+      "فشل في قراءة استجابة الخادم. قد تكون الاستجابة غير صحيحة"
+    );
+  }
 }
 
 // Define the admin user type

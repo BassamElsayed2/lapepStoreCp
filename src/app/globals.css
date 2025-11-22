@@ -3,7 +3,7 @@
 @custom-variant dark (&:where([class=dark], [class=dark] *));
 
 @theme {
-  --font-body: "Noto Sans Arabic", "Inter", serif;
+  --font-body: "Noto Kufi Arabic", sans-serif;
   --text-xs: 12px;
   --text-sm: 13px;
   --text-base: 14px;
@@ -113,7 +113,7 @@
 /** Body */
 html,
 body {
-  font-family: var(--font-arabic), var(--font-body), serif;
+  font-family: var(--font-body), sans-serif;
   @apply text-sm md:text-base !p-0 !overflow-y-auto text-[#1A1A1A] bg-white leading-normal dark:bg-[#0a0e19] dark:text-gray-400;
 }
 
