@@ -69,7 +69,7 @@ const GalleryDetails: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="flex justify-center items-center h-[400px]">
           <div className="flex flex-col items-center gap-4">
             <div className="w-8 h-8 border-4 border-primary border-r-transparent rounded-full animate-spin"></div>
@@ -82,12 +82,12 @@ const GalleryDetails: React.FC = () => {
 
   if (isError || !gallery) {
     return (
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="flex flex-col items-center justify-center h-[400px] gap-4">
           <p className="text-red-500">حدث خطأ أثناء تحميل المعرض</p>
           <Link
             href="/dashboard/images-gallery"
-            className="text-primary-500 hover:underline"
+            className="text-[#6A4CFF] hover:underline"
           >
             العودة إلى المعارض
           </Link>
@@ -104,9 +104,9 @@ const GalleryDetails: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -115,7 +115,7 @@ const GalleryDetails: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard/images-gallery"
-              className="hover:text-primary-500 transition-colors"
+              className="hover:text-[#6A4CFF] transition-colors"
             >
               معرض الصور
             </Link>
@@ -126,7 +126,7 @@ const GalleryDetails: React.FC = () => {
         </ol>
       </div>
 
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-content lg:max-w-[1070px] md:pt-[15px] md:px-[15px] md:pb-[75px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px]">
             <div className="lg:ltr:mr-[30px] lg:rtl:ml-[30px]">
@@ -148,7 +148,7 @@ const GalleryDetails: React.FC = () => {
                     onClick={() => handleTabClick(idx)}
                     className={`cursor-pointer rounded-md overflow-hidden w-[100px] h-[75px] relative border-2 transition-all ${
                       activeTab === idx
-                        ? "border-primary-500 shadow-lg"
+                        ? "border-[#6A4CFF] shadow-lg"
                         : "border-transparent hover:border-primary-200"
                     }`}
                   >
@@ -203,7 +203,7 @@ const GalleryDetails: React.FC = () => {
               <div className="pt-4 flex gap-4">
                 <Link
                   href={`/dashboard/images-gallery/${id}/edit`}
-                  className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md transition-colors"
+                  className="bg-[#6A4CFF] hover:bg-primary-600 text-white px-4 py-2 rounded-md transition-colors"
                 >
                   تعديل المعرض
                 </Link>
@@ -230,7 +230,7 @@ const GalleryDetails: React.FC = () => {
       {/* Modal تأكيد الحذف */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white dark:bg-[#0c1427] rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="bg-white dark:bg-[#1d1d1d] rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-xl font-semibold mb-4">تأكيد الحذف</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               هل أنت متأكد أنك تريد حذف هذا المعرض؟ لا يمكن التراجع عن هذا

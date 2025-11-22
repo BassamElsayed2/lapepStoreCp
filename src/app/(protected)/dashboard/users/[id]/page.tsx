@@ -23,7 +23,7 @@ const UserDetailsPage: React.FC = () => {
   if (isPending) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6A4CFF]"></div>
       </div>
     );
   }
@@ -37,7 +37,7 @@ const UserDetailsPage: React.FC = () => {
           </h3>
           <Link
             href="/dashboard/users"
-            className="text-primary-500 hover:text-primary-600"
+            className="text-[#6A4CFF] hover:text-primary-600"
           >
             العودة إلى قائمة المستخدمين
           </Link>
@@ -55,9 +55,9 @@ const UserDetailsPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -66,7 +66,7 @@ const UserDetailsPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard/users"
-              className="transition-all hover:text-primary-500"
+              className="transition-all hover:text-[#6A4CFF]"
             >
               المستخدمين
             </Link>
@@ -80,7 +80,7 @@ const UserDetailsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* User Profile */}
         <div className="lg:col-span-1">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md">
             <div className="trezo-card-header mb-[20px] md:mb-[25px] text-center">
               <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {user.full_name}
@@ -99,7 +99,7 @@ const UserDetailsPage: React.FC = () => {
                   className={`px-2 py-1 rounded-full text-xs font-medium ${
                     user.role === "admin"
                       ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
-                      : "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
+                      : "bg-[#E8E0FF] text-[#6A4CFF] dark:bg-orange-900 dark:text-orange-200"
                   }`}
                 >
                   {user.role === "admin" ? "مدير" : "مستخدم"}
@@ -141,7 +141,7 @@ const UserDetailsPage: React.FC = () => {
           </div>
 
           {/* Actions */}
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md mt-6">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md mt-6">
             <div className="trezo-card-header mb-[20px] md:mb-[25px]">
               <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
                 الإجراءات
@@ -162,7 +162,7 @@ const UserDetailsPage: React.FC = () => {
 
         {/* User Details Form */}
         <div className="lg:col-span-2">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md">
             <div className="trezo-card-header mb-[20px] md:mb-[25px]">
               <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
                 معلومات المستخدم
@@ -212,7 +212,7 @@ const UserDetailsPage: React.FC = () => {
           </div>
 
           {/* User Statistics */}
-          <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md mt-6">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md mt-6">
             <div className="trezo-card-header mb-[20px] md:mb-[25px]">
               <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
                 إحصائيات المستخدم

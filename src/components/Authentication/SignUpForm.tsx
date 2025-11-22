@@ -51,7 +51,7 @@ const SignUpForm: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   placeholder="Enter your full name"
                 />
               </div>
@@ -62,7 +62,7 @@ const SignUpForm: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   placeholder="example@trezo.com"
                 />
               </div>
@@ -73,12 +73,12 @@ const SignUpForm: React.FC = () => {
                 </label>
                 <input
                   type="password"
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   id="password"
                   placeholder="Type password"
                 />
                 <button
-                  className="absolute text-lg ltr:right-[20px] rtl:left-[20px] bottom-[12px] transition-all hover:text-primary-500"
+                  className="absolute text-lg ltr:right-[20px] rtl:left-[20px] bottom-[12px] transition-all hover:text-[#6A4CFF]"
                   id="toggleButton"
                   type="button"
                 >
@@ -88,7 +88,7 @@ const SignUpForm: React.FC = () => {
 
               <button
                 type="submit"
-                className="md:text-md block w-full text-center transition-all rounded-md font-medium my-[20px] md:my-[25px] py-[12px] px-[25px] text-white bg-primary-500 hover:bg-primary-400"
+                className="md:text-md block w-full text-center transition-all rounded-md font-medium my-[20px] md:my-[25px] py-[12px] px-[25px] text-white bg-[#6A4CFF] hover:bg-primary-400"
               >
                 <span className="flex items-center justify-center gap-[5px]">
                   <i className="material-symbols-outlined">person_4</i>
@@ -100,14 +100,14 @@ const SignUpForm: React.FC = () => {
                 By confirming your email, you agree to our{" "}
                 <Link
                   href="#"
-                  className="font-medium text-black dark:text-white transition-all hover:text-primary-500"
+                  className="font-medium text-black dark:text-white transition-all hover:text-[#6A4CFF]"
                 >
                   Terms of Service
                 </Link>{" "}
                 and that you have read and understood our{" "}
                 <Link
                   href="#"
-                  className="font-medium text-black dark:text-white transition-all hover:text-primary-500"
+                  className="font-medium text-black dark:text-white transition-all hover:text-[#6A4CFF]"
                 >
                   Privacy Policy
                 </Link>
@@ -117,7 +117,7 @@ const SignUpForm: React.FC = () => {
                 Already have an account.{" "}
                 <Link
                   href="/authentication/sign-in"
-                  className="text-primary-500 transition-all font-semibold hover:underline"
+                  className="text-[#6A4CFF] transition-all font-semibold hover:underline"
                 >
                   Sign In
                 </Link>

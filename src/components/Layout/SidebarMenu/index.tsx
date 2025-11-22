@@ -15,32 +15,62 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
   const { logout } = useLogout();
 
-  // Initialize openIndex to 0 to open the first item by default
-  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  // Helper function to check if pathname matches exactly or with trailing slash
+  const isActive = (path: string) => {
+    const normalizedPathname = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+    const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
+    return normalizedPathname === normalizedPath;
+  };
+
+  // Initialize openIndex to null (closed by default)
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
+  // Close accordions when navigating to dashboard home page
+  React.useEffect(() => {
+    const normalizedPathname = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+    if (normalizedPathname === '/dashboard') {
+      setOpenIndex(null);
+    } else {
+      // Auto-open accordion based on current path
+      if (normalizedPathname.startsWith('/dashboard/news')) {
+        setOpenIndex(0);
+      } else if (normalizedPathname.startsWith('/dashboard/blog')) {
+        setOpenIndex(2);
+      } else if (normalizedPathname.startsWith('/dashboard/testimonial')) {
+        setOpenIndex(5);
+      } else if (normalizedPathname.startsWith('/dashboard/branches')) {
+        setOpenIndex(3);
+      } else if (normalizedPathname.startsWith('/dashboard/my-profile') || normalizedPathname.startsWith('/dashboard/add-user')) {
+        setOpenIndex(29);
+      } else {
+        setOpenIndex(null);
+      }
+    }
+  }, [pathname]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
   // Common classes for menu items
-  const menuItemBaseClasses = "rounded-md text-black dark:text-white mb-[6px] whitespace-nowrap";
-  const menuButtonBaseClasses = "accordion-button toggle flex items-center transition-all py-[10px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c]";
-  const menuLinkBaseClasses = "sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[10px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c]";
-  const subMenuLinkBaseClasses = "sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[10px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c]";
-  const iconBaseClasses = "material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none flex-shrink-0";
-  const subIconBaseClasses = "material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[10px] rtl:ml-[10px] !text-[20px] leading-none flex-shrink-0";
-  const sectionTitleClasses = "block relative font-medium uppercase text-gray-400 dark:text-gray-500 mb-[12px] mt-[20px] text-xs tracking-wider";
+  const menuItemBaseClasses = "rounded-md text-gray-900 dark:text-white mb-[6px] whitespace-nowrap";
+  const menuButtonBaseClasses = "accordion-button toggle flex items-center transition-all duration-200 ease-in-out py-[10px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative text-gray-900 dark:text-white hover-gradient focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-500 focus:ring-offset-1 text-left group";
+  const menuLinkBaseClasses = "sidemenu-link rounded-md flex items-center relative transition-all duration-200 ease-in-out font-medium text-gray-900 dark:text-white py-[10px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover-gradient focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-500 focus:ring-offset-1 w-full text-left group";
+  const subMenuLinkBaseClasses = "sidemenu-link rounded-md flex items-center relative transition-all duration-200 ease-in-out font-medium text-gray-900 dark:text-white py-[10px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover-gradient focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-500 focus:ring-offset-1 w-full text-left group";
+  const iconBaseClasses = "material-symbols-outlined transition-all duration-200 text-purple-600 dark:text-purple-400 ltr:mr-[10px] rtl:ml-[10px] !text-[22px] leading-none flex-shrink-0";
+  const subIconBaseClasses = "material-symbols-outlined transition-all duration-200 text-purple-600 dark:text-purple-400 ltr:mr-[10px] rtl:ml-[10px] !text-[20px] leading-none flex-shrink-0";
+  const sectionTitleClasses = "block relative font-medium uppercase text-purple-500 dark:text-purple-400 mb-[12px] mt-[20px] text-xs tracking-wider";
 
   return (
     <>
-      <div className="sidebar-area bg-white dark:bg-[#0c1427] fixed z-[7] top-0 h-screen transition-all rounded-r-md shadow-lg">
-        <div className="logo bg-white dark:bg-[#0c1427] border-b border-gray-100 dark:border-[#172036] px-[25px] pt-[20px] pb-[18px] absolute z-[2] right-0 top-0 left-0 flex items-center justify-between">
+      <div className="sidebar-area bg-gray-50 dark:bg-gray-900 fixed z-[7] top-0 h-screen transition-all rounded-r-md shadow-lg">
+        <div className="logo bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-[#172036] px-[25px] pt-[20px] pb-[18px] absolute z-[2] right-0 top-0 left-0 flex items-center justify-between">
           <Link
             href="/dashboard"
             className="transition-none relative flex items-center outline-none"
           >
             <Image
-              src="/images/ENSs.png"
+              src="/images/ENS-copy.png"
               alt="logo-icon"
               width={150}
               height={150}
@@ -50,7 +80,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
           <button
             type="button"
-            className="burger-menu inline-flex items-center justify-center w-[32px] h-[32px] rounded-md transition-all hover:text-primary-500 hover:bg-gray-100 dark:hover:bg-[#15203c]"
+            className="burger-menu inline-flex items-center justify-center w-[32px] h-[32px] rounded-md transition-all duration-200 hover:text-purple-500 hover:bg-purple-50 dark:hover:bg-[#21123da7] dark:hover:text-purple-400"
             onClick={toggleActive}
             aria-label="إغلاق القائمة"
           >
@@ -67,7 +97,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <div className={menuItemBaseClasses}>
               <button
                 className={`${menuButtonBaseClasses} ${
-                  openIndex === 0 ? "open" : ""
+                  openIndex === 0 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(0)}
@@ -76,7 +106,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                 <span className="title leading-none">المنتجات</span>
               </button>
 
-              <div className={`accordion-collapse transition-all duration-300 ${
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
                 openIndex === 0 ? "open block" : "hidden"
               }`}>
                 <ul className="sidebar-sub-menu pt-[6px] space-y-1">
@@ -84,7 +114,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/news"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/news" || pathname === "/dashboard/news/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/news") && pathname !== "/dashboard/news/create-news" && pathname !== "/dashboard/news/create-news/" && pathname !== "/dashboard/news/categories" && pathname !== "/dashboard/news/categories/" ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>list</i>
@@ -95,7 +125,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/news/create-news"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/news/create-news" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/news/create-news") ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>add_circle</i>
@@ -106,7 +136,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/news/categories/"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/news/categories/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/news/categories") ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>category</i>
@@ -120,7 +150,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <Link
               href="/dashboard/orders"
               className={`${menuLinkBaseClasses} ${
-                pathname === "/dashboard/orders" || pathname === "/dashboard/orders/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                pathname === "/dashboard/orders" || pathname === "/dashboard/orders/" ? "active font-medium dark:bg-[#21123da7]" : ""
               }`}
             >
               <i className={iconBaseClasses}>shopping_cart</i>
@@ -130,7 +160,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <div className={menuItemBaseClasses}>
               <button
                 className={`${menuButtonBaseClasses} ${
-                  openIndex === 2 ? "open" : ""
+                  openIndex === 2 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(2)}
@@ -139,7 +169,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                 <span className="title leading-none">مقالات</span>
               </button>
 
-              <div className={`accordion-collapse transition-all duration-300 ${
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
                 openIndex === 2 ? "open block" : "hidden"
               }`}>
                 <ul className="sidebar-sub-menu pt-[6px] space-y-1">
@@ -147,7 +177,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/blog"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/blog" || pathname === "/dashboard/blog/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/blog") && pathname !== "/dashboard/blog/create-blog" && pathname !== "/dashboard/blog/create-blog/" ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>list</i>
@@ -158,7 +188,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/blog/create-blog"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/blog/create-blog" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/blog/create-blog") ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>add_circle</i>
@@ -172,7 +202,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <div className={menuItemBaseClasses}>
               <button
                 className={`${menuButtonBaseClasses} ${
-                  openIndex === 5 ? "open" : ""
+                  openIndex === 5 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(5)}
@@ -181,7 +211,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                 <span className="title leading-none">توصيات العملاء</span>
               </button>
 
-              <div className={`accordion-collapse transition-all duration-300 ${
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
                 openIndex === 5 ? "open block" : "hidden"
               }`}>
                 <ul className="sidebar-sub-menu pt-[6px] space-y-1">
@@ -189,7 +219,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/testimonial"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/testimonial" || pathname === "/dashboard/testimonial/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/testimonial") && pathname !== "/dashboard/testimonial/create-testimonial" && pathname !== "/dashboard/testimonial/create-testimonial/" ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>list</i>
@@ -200,7 +230,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/testimonial/create-testimonial"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/testimonial/create-testimonial" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/testimonial/create-testimonial") ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>add_circle</i>
@@ -213,7 +243,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
             {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <button
-                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
+                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#21123da7] ${
                   openIndex === 6 ? "open" : ""
                 }`}
                 type="button"
@@ -235,7 +265,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <li className="sidemenu-item mb-[4px] last:mb-0">
                       <Link
                         href="/dashboard/banners"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-[#6A4CFF] hover:bg-primary-50 w-full text-left dark:hover:bg-[#21123da7] ${
                           pathname === "/dashboard/banners" ? "active" : ""
                         }`}
                       >
@@ -252,7 +282,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <li className="sidemenu-item mb-[4px] last:mb-0">
                       <Link
                         href="/dashboard/banners/create"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] hover:text-[#6A4CFF] hover:bg-primary-50 w-full text-left dark:hover:bg-[#21123da7] ${
                           pathname === "/dashboard/banners/create"
                             ? "active"
                             : ""
@@ -270,7 +300,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <div className={menuItemBaseClasses}>
               <button
                 className={`${menuButtonBaseClasses} ${
-                  openIndex === 3 ? "open" : ""
+                  openIndex === 3 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(3)}
@@ -279,7 +309,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                 <span className="title leading-none">الفروع</span>
               </button>
 
-              <div className={`accordion-collapse transition-all duration-300 ${
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
                 openIndex === 3 ? "open block" : "hidden"
               }`}>
                 <ul className="sidebar-sub-menu pt-[6px] space-y-1">
@@ -287,7 +317,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/branches/"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/branches" || pathname === "/dashboard/branches/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/branches") && pathname !== "/dashboard/branches/create-branch" && pathname !== "/dashboard/branches/create-branch/" ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>list</i>
@@ -298,7 +328,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/branches/create-branch"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/branches/create-branch" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        isActive("/dashboard/branches/create-branch") ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>add_location</i>
@@ -312,7 +342,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <Link
               href="/dashboard/shipping-fees"
               className={`${menuLinkBaseClasses} ${
-                pathname === "/dashboard/shipping-fees" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                pathname === "/dashboard/shipping-fees" ? "active font-medium dark:bg-[#21123da7]" : ""
               }`}
             >
               <i className={iconBaseClasses}>local_shipping</i>
@@ -322,7 +352,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <Link
               href="/dashboard/users"
               className={`${menuLinkBaseClasses} ${
-                pathname === "/dashboard/users" || pathname === "/dashboard/users/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                pathname === "/dashboard/users" || pathname === "/dashboard/users/" ? "active font-medium dark:bg-[#21123da7]" : ""
               }`}
             >
               <i className={iconBaseClasses}>people</i>
@@ -336,7 +366,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <Link
               href="/dashboard/my-profile/"
               className={`${menuLinkBaseClasses} ${
-                pathname === "/dashboard/my-profile" || pathname === "/dashboard/my-profile/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                pathname === "/dashboard/my-profile" || pathname === "/dashboard/my-profile/" ? "active font-medium dark:bg-[#21123da7]" : ""
               }`}
             >
               <i className={iconBaseClasses}>account_circle</i>
@@ -346,7 +376,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <div className={menuItemBaseClasses}>
               <button
                 className={`${menuButtonBaseClasses} ${
-                  openIndex === 29 ? "open" : ""
+                  openIndex === 29 ? "open active" : ""
                 }`}
                 type="button"
                 onClick={() => toggleAccordion(29)}
@@ -355,7 +385,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                 <span className="title leading-none">إعدادات</span>
               </button>
 
-              <div className={`accordion-collapse transition-all duration-300 ${
+              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
                 openIndex === 29 ? "open block" : "hidden"
               }`}>
                 <ul className="sidebar-sub-menu pt-[6px] space-y-1">
@@ -363,7 +393,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/my-profile/edit/"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/my-profile/edit/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        pathname === "/dashboard/my-profile/edit/" ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>edit</i>
@@ -374,7 +404,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/my-profile/change-password/"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/my-profile/change-password/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        pathname === "/dashboard/my-profile/change-password/" ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>lock</i>
@@ -385,7 +415,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                     <Link
                       href="/dashboard/add-user/"
                       className={`${subMenuLinkBaseClasses} ${
-                        pathname === "/dashboard/add-user" || pathname === "/dashboard/add-user/" ? "active text-primary-500 bg-primary-50 dark:bg-[#15203c]" : ""
+                        pathname === "/dashboard/add-user" || pathname === "/dashboard/add-user/" ? "active font-medium dark:bg-[#21123da7]" : ""
                       }`}
                     >
                       <i className={subIconBaseClasses}>person_add</i>
@@ -398,7 +428,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
             <button
               onClick={() => logout()}
-              className={`${menuLinkBaseClasses} text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20`}
+              className={`${menuLinkBaseClasses} text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/30 hover:shadow-sm font-medium`}
             >
               <i className={iconBaseClasses}>logout</i>
               <span>تسجيل الخروج</span>

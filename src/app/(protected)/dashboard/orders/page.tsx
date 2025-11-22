@@ -146,7 +146,7 @@ const OrdersPage: React.FC = () => {
       delivered: {
         text: "تم التوصيل",
         color:
-          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+          "bg-[#DFF3E3] text-[#2A5B47] dark:bg-green-900 dark:text-green-200",
       },
       cancelled: {
         text: "ملغي",
@@ -166,7 +166,7 @@ const OrdersPage: React.FC = () => {
   if (isPending)
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6A4CFF]"></div>
       </div>
     );
 
@@ -179,9 +179,9 @@ const OrdersPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -195,8 +195,8 @@ const OrdersPage: React.FC = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
-          <div className="flex items-center justify-between">
+        <div className="trezo-card bg-[linear-gradient(90deg,rgba(158,130,255,0.25),rgba(67,38,204,0.3))] dark:bg-[#1C1C1E] p-4 rounded-md">
+          <div className="flex items-center justify-between ">
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 إجمالي الطلبات
@@ -213,7 +213,7 @@ const OrdersPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+        <div className="trezo-card bg-[linear-gradient(90deg,rgba(158,130,255,0.25),rgba(67,38,204,0.3))] dark:bg-[#1C1C1E] p-4 rounded-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">مدفوع</p>
@@ -229,7 +229,7 @@ const OrdersPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+        <div className="trezo-card bg-[linear-gradient(90deg,rgba(158,130,255,0.25),rgba(67,38,204,0.3))] dark:bg-[#1C1C1E] p-4 rounded-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -247,7 +247,7 @@ const OrdersPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card bg-white dark:bg-[#0c1427] p-4 rounded-md">
+        <div className="trezo-card bg-[linear-gradient(90deg,rgba(158,130,255,0.25),rgba(67,38,204,0.3))] dark:bg-[#1C1C1E] p-4 rounded-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -266,9 +266,9 @@ const OrdersPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px]">
-          <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
+      <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+        <div className="trezo-card-headerbg-[linear-gradient(90deg,rgba(158,130,255,0.25),rgba(67,38,204,0.3))] mb-[20px] md:mb-[25px]">
+          <h6 className="text-lg font-semibold text-black dark:text-white">
             قائمة الطلبات
           </h6>
         </div>
@@ -281,7 +281,7 @@ const OrdersPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="ابحث برقم الطلب أو اسم العميل أو رقم الهاتف..."
-              className="w-full p-2 pr-10 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
+              className="w-full p-2 pr-10 border transition border-purple-300 hover:bg-purple-90 rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#21123da7] dark:bg-gray-900 dark:text-white"
             />
             <i className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
               search
@@ -300,7 +300,7 @@ const OrdersPage: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full p-2 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
+            className="w-full p-2 border transition border-[#6A4CFF] focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20 rounded-lg outline-none bg-white dark:bg-gray-900 text-black dark:text-white"
           >
             <option value="">جميع الطلبات</option>
             <option value="paid">مدفوع</option>
@@ -314,7 +314,7 @@ const OrdersPage: React.FC = () => {
           <select
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
-            className="w-full p-2 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
+            className="w-full p-2 border transition border-[#6A4CFF] focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20 rounded-lg outline-none bg-white dark:bg-gray-900 text-black dark:text-white"
           >
             <option value="">كل التواريخ</option>
             <option value="today">اليوم</option>
@@ -341,7 +341,7 @@ const OrdersPage: React.FC = () => {
                   ].map((header) => (
                     <th
                       key={header}
-                      className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
+                      className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-[#6A4CFF] text-white dark:bg-[#21123da7] dark:text-white whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
                     >
                       {header}
                     </th>
@@ -352,13 +352,16 @@ const OrdersPage: React.FC = () => {
               <tbody className="text-black dark:text-white">
                 {orders?.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="text-center py-8 text-gray-500">
+                    <td colSpan={7} className="text-center py-8 text-gray-500 dark:text-gray-400">
                       لا توجد طلبات متاحة
                     </td>
                   </tr>
                 ) : (
                   orders?.map((order) => (
-                    <tr key={order.id}>
+                    <tr 
+                      key={order.id}
+                      className="hover:bg-purple-100 dark:hover:bg-[#21123da7] transition-colors"
+                    >
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                         <span className="font-medium text-gray-900 dark:text-white">
                           {order.id?.slice(0, 8)}
@@ -455,7 +458,8 @@ const OrdersPage: React.FC = () => {
                                   status: e.target.value,
                                 })
                               }
-                              className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-sm border border-[#6A4CFF] rounded px-2 py-1 bg-white dark:bg-gray-900 text-black dark:text-white focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                             >
                               <option value="pending">في الانتظار</option>
                               <option value="paid">مدفوع</option>
@@ -470,8 +474,9 @@ const OrdersPage: React.FC = () => {
                           <div className="relative group">
                             <Link
                               href={`/dashboard/orders/${order.id}`}
-                              className="text-blue-500 leading-none"
+                              className="text-gray-500 leading-none hover:text-[#6A4CFF] transition-colors"
                               type="button"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <i className="material-symbols-outlined !text-md">
                                 visibility
@@ -479,16 +484,17 @@ const OrdersPage: React.FC = () => {
                             </Link>
 
                             {/* Tooltip */}
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#4326CC] text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                               عرض التفاصيل
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4326CC]"></div>
                             </div>
                           </div>
 
                           {/* Delete */}
                           <div className="relative group">
                             <button
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 toast(
                                   (t) => (
                                     <span>
@@ -537,7 +543,7 @@ const OrdersPage: React.FC = () => {
                                 );
                               }}
                               disabled={isPending}
-                              className="text-danger-500 leading-none"
+                              className="text-danger-500 leading-none hover:text-danger-600 transition-colors"
                             >
                               <i className="material-symbols-outlined !text-md">
                                 delete
@@ -545,9 +551,9 @@ const OrdersPage: React.FC = () => {
                             </button>
 
                             {/* Tooltip */}
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#4326CC] text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                               مسح
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4326CC]"></div>
                             </div>
                           </div>
                         </div>
@@ -569,7 +575,8 @@ const OrdersPage: React.FC = () => {
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
                   disabled={currentPage === 1}
-                  className="px-3 py-1 border rounded disabled:opacity-50"
+                  className="px-3 py-1 border border-gray-100 dark:border-[#172036] rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors"
+                  aria-label="الصفحة السابقة"
                 >
                   السابق
                 </button>
@@ -577,9 +584,13 @@ const OrdersPage: React.FC = () => {
                   <button
                     key={i + 1}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={`px-3 py-1 border rounded ${
-                      currentPage === i + 1 ? "bg-primary-500 text-white" : ""
-                    }`}
+                    className={`px-3 py-1 border border-gray-100 dark:border-[#172036] rounded transition-colors ${
+                      currentPage === i + 1
+                        ? "bg-[#6A4CFF] text-white border-[#6A4CFF]"
+                        : "hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625]"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    aria-label={`الصفحة ${i + 1}`}
+                    aria-current={currentPage === i + 1 ? "page" : undefined}
                   >
                     {i + 1}
                   </button>
@@ -589,7 +600,8 @@ const OrdersPage: React.FC = () => {
                     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                   }
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1 border rounded disabled:opacity-50"
+                  className="px-3 py-1 border border-gray-100 dark:border-[#172036] rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors"
+                  aria-label="الصفحة التالية"
                 >
                   التالي
                 </button>

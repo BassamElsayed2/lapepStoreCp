@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -113,15 +114,39 @@ export default function CreateBranch() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="gap-[25px]">
-        <div className="xl:col-span-3 2xl:col-span-2">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-            <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
-              <div className="trezo-card-title">
-                <h5 className="!mb-0">إنشاء فرع</h5>
+    <>
+      <div className="mb-[25px] md:flex items-center justify-between">
+        <h5 className="!mb-0">إنشاء فرع جديد</h5>
+
+        <ol className="breadcrumb mt-[12px] md:mt-0 rtl:flex-row-reverse">
+          <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
+            <Link
+              href="/dashboard"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
+            >
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
+                home
+              </i>
+              رئيسية
+            </Link>
+          </li>
+          <li className="breadcrumb-item inline-block  relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
+            الفروع
+          </li>
+          <li className="breadcrumb-item inline-block  relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
+            إنشاء فرع
+          </li>
+        </ol>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className=" gap-[25px]">
+          <div className="lg:col-span-2">
+            <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+              <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
+                <div className="trezo-card-title">
+                  <h5 className="!mb-0">أضف فرع جديد</h5>
+                </div>
               </div>
-            </div>
 
             <div className="trezo-card-content sm:grid sm:grid-cols-2 sm:gap-[25px]">
               <div className="mb-[20px]">
@@ -135,7 +160,7 @@ export default function CreateBranch() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 />
                 {errors.name_ar && (
                   <p className="text-red-500 mt-1">{errors.name_ar.message}</p>
@@ -153,7 +178,7 @@ export default function CreateBranch() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 />
                 {errors.name_en && (
                   <p className="text-red-500 mt-1">{errors.name_en.message}</p>
@@ -171,7 +196,7 @@ export default function CreateBranch() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 />
                 {errors.area_ar && (
                   <p className="text-red-500 mt-1">{errors.area_ar.message}</p>
@@ -189,7 +214,7 @@ export default function CreateBranch() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 />
                 {errors.area_en && (
                   <p className="text-red-500 mt-1">{errors.area_en.message}</p>
@@ -207,7 +232,7 @@ export default function CreateBranch() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 />
                 {errors.address_ar && (
                   <p className="text-red-500 mt-1">
@@ -226,7 +251,7 @@ export default function CreateBranch() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 />
                 {errors.address_en && (
                   <p className="text-red-500 mt-1">
@@ -242,11 +267,12 @@ export default function CreateBranch() {
                 <input
                   {...register("works_hours", {
                     minLength: {
-                      value: 3,
-                      message: "العنوان يجب أن يكون 3 أحرف على الأقل",
+                      value: 1,
+                      message: "ساعات العمل يجب أن تكون 1 ساعة على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
+                  placeholder="مثال: 9:00 ص - 5:00 م"
                 />
                 {errors.works_hours && (
                   <p className="text-red-500 mt-1">
@@ -263,10 +289,11 @@ export default function CreateBranch() {
                   {...register("phone", {
                     minLength: {
                       value: 3,
-                      message: "العنوان يجب أن يكون 3 أحرف على الأقل",
+                      message: "رقم الهاتف يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
+                  placeholder="مثال: 01234567890"
                 />
                 {errors.phone && (
                   <p className="text-red-500 mt-1">{errors.phone.message}</p>
@@ -284,7 +311,7 @@ export default function CreateBranch() {
                       message: "العنوان يجب أن يكون 3 أحرف على الأقل",
                     },
                   })}
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 />
                 {errors.google_map && (
                   <p className="text-red-500 mt-1">
@@ -297,9 +324,9 @@ export default function CreateBranch() {
                 <label className="mb-[10px] block font-medium text-black dark:text-white">
                   اختر الصوره (اختياري)
                 </label>
-                <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[65px] px-[20px] border border-gray-200 dark:border-[#172036]">
+                <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[65px] px-[20px] border border-[#6A4CFF]">
                   <div className="flex items-center justify-center">
-                    <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
+                    <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-[12px] rtl:ml-[12px]">
                       <i className="ri-upload-2-line"></i>
                     </div>
                     <p className="text-black dark:text-white">
@@ -344,18 +371,46 @@ export default function CreateBranch() {
               </div>
             </div>
 
-            <div className="mt-[20px] sm:mt-[25px]">
-              <button
-                type="submit"
-                disabled={loading}
-                className="font-medium inline-block transition-all rounded-md 2xl:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50"
-              >
-                {loading ? "جارٍ الإرسال..." : "إنشاء"}
-              </button>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+
+        <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card-content">
+            <button
+              type="button"
+              onClick={() => router.push("/dashboard/branches")}
+              className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
+            >
+              ألغاء
+            </button>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-[#5a3ce6] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
+                {loading ? (
+                  <>
+                    <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2 animate-spin">
+                      sync
+                    </i>
+                    جاري الإنشاء...
+                  </>
+                ) : (
+                  <>
+                    <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
+                      add
+                    </i>
+                    إنشاء فرع
+                  </>
+                )}
+              </span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </>
   );
 }

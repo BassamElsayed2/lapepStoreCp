@@ -63,7 +63,7 @@ const LockScreenContent: React.FC = () => {
                 </label>
                 <input
                   type="password"
-                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                  className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   id="password"
                   placeholder="Type password"
                 />
@@ -71,7 +71,7 @@ const LockScreenContent: React.FC = () => {
 
               <button
                 type="submit"
-                className="md:text-md block w-full text-center transition-all rounded-md font-medium mt-[20px] py-[12px] px-[25px] text-white bg-primary-500 hover:bg-primary-400"
+                className="md:text-md block w-full text-center transition-all rounded-md font-medium mt-[20px] py-[12px] px-[25px] text-white bg-[#6A4CFF] hover:bg-primary-400"
               >
                 <span className="flex items-center justify-center gap-[5px]">
                   <i className="material-symbols-outlined">autorenew</i>

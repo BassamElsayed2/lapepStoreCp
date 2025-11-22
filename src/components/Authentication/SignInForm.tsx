@@ -5,6 +5,7 @@ import Image from "next/image";
 // import Link from "next/link";
 
 import { useSignIn } from "./useSignIn";
+import DarkMode from "./DarkMode";
 
 const SignInForm: React.FC = () => {
   // State variables for email and password
@@ -36,7 +37,8 @@ const SignInForm: React.FC = () => {
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 bg-white/50 dark:bg-[#0a0e19]/60"></div>
+        <DarkMode />
+        <div className="absolute inset-0 bg-white/50 dark:bg-[#0a0e19]/60 pointer-events-none"></div>
         
         <div className="relative z-10 mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px] w-full py-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-stretch">
@@ -55,7 +57,7 @@ const SignInForm: React.FC = () => {
             </div>
 
             <div className="xl:ltr:pl-[90px] xl:rtl:pr-[90px] 2xl:ltr:pl-[120px] 2xl:rtl:pr-[120px] order-1 lg:order-2 flex items-center">
-              <div className="bg-white/80 dark:bg-[#0c1427]/80 backdrop-blur-md rounded-2xl p-10 md:p-14 lg:p-16 xl:p-20 shadow-xl border border-gray-200/50 dark:border-[#172036]/50 w-full">
+              <div className="bg-white/80 dark:bg-[#1d1d1d]/80 backdrop-blur-md rounded-2xl p-10 md:p-14 lg:p-16 xl:p-20 shadow-xl border border-gray-200/50 dark:border-[#172036]/50 w-full">
                 <button className="transition-none relative flex items-center justify-center outline-none mb-10 mx-auto">
                   <Image
                     src="/images/black-logo.png"
@@ -63,13 +65,13 @@ const SignInForm: React.FC = () => {
                     width={32}
                     height={32}
                   />
-                  <span className="font-bold text-black dark:text-white relative ltr:ml-[10px] rtl:mr-[10px] top-px text-2xl">
+                  <span className="font-bold font-serif text-[#1A1A1A] dark:text-white relative ltr:ml-[10px] rtl:mr-[10px] top-px text-2xl">
                    Lapip Store
                   </span>
                 </button>
 
                 <div className="my-[20px] md:my-[28px] lg:my-[32px]">
-                  <h1 className="!font-semibold !text-[24px] md:!text-2xl lg:!text-3xl !mb-[7px] md:!mb-[10px] text-black dark:text-white">
+                  <h1 className="!font-semibold !text-[24px] md:!text-2xl lg:!text-3xl !mb-[7px] md:!mb-[10px] text-[#1A1A1A] dark:text-white">
                     مرحبا
                   </h1>
                   <p className="text-gray-600 dark:text-gray-400 text-base">
@@ -79,12 +81,12 @@ const SignInForm: React.FC = () => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-[24px] relative">
-                    <label className="mb-[12px] md:mb-[14px] text-black dark:text-white font-medium block text-base">
+                    <label className="mb-[12px] md:mb-[14px] text-[#1A1A1A] dark:text-white font-medium block text-base">
                       عنوان البريد الإلكتروني
                     </label>
                     <input
                       type="text"
-                      className="h-[65px] rounded-lg text-black dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[24px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
+                      className="h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
                       placeholder="example@trezo.com"
                       id="email"
                       autoComplete="email"
@@ -95,12 +97,12 @@ const SignInForm: React.FC = () => {
                   </div>
 
                   <div className="mb-[24px] relative" id="passwordHideShow">
-                    <label className="mb-[12px] md:mb-[14px] text-black dark:text-white font-medium block text-base">
+                    <label className="mb-[12px] md:mb-[14px] text-[#1A1A1A] dark:text-white font-medium block text-base">
                       كلمة المرور
                     </label>
                     <input
                       type={showPassword ? "text" : "password"}
-                      className="h-[65px] rounded-lg text-black dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[24px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
+                      className="h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
                       id="password"
                       placeholder="اكتب كلمة المرور"
                       autoComplete="current-password"
@@ -109,7 +111,7 @@ const SignInForm: React.FC = () => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
-                      className="absolute text-lg ltr:right-[24px] rtl:left-[24px] bottom-[14px] transition-all hover:text-primary-500 text-gray-500 dark:text-gray-400"
+                      className="absolute text-lg ltr:right-[24px] rtl:left-[24px] bottom-[14px] transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400"
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
                       aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
@@ -164,7 +166,7 @@ const SignInForm: React.FC = () => {
 
                 {/* <Link
                   href="/authentication/forgot-password"
-                  className="inline-block text-primary-500 transition-all font-semibold hover:underline mt-4"
+                  className="inline-block text-[#6A4CFF] transition-all font-semibold hover:underline mt-4"
                 >
                   هل نسيت كلمة السر؟
                 </Link> */}

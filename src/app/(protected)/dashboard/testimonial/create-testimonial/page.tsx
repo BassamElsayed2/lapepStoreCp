@@ -154,20 +154,20 @@ const CreateTestimonialPage: React.FC = () => {
 
         <ol className="breadcrumb mt-[12px] md:mt-0 rtl:flex-row-reverse">
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
-            <a
+            <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
-            </a>
+            </Link>
           </li>
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard/testimonial"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
               التوصيات
             </Link>
@@ -178,66 +178,9 @@ const CreateTestimonialPage: React.FC = () => {
         </ol>
       </div>
 
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Image Upload */}
-          <div className="space-y-4">
-            <label className="mb-[10px] text-black dark:text-white font-medium block">
-              صور التوصية
-            </label>
-
-            <div id="fileUploader">
-              <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
-                <div className="flex flex-col items-center justify-center text-center">
-                  <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg mb-3">
-                    <i className="ri-upload-2-line"></i>
-                  </div>
-                  <p className="leading-[1.5] mb-2">
-                    <strong className="text-black dark:text-white">
-                      اضغط لرفع
-                    </strong>
-                    <br /> الصور من هنا
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    الحد الأقصى: 5 صور
-                    <br />
-                    حجم الصورة: حتى 50 ميجابايت
-                  </p>
-                </div>
-
-                <input
-                  type="file"
-                  id="images"
-                  multiple
-                  accept="image/*"
-                  className="absolute top-0 left-0 right-0 bottom-0 rounded-md z-[1] opacity-0 cursor-pointer"
-                  onChange={handleFileChange}
-                />
-              </div>
-
-              {/* Image Previews */}
-              <div className="mt-[10px] flex flex-wrap gap-2">
-                {selectedImages.map((image, index) => (
-                  <div key={index} className="relative w-[50px] h-[50px]">
-                    <Image
-                      src={URL.createObjectURL(image)}
-                      alt="testimonial-preview"
-                      width={50}
-                      height={50}
-                      className="rounded-md"
-                    />
-                    <button
-                      type="button"
-                      className="absolute top-[-5px] right-[-5px] bg-orange-500 text-white w-[20px] h-[20px] flex items-center justify-center rounded-full text-xs rtl:right-auto rtl:left-[-5px]"
-                      onClick={() => handleRemoveImage(index)}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+        
 
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -250,7 +193,7 @@ const CreateTestimonialPage: React.FC = () => {
                 name="name_ar"
                 value={formData.name_ar}
                 onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 placeholder="أدخل الاسم باللغة العربية"
                 required
               />
@@ -265,7 +208,7 @@ const CreateTestimonialPage: React.FC = () => {
                 name="name_en"
                 value={formData.name_en}
                 onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 placeholder="Enter name in English"
                 required
               />
@@ -290,7 +233,7 @@ const CreateTestimonialPage: React.FC = () => {
                   style={{ minHeight: "200px" }}
                   className="rsw-editor"
                 >
-                  <Toolbar>
+                  <Toolbar className="rsw-toolbar">
                     <BtnUndo />
                     <BtnRedo />
                     <Separator />
@@ -328,7 +271,7 @@ const CreateTestimonialPage: React.FC = () => {
                   style={{ minHeight: "200px" }}
                   className="rsw-editor"
                 >
-                  <Toolbar>
+                  <Toolbar className="rsw-toolbar">
                     <BtnUndo />
                     <BtnRedo />
                     <Separator />
@@ -350,23 +293,100 @@ const CreateTestimonialPage: React.FC = () => {
               </EditorProvider>
             </div>
           </div>
+            {/* Image Upload */}
+            <div className="space-y-4">
+            <label className="mb-[10px] text-black dark:text-white font-medium block">
+              صور التوصية
+            </label>
+
+            <div id="fileUploader">
+              <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-[#6A4CFF]">
+                <div className="flex flex-col items-center justify-center text-center">
+                  <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg mb-3">
+                    <i className="ri-upload-2-line"></i>
+                  </div>
+                  <p className="leading-[1.5] mb-2">
+                    <strong className="text-black dark:text-white">
+                      اضغط لرفع
+                    </strong>
+                    <br /> الصور من هنا
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    الحد الأقصى: 5 صور
+                    <br />
+                    حجم الصورة: حتى 50 ميجابايت
+                  </p>
+                </div>
+
+                <input
+                  type="file"
+                  id="images"
+                  multiple
+                  accept="image/*"
+                  className="absolute top-0 left-0 right-0 bottom-0 rounded-md z-[1] opacity-0 cursor-pointer"
+                  onChange={handleFileChange}
+                />
+              </div>
+
+              {/* Image Previews */}
+              <div className="mt-[10px] flex flex-wrap gap-2">
+                {selectedImages.map((image, index) => (
+                  <div key={index} className="relative w-[50px] h-[50px]">
+                    <Image
+                      src={URL.createObjectURL(image)}
+                      alt="testimonial-preview"
+                      width={50}
+                      height={50}
+                      className="rounded-md border border-[#6A4CFF]"
+                    />
+                    <button
+                      type="button"
+                      className="absolute top-[-5px] right-[-5px] bg-orange-500 text-white w-[20px] h-[20px] flex items-center justify-center rounded-full text-xs rtl:right-auto rtl:left-[-5px]"
+                      onClick={() => handleRemoveImage(index)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end space-x-4 rtl:space-x-reverse">
-            <button
-              type="button"
-              onClick={() => router.push("/dashboard/testimonial")}
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-            >
-              إلغاء
-            </button>
-            <button
-              type="submit"
-              disabled={isPending || isUploading}
-              className="px-6 py-2 mr-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-            >
-              {isPending || isUploading ? "جاري الحفظ..." : "حفظ التوصية"}
-            </button>
+          <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="trezo-card-content">
+              <button
+                type="button"
+                onClick={() => router.push("/dashboard/testimonial")}
+                className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
+              >
+                ألغاء
+              </button>
+
+              <button
+                type="submit"
+                disabled={isPending || isUploading}
+                className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-[#5a3ce6] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
+                  {isPending || isUploading ? (
+                    <>
+                      <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2 animate-spin">
+                        sync
+                      </i>
+                      جاري الحفظ...
+                    </>
+                  ) : (
+                    <>
+                      <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
+                        save
+                      </i>
+                      حفظ التوصية
+                    </>
+                  )}
+                </span>
+              </button>
+            </div>
           </div>
         </form>
       </div>

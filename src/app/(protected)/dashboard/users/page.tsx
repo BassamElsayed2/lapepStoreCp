@@ -54,7 +54,7 @@ const UsersPage: React.FC = () => {
   if (isPending)
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6A4CFF]"></div>
       </div>
     );
 
@@ -67,9 +67,9 @@ const UsersPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -81,7 +81,7 @@ const UsersPage: React.FC = () => {
         </ol>
       </div>
 
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-header mb-[20px] md:mb-[25px]">
           <h6 className="text-lg font-semibold text-gray-900 dark:text-white">
             قائمة المستخدمين
@@ -95,7 +95,7 @@ const UsersPage: React.FC = () => {
               onClick={() => setActiveTab("admin")}
               className={`pb-3 px-4 font-medium transition-all ${
                 activeTab === "admin"
-                  ? "border-b-2 border-primary-500 text-primary-500"
+                  ? "border-b-2 border-[#6A4CFF] text-[#6A4CFF]"
                   : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               }`}
             >
@@ -110,7 +110,7 @@ const UsersPage: React.FC = () => {
               onClick={() => setActiveTab("user")}
               className={`pb-3 px-4 font-medium transition-all ${
                 activeTab === "user"
-                  ? "border-b-2 border-primary-500 text-primary-500"
+                  ? "border-b-2 border-[#6A4CFF] text-[#6A4CFF]"
                   : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               }`}
             >
@@ -132,15 +132,15 @@ const UsersPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="ابحث باسم المستخدم، الإيميل، أو رقم الهاتف..."
-              className="w-full p-2 pr-10 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
+              className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] ltr:pl-[45px] rtl:pr-[45px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
             />
-            <i className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
+            <i className="material-symbols-outlined absolute ltr:left-[15px] rtl:right-[15px] top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none">
               search
             </i>
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute ltr:right-[15px] rtl:left-[15px] top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               >
                 <i className="material-symbols-outlined text-sm">close</i>
               </button>
@@ -151,7 +151,7 @@ const UsersPage: React.FC = () => {
           <select
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
-            className="w-full p-2 border transition border-[#f2f2f2] hover:bg-[#f2f2f2] rounded-lg outline-none dark:border-[#172036] dark:hover:bg-[#172036] dark:bg-[#0c1427] dark:text-white"
+            className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
           >
             <option value="">كل التواريخ</option>
             <option value="today">اليوم</option>
@@ -174,7 +174,7 @@ const UsersPage: React.FC = () => {
                   ].map((header) => (
                     <th
                       key={header}
-                      className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
+                      className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-[#6A4CFF] dark:bg-[#21123da7] text-white whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
                     >
                       {header}
                     </th>
@@ -185,7 +185,7 @@ const UsersPage: React.FC = () => {
               <tbody className="text-black dark:text-white">
                 {users?.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="text-center py-8 text-gray-500">
+                    <td colSpan={4} className="text-center py-8 text-black dark:text-white">
                       {activeTab === "admin"
                         ? "لا يوجد مستخدمين للداشبورد"
                         : "لا يوجد مستخدمين للتطبيق"}
@@ -193,7 +193,10 @@ const UsersPage: React.FC = () => {
                   </tr>
                 ) : (
                   users?.map((user) => (
-                    <tr key={user.id}>
+                    <tr 
+                      key={user.id}
+                      className="hover:bg-purple-100 dark:hover:bg-[#21123da7] transition-colors"
+                    >
                       {/* Name */}
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                         <div className="flex items-center text-black dark:text-white">
@@ -247,7 +250,7 @@ const UsersPage: React.FC = () => {
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
                   disabled={currentPage === 1}
-                  className="px-3 py-1 border rounded disabled:opacity-50"
+                  className="px-3 py-1 border border-gray-100 dark:border-[#172036] rounded text-black dark:text-white hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   السابق
                 </button>
@@ -255,8 +258,8 @@ const UsersPage: React.FC = () => {
                   <button
                     key={i + 1}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={`px-3 py-1 border rounded ${
-                      currentPage === i + 1 ? "bg-primary-500 text-white" : ""
+                    className={`px-3 py-1 border border-gray-100 dark:border-[#172036] rounded text-black dark:text-white hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors ${
+                      currentPage === i + 1 ? "bg-[#6A4CFF] text-white border-[#6A4CFF] hover:bg-[#5a3ce6]" : ""
                     }`}
                   >
                     {i + 1}
@@ -267,7 +270,7 @@ const UsersPage: React.FC = () => {
                     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                   }
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1 border rounded disabled:opacity-50"
+                  className="px-3 py-1 border border-gray-100 dark:border-[#172036] rounded text-black dark:text-white hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   التالي
                 </button>

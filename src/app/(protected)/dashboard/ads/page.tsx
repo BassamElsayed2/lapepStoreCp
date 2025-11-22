@@ -210,7 +210,7 @@ const ComboOffersList: React.FC = () => {
   };
 
   return (
-    <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+    <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
       <div className="trezo-tabs combo-offers-tabs">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-[20px] md:mb-[25px] gap-4">
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -220,7 +220,7 @@ const ComboOffersList: React.FC = () => {
                 placeholder="ابحث عن عرض..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-[#15203c] dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-[#21123da7] dark:text-white"
               />
               <i className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                 search
@@ -229,7 +229,7 @@ const ComboOffersList: React.FC = () => {
           </div>
           <Link
             href="/dashboard/ads/create-combo-offer"
-            className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
+            className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-[#6A4CFF] border border-[#6A4CFF] hover:bg-[#6A4CFF] hover:text-white"
           >
             <span className="relative pl-6">
               <i className="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2">
@@ -256,7 +256,7 @@ const ComboOffersList: React.FC = () => {
                 ].map((head, i) => (
                   <th
                     key={i}
-                    className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c]"
+                    className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gradient-to-r from-[#9E82FF] to-[#4326CC] text-white"
                   >
                     {head}
                   </th>
@@ -293,7 +293,7 @@ const ComboOffersList: React.FC = () => {
                         {offer.description_ar || "لا يوجد وصف"}
                       </div>
                     </td>
-                    <td className="py-3 px-3 font-semibold text-primary-500">
+                    <td className="py-3 px-3 font-semibold text-[#6A4CFF]">
                       {formatPrice(offer.total_price)}
                     </td>
                     <td className="py-3 px-3">{formatDate(offer.starts_at)}</td>
@@ -322,7 +322,7 @@ const ComboOffersList: React.FC = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEditClick(offer)}
-                          className="text-primary-500 leading-none"
+                          className="text-[#6A4CFF] leading-none"
                         >
                           <i className="material-symbols-outlined !text-md">
                             edit
@@ -348,7 +348,7 @@ const ComboOffersList: React.FC = () => {
         {/* Edit Modal */}
         {isEditModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-[#0c1427] p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-[#1d1d1d] p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold text-black dark:text-white">
                   تعديل العرض
@@ -375,7 +375,7 @@ const ComboOffersList: React.FC = () => {
                     </label>
                     <input
                       {...register("title_ar", { required: true })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 block w-full outline-0 transition-all"
                     />
                     {errors.title_ar && (
                       <p className="text-red-500 mt-1">مطلوب</p>
@@ -388,7 +388,7 @@ const ComboOffersList: React.FC = () => {
                     </label>
                     <input
                       {...register("title_en", { required: true })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 block w-full outline-0 transition-all"
                     />
                     {errors.title_en && (
                       <p className="text-red-500 mt-1">Required</p>
@@ -402,7 +402,7 @@ const ComboOffersList: React.FC = () => {
                     <textarea
                       {...register("description_ar")}
                       rows={3}
-                      className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-2 block w-full outline-0 transition-all"
+                      className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 py-2 block w-full outline-0 transition-all"
                     />
                   </div>
 
@@ -413,7 +413,7 @@ const ComboOffersList: React.FC = () => {
                     <textarea
                       {...register("description_en")}
                       rows={3}
-                      className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 py-2 block w-full outline-0 transition-all"
+                      className="rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 py-2 block w-full outline-0 transition-all"
                     />
                   </div>
 
@@ -425,7 +425,7 @@ const ComboOffersList: React.FC = () => {
                       type="number"
                       step="0.01"
                       {...register("total_price", { required: true, min: 0 })}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 block w-full outline-0 transition-all"
                     />
                     {errors.total_price && (
                       <p className="text-red-500 mt-1">مطلوب</p>
@@ -439,7 +439,7 @@ const ComboOffersList: React.FC = () => {
                     <input
                       type="date"
                       {...register("starts_at")}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 block w-full outline-0 transition-all"
                     />
                   </div>
 
@@ -450,7 +450,7 @@ const ComboOffersList: React.FC = () => {
                     <input
                       type="date"
                       {...register("ends_at")}
-                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-4 block w-full outline-0 transition-all"
+                      className="h-[45px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 block w-full outline-0 transition-all"
                     />
                   </div>
 
@@ -460,7 +460,7 @@ const ComboOffersList: React.FC = () => {
                     </label>
                     <div className="relative flex items-center justify-center overflow-hidden rounded-md py-8 px-4 border border-gray-200 dark:border-[#172036]">
                       <div className="flex items-center justify-center">
-                        <div className="w-8 h-8 border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-3 rtl:ml-3">
+                        <div className="w-8 h-8 border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-3 rtl:ml-3">
                           <i className="ri-upload-2-line"></i>
                         </div>
                         <p className="text-black dark:text-white">
@@ -519,7 +519,7 @@ const ComboOffersList: React.FC = () => {
                   <button
                     type="submit"
                     disabled={updateMutation.isPending}
-                    className="px-4 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 disabled:opacity-50"
+                    className="px-4 py-2 bg-[#6A4CFF] text-white rounded-md hover:bg-primary-600 disabled:opacity-50"
                   >
                     {updateMutation.isPending
                       ? "جارٍ الحفظ..."
@@ -540,7 +540,7 @@ const ComboOffersList: React.FC = () => {
                 onClick={() => setCurrentPage(i + 1)}
                 className={`px-3 py-1 rounded-md mx-1 text-sm ${
                   currentPage === i + 1
-                    ? "bg-primary-500 text-white"
+                    ? "bg-[#6A4CFF] text-white"
                     : "bg-gray-200"
                 }`}
               >

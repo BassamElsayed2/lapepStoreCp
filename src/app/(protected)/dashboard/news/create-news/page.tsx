@@ -219,9 +219,9 @@ const CreateProductForm: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -238,7 +238,7 @@ const CreateProductForm: React.FC = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" gap-[25px]">
           <div className="lg:col-span-2">
-            <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
               <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
                 <div className="trezo-card-title">
                   <h5 className="!mb-0">أضف منتج جديد</h5>
@@ -255,7 +255,7 @@ const CreateProductForm: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]   focus:ring-[#6A4CFF]/20"
                       placeholder="ادخل اسم المنتج بالعربية"
                       id="name_ar"
                       {...register("name_ar", {
@@ -281,7 +281,7 @@ const CreateProductForm: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]   focus:ring-[#6A4CFF]/20"
                       placeholder="Enter product name in English"
                       id="name_en"
                       {...register("name_en", {
@@ -305,17 +305,18 @@ const CreateProductForm: React.FC = () => {
                       التصنيف <span className="text-red-500">*</span>
                     </label>
                     <select
-                      className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500"
+                      className="h-[55px] rounded-md border border-[#6A4CFF] bg-white dark:bg-gray-900 text-black dark:text-white px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF]   focus:ring-[#6A4CFF]/20"
                       {...register("category_id", {
                         required: "يجب اختيار التصنيف",
                       })}
                       onChange={handleCategoryChange}
                     >
-                      <option value="">اختر التصنيف</option>
+                      <option value="" className="bg-white dark:bg-gray-900 text-black dark:text-white">اختر التصنيف</option>
                       {categories?.map((category) => (
                         <option
                           key={category.id}
                           value={category.id.toString()}
+                          className="bg-white dark:bg-gray-900 text-black dark:text-white"
                         >
                           {category.name_ar}
                         </option>
@@ -336,7 +337,7 @@ const CreateProductForm: React.FC = () => {
                     <input
                       type="number"
                       step="0.01"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]   focus:ring-[#6A4CFF]/20"
                       placeholder="0.00"
                       id="price"
                       {...register("price", {
@@ -363,7 +364,7 @@ const CreateProductForm: React.FC = () => {
                       type="number"
                       step="0.01"
                       min="0"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]   focus:ring-[#6A4CFF]/20"
                       placeholder="اتركه فارغاً إذا لم يكن هناك خصم"
                       id="offer_price"
                       {...register("offer_price", {
@@ -387,7 +388,7 @@ const CreateProductForm: React.FC = () => {
                     </label>
                     <input
                       type="number"
-                      className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                      className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]   focus:ring-[#6A4CFF]/20"
                       placeholder="0"
                       id="quantity"
                       {...register("quantity", {
@@ -414,7 +415,7 @@ const CreateProductForm: React.FC = () => {
                       <input
                         type="checkbox"
                         id="is_best_seller"
-                        className="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-[#6A4CFF] bg-gray-100 border-[#6A4CFF] rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800  dark:bg-gray-700"
                         {...register("is_best_seller")}
                       />
                       <label
@@ -435,7 +436,7 @@ const CreateProductForm: React.FC = () => {
                       <input
                         type="checkbox"
                         id="limited_time_offer"
-                        className="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-[#6A4CFF] bg-gray-100 border-[#6A4CFF] rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700"
                         {...register("limited_time_offer")}
                       />
                       <label
@@ -465,7 +466,7 @@ const CreateProductForm: React.FC = () => {
                         style={{ minHeight: "200px" }}
                         className="rsw-editor"
                       >
-                        <Toolbar>
+                        <Toolbar className="rsw-toolbar">
                           <BtnUndo />
                           <BtnRedo />
                           <Separator />
@@ -505,7 +506,7 @@ const CreateProductForm: React.FC = () => {
                         style={{ minHeight: "200px" }}
                         className="rsw-editor"
                       >
-                        <Toolbar>
+                        <Toolbar className="rsw-toolbar">
                           <BtnUndo />
                           <BtnRedo />
                           <Separator />
@@ -533,9 +534,9 @@ const CreateProductForm: React.FC = () => {
                     </label>
 
                     <div id="fileUploader">
-                      <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
+                      <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-[#6A4CFF]">
                         <div className="flex flex-col items-center justify-center text-center">
-                          <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg mb-3">
+                          <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg mb-3">
                             <i className="ri-upload-2-line"></i>
                           </div>
                           <p className="leading-[1.5] mb-2">
@@ -586,7 +587,7 @@ const CreateProductForm: React.FC = () => {
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                             {selectedImages.map((image, index) => (
                               <div key={index} className="relative group">
-                                <div className="relative w-full h-[100px] rounded-md overflow-hidden border border-gray-200 dark:border-[#172036]">
+                                <div className="relative w-full h-[100px] rounded-md overflow-hidden border border-[#6A4CFF]">
                                   <Image
                                     src={URL.createObjectURL(image)}
                                     alt={`product-preview-${index}`}
@@ -619,10 +620,11 @@ const CreateProductForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="trezo-card mb-[25px]">
+        <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
           <div className="trezo-card-content">
             <button
-              type="reset"
+              type="button"
+              onClick={() => router.push("/dashboard/news")}
               className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
             >
               ألغاء
@@ -631,7 +633,7 @@ const CreateProductForm: React.FC = () => {
             <button
               type="submit"
               disabled={isPending || isUploadingImages}
-              className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-[#5a3ce6] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
                 {isUploadingImages ? (

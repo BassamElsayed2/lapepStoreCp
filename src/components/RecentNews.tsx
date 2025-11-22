@@ -16,7 +16,7 @@ const RecentProperty: React.FC = () => {
   if (products?.total === 0) {
     return (
       <section
-        className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
+        className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md"
         aria-label="الأخبار الأخيرة"
       >
         <div className="trezo-card-header mb-[15px] flex items-center justify-between">
@@ -35,7 +35,7 @@ const RecentProperty: React.FC = () => {
 
   return (
     <section
-      className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md"
+      className="trezo-card bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md"
       aria-label="الأخبار الأخيرة"
     >
       <header className="trezo-card-header mb-[15px] flex items-center justify-between">

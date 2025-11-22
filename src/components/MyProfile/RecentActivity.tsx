@@ -5,7 +5,7 @@ import React from "react";
 const RecentActivity: React.FC = () => {
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
           <div className="trezo-card-title">
             <h5 className="!mb-0">Recent Activity</h5>
@@ -29,7 +29,7 @@ const RecentActivity: React.FC = () => {
               </p>
               <span className="block text-sm">
                 By:
-                <span className="text-primary-500">Olivia Rodriguez</span>
+                <span className="text-[#6A4CFF]">Olivia Rodriguez</span>
               </span>
             </div>
             
@@ -47,7 +47,7 @@ const RecentActivity: React.FC = () => {
               </p>
               <span className="block text-sm">
                 By:
-                <span className="text-primary-500">Isabella Cooper</span>
+                <span className="text-[#6A4CFF]">Isabella Cooper</span>
               </span>
             </div>
 
@@ -67,7 +67,7 @@ const RecentActivity: React.FC = () => {
               </p>
               <span className="block text-sm">
                 By:
-                <span className="text-primary-500">Lucas Morgan</span>
+                <span className="text-[#6A4CFF]">Lucas Morgan</span>
               </span>
             </div>
             
@@ -87,7 +87,7 @@ const RecentActivity: React.FC = () => {
               </p>
               <span className="block text-sm">
                 By:
-                <span className="text-primary-500">Ethan Parker</span>
+                <span className="text-[#6A4CFF]">Ethan Parker</span>
               </span>
             </div>
           </div>

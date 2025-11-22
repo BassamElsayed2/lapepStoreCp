@@ -149,7 +149,7 @@ const EditTestimonialPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6A4CFF]"></div>
       </div>
     );
   }
@@ -163,9 +163,9 @@ const EditTestimonialPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
-              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+              <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-[#6A4CFF] top-1/2 -translate-y-1/2">
                 home
               </i>
               رئيسية
@@ -174,7 +174,7 @@ const EditTestimonialPage: React.FC = () => {
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
             <Link
               href="/dashboard/testimonial"
-              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+              className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-[#6A4CFF]"
             >
               التوصيات
             </Link>
@@ -185,7 +185,7 @@ const EditTestimonialPage: React.FC = () => {
         </ol>
       </div>
 
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Image Upload */}
           <div className="space-y-4">
@@ -203,7 +203,7 @@ const EditTestimonialPage: React.FC = () => {
                 />
                 <label
                   htmlFor="image-upload"
-                  className="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  className="cursor-pointer inline-flex items-center px-4 py-2 border border-[#6A4CFF] rounded-md shadow-sm text-sm font-medium text-black dark:text-white bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#6A4CFF]/20 transition-colors"
                 >
                   <i className="material-symbols-outlined mr-2">upload</i>
                   اختر صورة جديدة
@@ -216,7 +216,7 @@ const EditTestimonialPage: React.FC = () => {
                     alt="Preview"
                     width={100}
                     height={100}
-                    className="rounded-md object-cover"
+                    className="rounded-md object-cover border border-[#6A4CFF]"
                   />
                   <button
                     type="button"
@@ -245,7 +245,7 @@ const EditTestimonialPage: React.FC = () => {
                 name="name_ar"
                 value={formData.name_ar}
                 onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 placeholder="أدخل الاسم باللغة العربية"
                 required
               />
@@ -260,7 +260,7 @@ const EditTestimonialPage: React.FC = () => {
                 name="name_en"
                 value={formData.name_en}
                 onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                className="h-[55px] rounded-md text-black dark:text-white border border-[#6A4CFF] bg-white dark:bg-gray-900 px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-[#6A4CFF]/20"
                 placeholder="Enter name in English"
                 required
               />
@@ -285,7 +285,7 @@ const EditTestimonialPage: React.FC = () => {
                   style={{ minHeight: "200px" }}
                   className="rsw-editor"
                 >
-                  <Toolbar>
+                  <Toolbar className="rsw-toolbar">
                     <BtnUndo />
                     <BtnRedo />
                     <Separator />
@@ -323,7 +323,7 @@ const EditTestimonialPage: React.FC = () => {
                   style={{ minHeight: "200px" }}
                   className="rsw-editor"
                 >
-                  <Toolbar>
+                  <Toolbar className="rsw-toolbar">
                     <BtnUndo />
                     <BtnRedo />
                     <Separator />
@@ -347,21 +347,40 @@ const EditTestimonialPage: React.FC = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end space-x-4 rtl:space-x-reverse">
-            <button
-              type="button"
-              onClick={() => router.push("/dashboard/testimonial")}
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-            >
-              إلغاء
-            </button>
-            <button
-              type="submit"
-              disabled={isPending || isUploading}
-              className="px-6 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-            >
-              {isPending || isUploading ? "جاري الحفظ..." : "حفظ التغييرات"}
-            </button>
+          <div className="trezo-card bg-[#F7F7FB] dark:bg-[#1C1C1E] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+            <div className="trezo-card-content">
+              <button
+                type="button"
+                onClick={() => router.push("/dashboard/testimonial")}
+                className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
+              >
+                ألغاء
+              </button>
+
+              <button
+                type="submit"
+                disabled={isPending || isUploading}
+                className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-[#5a3ce6] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
+                  {isPending || isUploading ? (
+                    <>
+                      <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2 animate-spin">
+                        sync
+                      </i>
+                      جاري الحفظ...
+                    </>
+                  ) : (
+                    <>
+                      <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
+                        save
+                      </i>
+                      حفظ التغييرات
+                    </>
+                  )}
+                </span>
+              </button>
+            </div>
           </div>
         </form>
       </div>

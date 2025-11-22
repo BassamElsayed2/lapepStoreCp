@@ -33,7 +33,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="Olivia"
             />
           </div>
@@ -44,7 +44,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="John"
             />
           </div>
@@ -55,7 +55,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="olivia@trezo.com"
             />
           </div>
@@ -66,7 +66,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="+1 444 555 6699"
             />
           </div>
@@ -77,7 +77,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="84 S. Arrowhead Court Branford"
             />
           </div>
@@ -86,7 +86,7 @@ const AccountSettingsForm: React.FC = () => {
             <label className="mb-[10px] text-black dark:text-white font-medium block">
               Country
             </label>
-            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500 text-black dark:text-white">
+            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF] text-black dark:text-white">
               <option value="0">Select</option>
               <option value="1">Switzerland</option>
               <option value="2">New Zealand</option>
@@ -107,7 +107,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="date"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="1987-01-08"
             />
           </div>
@@ -116,7 +116,7 @@ const AccountSettingsForm: React.FC = () => {
             <label className="mb-[10px] text-black dark:text-white font-medium block">
               Gender
             </label>
-            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500 text-black dark:text-white">
+            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF] text-black dark:text-white">
               <option value="0">Select</option>
               <option value="1">Male</option>
               <option value="2">Female</option>
@@ -128,7 +128,7 @@ const AccountSettingsForm: React.FC = () => {
             <label className="mb-[10px] text-black dark:text-white font-medium block">
               Your Skills
             </label>
-            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500 text-black dark:text-white">
+            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF] text-black dark:text-white">
               <option value="0">Select</option>
               <option value="1">Leadership</option>
               <option value="2">Project Management</option>
@@ -142,7 +142,7 @@ const AccountSettingsForm: React.FC = () => {
             <label className="mb-[10px] text-black dark:text-white font-medium block">
               Your Profession
             </label>
-            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500 text-black dark:text-white">
+            <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF] text-black dark:text-white">
               <option value="0">Select</option>
               <option value="1">Financial Manager</option>
               <option value="2">IT Manager</option>
@@ -158,7 +158,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="Trezo Admin"
             />
           </div>
@@ -169,7 +169,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="http://website.com/"
             />
           </div>
@@ -179,7 +179,7 @@ const AccountSettingsForm: React.FC = () => {
               Add Your Bio
             </label>
             <textarea
-              className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               placeholder="It makes me feel..."
             ></textarea>
           </div>
@@ -193,7 +193,7 @@ const AccountSettingsForm: React.FC = () => {
         <div id="fileUploader">
           <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
             <div className="flex items-center justify-center">
-              <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
+              <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-[12px] rtl:ml-[12px]">
                 <i className="ri-upload-2-line"></i>
               </div>
               <p className="leading-[1.5]">
@@ -245,7 +245,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="https://www.facebook.com/"
             />
           </div>
@@ -256,7 +256,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="https://x.com/"
             />
           </div>
@@ -267,7 +267,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="https://www.linkedin.com/"
             />
           </div>
@@ -278,7 +278,7 @@ const AccountSettingsForm: React.FC = () => {
             </label>
             <input
               type="text"
-              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
               defaultValue="https://www.youtube.com/"
             />
           </div>
@@ -294,7 +294,7 @@ const AccountSettingsForm: React.FC = () => {
 
           <button
             type="button"
-            className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400"
+            className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-primary-400"
           >
             <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
               <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">

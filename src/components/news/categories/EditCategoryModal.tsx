@@ -48,7 +48,7 @@ export default function EditCategoryModal({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full border border-gray-300 dark:border-[#172036] px-3 py-2 rounded-md bg-white dark:bg-[#0c1427] text-black dark:text-white focus:outline-none focus:ring focus:ring-primary-500"
+                className="w-full border border-gray-300 dark:border-[#172036] px-3 py-2 rounded-md bg-white dark:bg-[#1d1d1d] text-black dark:text-white focus:outline-none focus:ring focus:ring-primary-500"
                 placeholder="اكتب اسم التصنيف"
               />
             </div>
@@ -62,7 +62,7 @@ export default function EditCategoryModal({
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 rounded-md bg-primary-500 text-white hover:bg-primary-600"
+                className="px-4 py-2 rounded-md bg-[#6A4CFF] text-white hover:bg-primary-600"
               >
                 حفظ
               </button>

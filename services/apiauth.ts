@@ -43,6 +43,9 @@ async function apiFetch<T>(
         errorMessage = errorData.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة";
       } else if (response.status === 404) {
         errorMessage = errorData.message || "المسار المطلوب غير موجود";
+      } else if (response.status === 429) {
+        // Too Many Requests - provide user-friendly message
+        errorMessage = errorData.message || "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
       } else if (response.status === 500) {
         errorMessage = errorData.message || "حدث خطأ في الخادم";
       }
@@ -52,6 +55,8 @@ async function apiFetch<T>(
       
       if (response.status === 401) {
         errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+      } else if (response.status === 429) {
+        errorMessage = "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
       }
     }
     

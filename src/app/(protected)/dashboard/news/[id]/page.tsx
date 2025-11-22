@@ -167,7 +167,7 @@ export default function EditProductPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6A4CFF] mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">
             جاري تحميل بيانات المنتج...
           </p>
@@ -192,7 +192,7 @@ export default function EditProductPage() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className=" gap-[25px]">
         <div className="lg:col-span-2">
-          <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+          <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
             <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
               <div className="trezo-card-title">
                 <h5 className="!mb-0">تعديل منتج</h5>
@@ -208,7 +208,7 @@ export default function EditProductPage() {
                   </label>
                   <input
                     {...register("name_ar")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -218,7 +218,7 @@ export default function EditProductPage() {
                   </label>
                   <input
                     {...register("name_en")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -230,7 +230,7 @@ export default function EditProductPage() {
                     type="number"
                     step="0.01"
                     {...register("price")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -242,7 +242,7 @@ export default function EditProductPage() {
                     type="number"
                     step="0.01"
                     {...register("offer_price")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -251,7 +251,7 @@ export default function EditProductPage() {
                   <input
                     type="number"
                     {...register("stock_quantity")}
-                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                    className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                   />
                 </div>
 
@@ -261,7 +261,7 @@ export default function EditProductPage() {
                     <input
                       type="checkbox"
                       id="is_best_seller"
-                      className="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-[#6A4CFF] bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-800   dark:bg-gray-700 dark:border-gray-600"
                       {...register("is_best_seller")}
                     />
                     <label
@@ -279,7 +279,7 @@ export default function EditProductPage() {
                     <input
                       type="checkbox"
                       id="limited_time_offer"
-                      className="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-[#6A4CFF] bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800   dark:bg-gray-700 dark:border-gray-600"
                       {...register("limited_time_offer")}
                     />
                     <label
@@ -299,7 +299,7 @@ export default function EditProductPage() {
                     </label>
                     <select
                       {...register("category_id")}
-                      className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500"
+                      className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF]"
                     >
                       {categories?.map((category) => (
                         <option
@@ -408,7 +408,7 @@ export default function EditProductPage() {
                   <div id="fileUploader">
                     <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[88px] px-[20px] border border-gray-200 dark:border-[#172036]">
                       <div className="flex items-center justify-center">
-                        <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
+                        <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#21123da7] flex items-center justify-center rounded-md text-[#6A4CFF] text-lg ltr:mr-[12px] rtl:ml-[12px]">
                           <i className="ri-upload-2-line"></i>
                         </div>
                         <p className="leading-[1.5]">
@@ -491,17 +491,18 @@ export default function EditProductPage() {
       {/* الأزرار */}
       <div className="trezo-card mb-[25px]">
         <div className="trezo-card-content">
-          <button
-            type="reset"
-            className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
-          >
-            إلغاء
-          </button>
+        <button
+              type="button"
+              onClick={() => router.push("/dashboard/news")}
+              className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
+            >
+              ألغاء
+            </button>
 
           <button
             type="submit"
             disabled={isSubmitting || isUploadingImage}
-            className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-primary-500 text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="font-medium inline-block transition-all rounded-md md:text-md py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-[#6A4CFF] text-white hover:bg-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
               {isUploadingImage ? (

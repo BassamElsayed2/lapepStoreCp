@@ -24,13 +24,13 @@ const RTLMode: React.FC = () => {
     <>
       <button
         type="button"
-        className={`rtl-mode-toggle flex items-center text-black dark:text-white font-medium ${
+        className={`rtl-mode-toggle flex items-center text-[#1A1A1A] dark:text-white font-medium ${
           dirAttribute === "rtl" ? "open" : ""
         }`}
         onClick={handleButtonClick}
       >
         RTL Mode:
-        <span className="inline-block relative rounded-full w-[35px] h-[20px] bg-gray-50 dark:bg-[#0a0e19] ltr:ml-[10px] rtl:mr-[10px]">
+        <span className="inline-block relative rounded-full w-[35px] h-[20px] bg-white dark:bg-[#0a0e19] ltr:ml-[10px] rtl:mr-[10px]">
           <span className="inline-block transition-all absolute h-[12px] w-[12px] bg-black dark:bg-white rounded-full top-1/2 -translate-y-1/2"></span>
         </span>
       </button>

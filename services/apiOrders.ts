@@ -24,6 +24,17 @@ async function apiFetch<T>(
   const response = await fetch(`${API_URL}${endpoint}`, config);
   
   if (!response.ok) {
+    // Handle 401 Unauthorized - token expired or invalid
+    if (response.status === 401) {
+      // Clear token and redirect to login
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        window.location.href = '/';
+      }
+      throw new Error('انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى');
+    }
+    
     const errorData = await response.json().catch(() => ({
       message: 'حدث خطأ في الاتصال بالخادم',
     }));

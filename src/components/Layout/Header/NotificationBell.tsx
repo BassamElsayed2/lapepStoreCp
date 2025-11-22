@@ -52,7 +52,7 @@ const NotificationBell: React.FC = () => {
     <div className="relative ltr:mr-[15px] rtl:ml-[15px] group">
       <Link
         href="/dashboard/orders"
-        className="relative inline-block text-center hover:text-primary-500 transition-all"
+        className="relative inline-block text-center hover:text-purple-500 dark:hover:text-purple-400 transition-all"
         title={newOrdersCount > 0 ? `${newOrdersCount} طلب مدفوع جديد` : "الطلبات"}
       >
         <i className="material-symbols-outlined !text-[23px]">

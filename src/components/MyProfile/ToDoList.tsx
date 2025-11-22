@@ -21,7 +21,7 @@ const initialTasks: Task[] = [
     dueDate: "30 Apr 2024",
     priority: "High",
     status: "Finished",
-    statusClass: "bg-primary-50 text-primary-500",
+    statusClass: "bg-primary-50 text-[#6A4CFF]",
   },
   {
     id: 851,
@@ -48,7 +48,7 @@ const initialTasks: Task[] = [
     dueDate: "15 Apr 2024",
     priority: "High",
     status: "Finished",
-    statusClass: "bg-primary-50 text-primary-500",
+    statusClass: "bg-primary-50 text-[#6A4CFF]",
   },
   {
     id: 854,
@@ -93,7 +93,7 @@ const initialTasks: Task[] = [
     dueDate: "15 Apr 2024",
     priority: "High",
     status: "Finished",
-    statusClass: "bg-primary-50 text-primary-500",
+    statusClass: "bg-primary-50 text-[#6A4CFF]",
   },
   {
     id: 859,
@@ -102,7 +102,7 @@ const initialTasks: Task[] = [
     dueDate: "30 Apr 2024",
     priority: "High",
     status: "Finished",
-    statusClass: "bg-primary-50 text-primary-500",
+    statusClass: "bg-primary-50 text-[#6A4CFF]",
   },
 ];
 
@@ -160,7 +160,7 @@ const ToDoList: React.FC = () => {
 
   return (
     <>
-      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      <div className="trezo-card bg-white dark:bg-[#1d1d1d] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
           <div className="trezo-card-title">
             <h5 className="!mb-0">To Do List</h5>
@@ -179,7 +179,7 @@ const ToDoList: React.FC = () => {
                   placeholder="Search here....."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] ltr:md:pr-[16px] rtl:pl-[13px] rtl:md:pl-[16px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
+                  className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] ltr:md:pr-[16px] rtl:pl-[13px] rtl:md:pl-[16px] placeholder:text-gray-500 outline-0 dark:bg-[#21123da7] dark:text-white dark:border-[#21123da7] dark:placeholder:text-gray-400"
                 />
               </form>
             </div>
@@ -187,7 +187,7 @@ const ToDoList: React.FC = () => {
             <div className="mt-[15px] sm:mt-0">
               <button
                 type="button"
-                className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
+                className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-[#6A4CFF] border border-[#6A4CFF] hover:bg-[#6A4CFF] hover:text-white"
                 onClick={() => setOpen(true)}
               >
                 <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
@@ -206,7 +206,7 @@ const ToDoList: React.FC = () => {
             <table className="w-full">
               <thead className="text-black dark:text-white">
                 <tr>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     <div className="form-check relative top-[2px]">
                       <input
                         type="checkbox"
@@ -219,25 +219,25 @@ const ToDoList: React.FC = () => {
                       />
                     </div>
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     ID
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     Task Title
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     Assigned To
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     Due Date
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     Priority
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     Status
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#21123da7] whitespace-nowrap">
                     Action
                   </th>
                 </tr>
@@ -286,7 +286,7 @@ const ToDoList: React.FC = () => {
 
                     <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 border-b border-gray-100 dark:border-[#172036]">
                       <span
-                        className={`px-[8px] py-[3px] inline-block dark:bg-[#15203c] rounded-sm font-medium text-xs ${task.statusClass}`}
+                        className={`px-[8px] py-[3px] inline-block dark:bg-[#21123da7] rounded-sm font-medium text-xs ${task.statusClass}`}
                       >
                         {task.status}
                       </span>
@@ -297,7 +297,7 @@ const ToDoList: React.FC = () => {
                         <div className="relative group">
                           <button
                             type="button"
-                            className="text-primary-500 leading-none"
+                            className="text-[#6A4CFF] leading-none"
                           >
                             <i className="material-symbols-outlined !text-md">
                               visibility
@@ -365,7 +365,7 @@ const ToDoList: React.FC = () => {
               <li className="inline-block">
                 <button
                   type="button"
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
+                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-[#6A4CFF] hover:text-white hover:border-[#6A4CFF]"
                   disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
@@ -381,7 +381,7 @@ const ToDoList: React.FC = () => {
                   <button
                     className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border dark:border-[#172036] ${
                       currentPage === index + 1
-                        ? "border-primary-500 bg-primary-500 text-white"
+                        ? "border-[#6A4CFF] bg-[#6A4CFF] text-white"
                         : "border-gray-100"
                     }`}
                     onClick={() => handlePageChange(index + 1)}
@@ -394,7 +394,7 @@ const ToDoList: React.FC = () => {
               <li className="inline-block">
                 <button
                   type="button"
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
+                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-[#6A4CFF] hover:text-white hover:border-[#6A4CFF]"
                   disabled={currentPage === totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
@@ -422,15 +422,15 @@ const ToDoList: React.FC = () => {
               transition
               className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-[550px] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
             >
-              <div className="trezo-card w-full bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-                <div className="trezo-card-header bg-gray-50 dark:bg-[#15203c] mb-[20px] md:mb-[25px] flex items-center justify-between -mx-[20px] md:-mx-[25px] -mt-[20px] md:-mt-[25px] p-[20px] md:p-[25px] rounded-t-md">
+              <div className="trezo-card w-full bg-white dark:bg-[#1d1d1d] p-[20px] md:p-[25px] rounded-md">
+                <div className="trezo-card-header bg-gradient-to-r from-[#9E82FF] to-[#4326CC] text-white mb-[20px] md:mb-[25px] flex items-center justify-between -mx-[20px] md:-mx-[25px] -mt-[20px] md:-mt-[25px] p-[20px] md:p-[25px] rounded-t-md">
                   <div className="trezo-card-title">
                     <h5 className="!mb-0">Add New Task</h5>
                   </div>
                   <div className="trezo-card-subtitle">
                     <button
                       type="button"
-                      className="text-[23px] transition-all leading-none text-black dark:text-white hover:text-primary-500"
+                      className="text-[23px] transition-all leading-none text-black dark:text-white hover:text-[#6A4CFF]"
                       onClick={() => setOpen(false)}
                     >
                       <i className="ri-close-fill"></i>
@@ -447,7 +447,7 @@ const ToDoList: React.FC = () => {
                         </label>
                         <input
                           type="text"
-                          className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                          className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                           placeholder="Task title"
                         />
                       </div>
@@ -456,7 +456,7 @@ const ToDoList: React.FC = () => {
                         <label className="mb-[10px] text-black dark:text-white font-medium block">
                           Assigned To
                         </label>
-                        <select className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
+                        <select className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF]">
                           <option>Select</option>
                           <option>Shawn Kennedy</option>
                           <option>Roberto Cruz</option>
@@ -473,7 +473,7 @@ const ToDoList: React.FC = () => {
                         </label>
                         <input
                           type="date"
-                          className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+                          className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-[#6A4CFF]"
                         />
                       </div>
 
@@ -481,7 +481,7 @@ const ToDoList: React.FC = () => {
                         <label className="mb-[10px] text-black dark:text-white font-medium block">
                           Priority
                         </label>
-                        <select className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
+                        <select className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF]">
                           <option>Select</option>
                           <option>High</option>
                           <option>Medium</option>
@@ -493,7 +493,7 @@ const ToDoList: React.FC = () => {
                         <label className="mb-[10px] text-black dark:text-white font-medium block">
                           Status
                         </label>
-                        <select className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
+                        <select className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-[#6A4CFF]">
                           <option>Select</option>
                           <option>In Progress</option>
                           <option>Pending</option>
@@ -513,7 +513,7 @@ const ToDoList: React.FC = () => {
                       </button>
                       <button
                         type="button"
-                        className="inline-block bg-primary-500 text-white py-[12px] px-[26.5px] transition-all rounded-md hover:bg-primary-400"
+                        className="inline-block bg-[#6A4CFF] text-white py-[12px] px-[26.5px] transition-all rounded-md hover:bg-primary-400"
                       >
                         <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px]">
                           <i className="material-symbols-outlined !text-[20px] absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">

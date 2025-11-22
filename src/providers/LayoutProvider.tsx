@@ -37,7 +37,7 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
   return (
     <>
       <div
-        className={`main-content-wrap transition-all ${active ? "active" : ""}`}
+        className={`main-content-wrap transition-all bg-gray-50 dark:bg-gray-900 ${active ? "active" : ""}`}
       >
         {!isAuthPage && (
           <>
@@ -47,7 +47,7 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
           </>
         )}
 
-        <div className="main-content transition-all flex flex-col overflow-hidden min-h-screen">
+        <div className="main-content transition-all flex flex-col overflow-hidden min-h-screen bg-gray-50 dark:bg-gray-900">
           {children}
         </div>
       </div>
