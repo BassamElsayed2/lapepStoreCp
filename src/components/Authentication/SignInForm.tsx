@@ -50,7 +50,7 @@ const SignInForm: React.FC = () => {
   return (
     <>
       <div 
-        className="auth-main-content relative h-screen overflow-hidden flex items-center"
+        className="auth-main-content relative min-h-screen overflow-y-auto flex items-center py-4 md:py-0"
         style={{
           backgroundImage: 'url(/images/bgsign.png)',
           backgroundRepeat: 'repeat',
@@ -61,9 +61,9 @@ const SignInForm: React.FC = () => {
         <DarkMode />
 
         <div className="absolute inset-0 bg-white/50 dark:bg-[#7D8F79]/60 pointer-events-none"></div>
-        <div className="relative z-10 mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px] w-full py-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-stretch">
-            <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1 relative overflow-hidden shadow-2xl min-h-[500px] lg:min-h-[600px]">
+        <div className="relative z-10 mx-auto px-4 sm:px-6 md:px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px] w-full py-4 md:py-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-[25px] items-stretch">
+            <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1 relative overflow-hidden shadow-2xl min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px]">
               <div className="relative w-full h-full rounded-[25px] overflow-hidden bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20">
                 <Image
                   src="/images/mint.png"
@@ -78,36 +78,37 @@ const SignInForm: React.FC = () => {
             </div>
 
             <div className="xl:ltr:pl-[90px] xl:rtl:pr-[90px] 2xl:ltr:pl-[120px] 2xl:rtl:pr-[120px] order-1 lg:order-2 flex items-center">
-              <div className="bg-white/80 dark:bg-[#1d1d1d]/80 backdrop-blur-md rounded-2xl p-10 md:p-14 lg:p-16 xl:p-20 shadow-xl border border-gray-200/50 dark:border-[#172036]/50 w-full">
-                <button className="transition-none relative flex items-center justify-center outline-none mb-10 mx-auto">
+              <div className="bg-white/80 dark:bg-[#1d1d1d]/80 backdrop-blur-md rounded-2xl p-8 sm:p-10 md:p-12 lg:p-14 xl:p-16 2xl:p-20 shadow-xl border border-gray-200/50 dark:border-[#172036]/50 w-full max-w-[95%] sm:max-w-full mx-auto">
+                <button className="transition-none relative flex items-center justify-center outline-none mb-6 sm:mb-8 md:mb-10 mx-auto">
                   <Image
                     src={isDarkMode ? "/images/whiteb.png" : "/images/blackb.png"}
                     alt="logo-icon"
-                    width={32}
-                    height={32}
+                    width={28}
+                    height={28}
+                    className="sm:w-8 sm:h-8"
                   />
-                  <span className="font-bold font-serif text-[#1A1A1A] dark:text-white relative ltr:ml-[10px] rtl:mr-[10px] top-px text-2xl">
+                  <span className="font-bold font-serif text-[#1A1A1A] dark:text-white relative ltr:ml-[8px] rtl:mr-[8px] sm:ltr:ml-[10px] sm:rtl:mr-[10px] top-px text-xl sm:text-2xl">
                    Lapip Store
                   </span>
                 </button>
 
-                <div className="my-[20px] md:my-[28px] lg:my-[32px]">
-                  <h1 className="!font-semibold !text-[24px] md:!text-2xl lg:!text-3xl !mb-[7px] md:!mb-[10px] text-[#1A1A1A] dark:text-white">
+                <div className="my-4 sm:my-5 md:my-[20px] lg:my-[28px] xl:my-[32px]">
+                  <h1 className="!font-semibold !text-xl sm:!text-2xl md:!text-[24px] lg:!text-3xl !mb-2 sm:!mb-[7px] md:!mb-[10px] text-[#1A1A1A] dark:text-white">
                     مرحبا
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-400 text-base">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
                     سجل دخولك للوصول إلى حسابك
                   </p>
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-[24px] relative">
-                    <label className="mb-[12px] md:mb-[14px] text-[#1A1A1A] dark:text-white font-medium block text-base">
+                  <div className="mb-4 sm:mb-5 md:mb-[24px] relative">
+                    <label className="mb-2 sm:mb-[10px] md:mb-[12px] lg:mb-[14px] text-[#1A1A1A] dark:text-white font-medium block text-sm sm:text-base">
                       عنوان البريد الإلكتروني
                     </label>
                     <input
                       type="text"
-                      className="h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
+                      className="h-12 sm:h-14 md:h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-4 sm:px-5 md:px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-sm sm:text-base"
                       placeholder="example@trezo.com"
                       id="email"
                       autoComplete="email"
@@ -117,13 +118,13 @@ const SignInForm: React.FC = () => {
                     />
                   </div>
 
-                  <div className="mb-[24px] relative" id="passwordHideShow">
-                    <label className="mb-[12px] md:mb-[14px] text-[#1A1A1A] dark:text-white font-medium block text-base">
+                  <div className="mb-4 sm:mb-5 md:mb-[24px] relative" id="passwordHideShow">
+                    <label className="mb-2 sm:mb-[10px] md:mb-[12px] lg:mb-[14px] text-[#1A1A1A] dark:text-white font-medium block text-sm sm:text-base">
                       كلمة المرور
                     </label>
                     <input
                       type={showPassword ? "text" : "password"}
-                      className="h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-base"
+                      className="h-12 sm:h-14 md:h-[65px] rounded-lg text-[#1A1A1A] dark:text-white border-2 border-gray-200 dark:border-[#172036] bg-white dark:bg-[#1d1d1d] ltr:pr-12 rtl:pl-12 sm:ltr:pr-14 sm:rtl:pl-14 md:ltr:pr-[60px] md:rtl:pl-[60px] px-4 sm:px-5 md:px-[24px] block w-full outline-0 transition-all placeholder:text-[#8A8A8A] dark:placeholder:text-gray-400 focus:border-[#6A4CFF] focus:ring-2 focus:ring-primary-500/20 shadow-sm text-sm sm:text-base"
                       id="password"
                       placeholder="اكتب كلمة المرور"
                       autoComplete="current-password"
@@ -132,7 +133,7 @@ const SignInForm: React.FC = () => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
-                      className="absolute text-lg ltr:right-[24px] rtl:left-[24px] bottom-[14px] transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400"
+                      className="absolute text-base sm:text-lg ltr:right-4 rtl:left-4 sm:ltr:right-5 sm:rtl:left-5 md:ltr:right-[24px] md:rtl:left-[24px] top-1/2 -translate-y-1/2 transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400 z-10"
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
                       aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
@@ -146,7 +147,7 @@ const SignInForm: React.FC = () => {
                   </div>
 
                   {isError && errorMessage && (
-                    <div className="text-red-500 text-sm mb-5 bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800">
+                    <div className="text-red-500 text-xs sm:text-sm mb-4 sm:mb-5 bg-red-50 dark:bg-red-900/20 p-3 sm:p-4 rounded-lg border border-red-200 dark:border-red-800">
                       {errorMessage}
                     </div>
                   )}
@@ -154,7 +155,7 @@ const SignInForm: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isPending}
-                    className="text-lg block w-full text-center transition-all rounded-lg font-medium mt-[30px] md:mt-[36px] py-[18px] px-[30px] text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="text-base sm:text-lg block w-full text-center transition-all rounded-lg font-medium mt-6 sm:mt-8 md:mt-[30px] lg:mt-[36px] py-4 sm:py-[16px] md:py-[18px] px-6 sm:px-8 md:px-[30px] text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     style={{
 
                       backgroundColor: "#7D8F79",
