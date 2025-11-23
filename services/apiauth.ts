@@ -35,73 +35,83 @@ async function apiFetch<T>(
     clearTimeout(timeoutId);
   } catch (networkError) {
     clearTimeout(timeoutId);
-    
+
     // Handle different types of network errors
     if (networkError instanceof Error) {
-      if (networkError.name === 'AbortError') {
+      if (networkError.name === "AbortError") {
         throw new Error(
           "انتهت مهلة الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى"
         );
       }
-      
+
       // Check for CORS errors
-      if (networkError.message.includes('CORS') || networkError.message.includes('Failed to fetch')) {
+      if (
+        networkError.message.includes("CORS") ||
+        networkError.message.includes("Failed to fetch")
+      ) {
         throw new Error(
           `فشل الاتصال بالخادم. قد تكون هناك مشكلة في إعدادات CORS أو الخادم غير متاح على ${API_URL}`
         );
       }
-      
+
       // Check for SSL/HTTPS errors
-      if (networkError.message.includes('certificate') || networkError.message.includes('SSL')) {
+      if (
+        networkError.message.includes("certificate") ||
+        networkError.message.includes("SSL")
+      ) {
         throw new Error(
           "فشل الاتصال بسبب مشكلة في شهادة SSL. يرجى التحقق من إعدادات الخادم"
         );
       }
     }
-    
+
     throw new Error(
-      `فشل الاتصال بالخادم. يرجى التأكد من أن الخادم يعمل على ${API_URL}. الخطأ: ${networkError instanceof Error ? networkError.message : 'خطأ غير معروف'}`
+      `فشل الاتصال بالخادم. يرجى التأكد من أن الخادم يعمل على ${API_URL}. الخطأ: ${
+        networkError instanceof Error ? networkError.message : "خطأ غير معروف"
+      }`
     );
   }
 
   if (!response.ok) {
     let errorMessage = `HTTP error! status: ${response.status}`;
-    
+
     try {
       const errorData = await response.json();
       errorMessage = errorData.message || errorData.error || errorMessage;
-      
+
       // Handle specific error cases
       if (response.status === 401) {
-        errorMessage = errorData.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+        errorMessage =
+          errorData.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة";
       } else if (response.status === 404) {
         errorMessage = errorData.message || "المسار المطلوب غير موجود";
       } else if (response.status === 429) {
         // Too Many Requests - provide user-friendly message
-        errorMessage = errorData.message || "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
+        errorMessage =
+          errorData.message ||
+          "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
       } else if (response.status === 500) {
         errorMessage = errorData.message || "حدث خطأ في الخادم";
       }
     } catch {
       // If response is not JSON, use status text
       errorMessage = response.statusText || errorMessage;
-      
+
       if (response.status === 401) {
         errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
       } else if (response.status === 429) {
-        errorMessage = "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
+        errorMessage =
+          "تم إرسال طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى";
       }
     }
-    
+
     throw new Error(errorMessage);
   }
 
   try {
     return await response.json();
   } catch (jsonError) {
-    throw new Error(
-      "فشل في قراءة استجابة الخادم. قد تكون الاستجابة غير صحيحة"
-    );
+    throw new Error("فشل في قراءة استجابة الخادم. قد تكون الاستجابة غير صحيحة");
   }
 }
 
@@ -166,7 +176,12 @@ export async function login({
     });
 
     // Validate response structure
-    if (!response || !response.data || !response.data.user || !response.data.token) {
+    if (
+      !response ||
+      !response.data ||
+      !response.data.user ||
+      !response.data.token
+    ) {
       throw new Error("استجابة غير صحيحة من الخادم");
     }
 
