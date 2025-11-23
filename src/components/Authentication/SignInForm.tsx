@@ -97,7 +97,7 @@ const SignInForm: React.FC = () => {
                     مرحبا
                   </h1>
                   <p className="text-gray-600 dark:text-gray-400 text-base">
-                    سجل دخولك للوصول إلى حسابك
+                    سجل دخولك للوصول إلى لوحة التحكم
                   </p>
                 </div>
 
