@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <>
-      <div className="bg-white dark:bg-[#0a0e19] py-[30px] h-screen overflow-x-hidden mb-[25px]">
+      <div className="bg-white dark:bg-[#222222] py-[30px] h-screen overflow-x-hidden mb-[25px]">
         <div className="w-full h-full table">
           <div className="table-cell align-middle">
             <div className="mx-auto max-w-[960px] text-center">

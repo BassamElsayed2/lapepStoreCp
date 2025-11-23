@@ -30,7 +30,7 @@ const RTLMode: React.FC = () => {
         onClick={handleButtonClick}
       >
         RTL Mode:
-        <span className="inline-block relative rounded-full w-[35px] h-[20px] bg-white dark:bg-[#0a0e19] ltr:ml-[10px] rtl:mr-[10px]">
+        <span className="inline-block relative rounded-full w-[35px] h-[20px] bg-white dark:bg-[#222222] ltr:ml-[10px] rtl:mr-[10px]">
           <span className="inline-block transition-all absolute h-[12px] w-[12px] bg-black dark:bg-white rounded-full top-1/2 -translate-y-1/2"></span>
         </span>
       </button>

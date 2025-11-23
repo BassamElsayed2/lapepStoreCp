@@ -35,7 +35,7 @@ export default function EditCategoryModal({
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-md bg-white dark:bg-[#0a0e19] rounded-lg shadow-lg p-6">
+        <Dialog.Panel className="w-full max-w-md bg-white dark:bg-[#222222] rounded-lg shadow-lg p-6">
           <Dialog.Title className="text-xl font-semibold mb-4 text-right">
             {title}
           </Dialog.Title>

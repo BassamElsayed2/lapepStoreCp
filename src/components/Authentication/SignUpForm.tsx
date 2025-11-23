@@ -7,7 +7,7 @@ import Link from "next/link";
 const SignUpForm: React.FC = () => {
   return (
     <>
-      <div className="auth-main-content bg-white dark:bg-[#0a0e19] py-[60px] md:py-[80px] lg:py-[120px] xl:py-[135px]">
+      <div className="auth-main-content bg-white dark:bg-[#222222] py-[60px] md:py-[80px] lg:py-[120px] xl:py-[135px]">
         <div className="mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-center">
             <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 // import Link from "next/link";
 
@@ -11,11 +11,32 @@ const SignInForm: React.FC = () => {
   // State variables for email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
   // Custom hook to handle sign-in logic
   const { login, isPending, isError, errorMessage } = useSignIn();
+
+  // Check for dark mode
+  useEffect(() => {
+    const checkDarkMode = () => {
+      const htmlElement = document.documentElement;
+      setIsDarkMode(htmlElement.classList.contains("dark"));
+    };
+
+    // Check on mount
+    checkDarkMode();
+
+    // Watch for changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,14 +59,14 @@ const SignInForm: React.FC = () => {
         }}
       >
         <DarkMode />
-        <div className="absolute inset-0 bg-white/50 dark:bg-[#0a0e19]/60 pointer-events-none"></div>
-        
+
+        <div className="absolute inset-0 bg-white/50 dark:bg-[#7D8F79]/60 pointer-events-none"></div>
         <div className="relative z-10 mx-auto px-[12.5px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1255px] w-full py-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[25px] items-stretch">
             <div className="xl:ltr:-mr-[25px] xl:rtl:-ml-[25px] 2xl:ltr:-mr-[45px] 2xl:rtl:-ml-[45px] rounded-[25px] order-2 lg:order-1 relative overflow-hidden shadow-2xl min-h-[500px] lg:min-h-[600px]">
               <div className="relative w-full h-full rounded-[25px] overflow-hidden bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20">
                 <Image
-                  src="/images/hi.gif"
+                  src="/images/mint.png"
                   alt="sign-in-image"
                   className="rounded-[25px] object-cover w-full h-full"
                   width={646}
@@ -60,7 +81,7 @@ const SignInForm: React.FC = () => {
               <div className="bg-white/80 dark:bg-[#1d1d1d]/80 backdrop-blur-md rounded-2xl p-10 md:p-14 lg:p-16 xl:p-20 shadow-xl border border-gray-200/50 dark:border-[#172036]/50 w-full">
                 <button className="transition-none relative flex items-center justify-center outline-none mb-10 mx-auto">
                   <Image
-                    src="/images/black-logo.png"
+                    src={isDarkMode ? "/images/whiteb.png" : "/images/blackb.png"}
                     alt="logo-icon"
                     width={32}
                     height={32}
@@ -135,7 +156,8 @@ const SignInForm: React.FC = () => {
                     disabled={isPending}
                     className="text-lg block w-full text-center transition-all rounded-lg font-medium mt-[30px] md:mt-[36px] py-[18px] px-[30px] text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     style={{
-                      backgroundColor: '#ACCCA7',
+
+                      backgroundColor: "#7D8F79",
                     }}
                     onMouseEnter={(e) => {
                       if (!isPending) {
@@ -144,7 +166,8 @@ const SignInForm: React.FC = () => {
                     }}
                     onMouseLeave={(e) => {
                       if (!isPending) {
-                        e.currentTarget.style.backgroundColor = '#ACCCA7';
+
+                        e.currentTarget.style.backgroundColor = "#7D8F79";
                       }
                     }}
                   >
