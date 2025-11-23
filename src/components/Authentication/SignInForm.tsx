@@ -23,21 +23,21 @@ const SignInForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Reset validation errors
     setValidationErrors({});
-    
+
     // Validate fields
     const errors: { email?: string; password?: string } = {};
-    
+
     if (!email || email.trim() === "") {
       errors.email = "يجب إدخال عنوان البريد الإلكتروني";
     }
-    
+
     if (!password || password.trim() === "") {
       errors.password = "يجب إدخال كلمة المرور";
     }
-    
+
     // If there are validation errors, show them and stop
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
@@ -165,7 +165,7 @@ const SignInForm: React.FC = () => {
                       }}
                     />
                     <button
-                      className="absolute text-lg ltr:right-[24px] rtl:left-[24px] top-1/2 -translate-y-1/2 transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400 z-10"
+                      className="absolute text-lg ltr:right-[24px] rtl:left-[24px] top-[70%] -translate-y-1/2 transition-all hover:text-[#6A4CFF] text-[#8A8A8A] dark:text-gray-400 z-10"
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
                       aria-label={
