@@ -11,7 +11,6 @@ export default function ProtectedWrapper({
   children: React.ReactNode;
 }) {
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   const hasChecked = useRef(false);
 
@@ -24,7 +23,7 @@ export default function ProtectedWrapper({
     const checkSession = async () => {
       try {
         // Quick check for token in localStorage first
-        const token = localStorage.getItem('admin_token');
+        const token = localStorage.getItem("admin_token");
         if (!token) {
           router.replace("/");
           return;
@@ -32,27 +31,26 @@ export default function ProtectedWrapper({
 
         // Verify token with backend
         const user = await getCurrentUser();
-        
+
         if (!user) {
           // No user or not authenticated
           router.replace("/");
           return;
         }
 
-        if (user.role !== 'admin') {
+        if (user.role !== "admin") {
           // User is not admin
-          localStorage.removeItem('admin_token');
-          localStorage.removeItem('admin_user');
+          localStorage.removeItem("admin_token");
+          localStorage.removeItem("admin_user");
           router.replace("/");
           return;
         }
 
         // User is authenticated and is admin
         hasChecked.current = true;
-        setIsAuthenticated(true);
         setLoading(false);
       } catch (error) {
-        console.error('Session check failed:', error);
+        console.error("Session check failed:", error);
         router.replace("/");
       }
     };
