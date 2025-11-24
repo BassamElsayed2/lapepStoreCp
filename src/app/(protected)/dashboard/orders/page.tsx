@@ -46,13 +46,17 @@ const OrdersPage: React.FC = () => {
         search: debouncedSearchQuery,
         date: dateFilter,
       }),
-    refetchInterval: 10000, // Auto-refresh every 10 seconds
+    refetchInterval: 60000, // Auto-refresh every 60 seconds (reduced from 10s to prevent rate limiting)
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    refetchOnWindowFocus: true, // Refetch when user returns to tab
   });
 
   const { data: stats } = useQuery({
     queryKey: ["orderStats"],
     queryFn: getOrderStats,
-    refetchInterval: 10000, // Auto-refresh every 10 seconds
+    refetchInterval: 60000, // Auto-refresh every 60 seconds (reduced from 10s to prevent rate limiting)
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    refetchOnWindowFocus: true, // Refetch when user returns to tab
   });
 
   const orders = useMemo(() => data?.orders || [], [data?.orders]);

@@ -1,7 +1,7 @@
 // app/(protected)/ProtectedWrapper.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/services/apiauth";
 
@@ -11,11 +11,26 @@ export default function ProtectedWrapper({
   children: React.ReactNode;
 }) {
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
+  const hasChecked = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple checks during development hot reload
+    if (hasChecked.current) {
+      return;
+    }
+
     const checkSession = async () => {
       try {
+        // Quick check for token in localStorage first
+        const token = localStorage.getItem('admin_token');
+        if (!token) {
+          router.replace("/");
+          return;
+        }
+
+        // Verify token with backend
         const user = await getCurrentUser();
         
         if (!user) {
@@ -33,6 +48,8 @@ export default function ProtectedWrapper({
         }
 
         // User is authenticated and is admin
+        hasChecked.current = true;
+        setIsAuthenticated(true);
         setLoading(false);
       } catch (error) {
         console.error('Session check failed:', error);

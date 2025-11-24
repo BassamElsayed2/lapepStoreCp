@@ -190,9 +190,16 @@ export async function login({
       throw new Error("هذا الحساب ليس لديه صلاحيات الدخول للداشبورد");
     }
 
-    // Save token to localStorage
+    // Save token to localStorage (persists across page reloads)
     localStorage.setItem("admin_token", response.data.token);
     localStorage.setItem("admin_user", JSON.stringify(response.data.user));
+
+    // Also save to sessionStorage as backup
+    sessionStorage.setItem("admin_token", response.data.token);
+    sessionStorage.setItem("admin_user", JSON.stringify(response.data.user));
+
+    // Save to cookie for middleware (expires in 7 days)
+    document.cookie = `admin_token=${response.data.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
 
     return response;
   } catch (error: unknown) {
@@ -308,6 +315,13 @@ export async function logout(): Promise<void> {
     localStorage.removeItem("admin_token");
     localStorage.removeItem("admin_user");
 
+    // Clear sessionStorage
+    sessionStorage.removeItem("admin_token");
+    sessionStorage.removeItem("admin_user");
+
+    // Clear cookie
+    document.cookie = "admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+
     // Optional: call backend logout endpoint if exists
     try {
       await apiFetch("/auth/logout", { method: "POST" });
@@ -323,7 +337,20 @@ export async function logout(): Promise<void> {
  * Check if user is authenticated
  */
 export function isAuthenticated(): boolean {
-  const token = localStorage.getItem("admin_token");
+  // Check localStorage first
+  let token = localStorage.getItem("admin_token");
+  
+  // Fallback to sessionStorage if not in localStorage
+  if (!token) {
+    token = sessionStorage.getItem("admin_token");
+    // If found in sessionStorage, restore to localStorage
+    if (token) {
+      const user = sessionStorage.getItem("admin_user");
+      localStorage.setItem("admin_token", token);
+      if (user) localStorage.setItem("admin_user", user);
+    }
+  }
+  
   return !!token;
 }
 

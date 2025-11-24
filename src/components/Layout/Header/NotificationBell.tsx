@@ -12,7 +12,9 @@ const NotificationBell: React.FC = () => {
   const { data: stats } = useQuery({
     queryKey: ["orderStats"],
     queryFn: getOrderStats,
-    refetchInterval: 5000, // Refresh every 5 seconds
+    refetchInterval: 30000, // Refresh every 30 seconds (reduced from 5s to prevent rate limiting)
+    staleTime: 20000, // Consider data fresh for 20 seconds
+    refetchOnWindowFocus: true, // Refetch when user returns to tab
   });
 
   // Count new paid/confirmed orders (combined)

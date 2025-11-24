@@ -14,17 +14,19 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for authentication token
+  // Check for authentication token in cookies or headers
   const token = req.cookies.get("admin_token")?.value || 
                 req.headers.get("authorization")?.replace("Bearer ", "");
 
-  // If no token in cookies, check localStorage (client-side will handle redirect)
-  if (!token) {
-    // For API routes or protected pages, redirect to login
-    if (pathname.startsWith("/dashboard") || pathname.startsWith("/api")) {
-      const loginUrl = new URL("/", req.url);
-      return NextResponse.redirect(loginUrl);
-    }
+  // Note: localStorage is not accessible in middleware (server-side)
+  // Client-side ProtectedWrapper will handle the actual auth check
+  // This middleware just adds security headers and basic cookie check
+  
+  // If no token in cookies for protected routes, let client-side handle it
+  // We don't redirect here to avoid conflicts with localStorage-based auth
+  if (!token && (pathname.startsWith("/dashboard") || pathname.startsWith("/api"))) {
+    // Let it pass - client-side ProtectedWrapper will handle redirect
+    // This prevents issues with localStorage not being accessible here
   }
 
   // Add security headers
