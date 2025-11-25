@@ -34,10 +34,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
       // Auto-open accordion based on current path
       if (normalizedPathname.startsWith('/dashboard/news')) {
         setOpenIndex(0);
-      } else if (normalizedPathname.startsWith('/dashboard/blog')) {
-        setOpenIndex(2);
-      } else if (normalizedPathname.startsWith('/dashboard/testimonial')) {
-        setOpenIndex(5);
       } else if (normalizedPathname.startsWith('/dashboard/branches')) {
         setOpenIndex(3);
       } else if (normalizedPathname.startsWith('/dashboard/my-profile') || normalizedPathname.startsWith('/dashboard/add-user')) {
@@ -156,90 +152,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               <i className={iconBaseClasses}>shopping_cart</i>
               <span>قائمة الطلبات</span>
             </Link>
-
-            <div className={menuItemBaseClasses}>
-              <button
-                className={`${menuButtonBaseClasses} ${
-                  openIndex === 2 ? "open active" : ""
-                }`}
-                type="button"
-                onClick={() => toggleAccordion(2)}
-              >
-                <i className={iconBaseClasses}>article</i>
-                <span className="title leading-none">مقالات</span>
-              </button>
-
-              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
-                openIndex === 2 ? "open block" : "hidden"
-              }`}>
-                <ul className="sidebar-sub-menu pt-[6px] space-y-1">
-                  <li className="sidemenu-item">
-                    <Link
-                      href="/dashboard/blog"
-                      className={`${subMenuLinkBaseClasses} ${
-                        isActive("/dashboard/blog") && pathname !== "/dashboard/blog/create-blog" && pathname !== "/dashboard/blog/create-blog/" ? "active font-medium dark:bg-[#21123da7]" : ""
-                      }`}
-                    >
-                      <i className={subIconBaseClasses}>list</i>
-                      <span>قائمة المقالات</span>
-                    </Link>
-                  </li>
-                  <li className="sidemenu-item">
-                    <Link
-                      href="/dashboard/blog/create-blog"
-                      className={`${subMenuLinkBaseClasses} ${
-                        isActive("/dashboard/blog/create-blog") ? "active font-medium dark:bg-[#21123da7]" : ""
-                      }`}
-                    >
-                      <i className={subIconBaseClasses}>add_circle</i>
-                      <span>إنشاء مقال</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className={menuItemBaseClasses}>
-              <button
-                className={`${menuButtonBaseClasses} ${
-                  openIndex === 5 ? "open active" : ""
-                }`}
-                type="button"
-                onClick={() => toggleAccordion(5)}
-              >
-                <i className={iconBaseClasses}>rate_review</i>
-                <span className="title leading-none">توصيات العملاء</span>
-              </button>
-
-              <div className={`accordion-collapse transition-all duration-300 ease-in-out ${
-                openIndex === 5 ? "open block" : "hidden"
-              }`}>
-                <ul className="sidebar-sub-menu pt-[6px] space-y-1">
-                  <li className="sidemenu-item">
-                    <Link
-                      href="/dashboard/testimonial"
-                      className={`${subMenuLinkBaseClasses} ${
-                        isActive("/dashboard/testimonial") && pathname !== "/dashboard/testimonial/create-testimonial" && pathname !== "/dashboard/testimonial/create-testimonial/" ? "active font-medium dark:bg-[#21123da7]" : ""
-                      }`}
-                    >
-                      <i className={subIconBaseClasses}>list</i>
-                      <span>قائمة التوصيات</span>
-                    </Link>
-                  </li>
-                  <li className="sidemenu-item">
-                    <Link
-                      href="/dashboard/testimonial/create-testimonial"
-                      className={`${subMenuLinkBaseClasses} ${
-                        isActive("/dashboard/testimonial/create-testimonial") ? "active font-medium dark:bg-[#21123da7]" : ""
-                      }`}
-                    >
-                      <i className={subIconBaseClasses}>add_circle</i>
-                      <span>إنشاء توصية</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
 
             {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <button
