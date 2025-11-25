@@ -39,8 +39,6 @@ const UsersPage: React.FC = () => {
       }),
   });
 
-  console.log(data);
-
   const users = data?.users || [];
   const total = data?.total || 0;
   const totalPages = Math.ceil(total / pageSize);
@@ -115,9 +113,7 @@ const UsersPage: React.FC = () => {
               }`}
             >
               <span className="flex items-center gap-2">
-                <i className="material-symbols-outlined !text-[20px]">
-                  people
-                </i>
+                <i className="material-symbols-outlined !text-[20px]">people</i>
                 مستخدمي التطبيق
               </span>
             </button>
@@ -166,26 +162,26 @@ const UsersPage: React.FC = () => {
             <table className="w-full">
               <thead className="text-black dark:text-white">
                 <tr>
-                  {[
-                    "الاسم",
-                    "الإيميل",
-                    "رقم الهاتف",
-                    "تاريخ التسجيل",
-                  ].map((header) => (
-                    <th
-                      key={header}
-                      className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-[#6A4CFF] dark:bg-[#21123da7] text-white whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
-                    >
-                      {header}
-                    </th>
-                  ))}
+                  {["الاسم", "الإيميل", "رقم الهاتف", "تاريخ التسجيل"].map(
+                    (header) => (
+                      <th
+                        key={header}
+                        className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-[#6A4CFF] dark:bg-[#21123da7] text-white whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md"
+                      >
+                        {header}
+                      </th>
+                    )
+                  )}
                 </tr>
               </thead>
 
               <tbody className="text-black dark:text-white">
                 {users?.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="text-center py-8 text-black dark:text-white">
+                    <td
+                      colSpan={4}
+                      className="text-center py-8 text-black dark:text-white"
+                    >
                       {activeTab === "admin"
                         ? "لا يوجد مستخدمين للداشبورد"
                         : "لا يوجد مستخدمين للتطبيق"}
@@ -193,7 +189,7 @@ const UsersPage: React.FC = () => {
                   </tr>
                 ) : (
                   users?.map((user) => (
-                    <tr 
+                    <tr
                       key={user.id}
                       className="hover:bg-purple-100 dark:hover:bg-[#21123da7] transition-colors"
                     >
@@ -223,14 +219,13 @@ const UsersPage: React.FC = () => {
                       {/* Registration Date */}
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
                         <span className="text-sm text-gray-600 dark:text-gray-300">
-                          {new Date(user.created_at as string).toLocaleDateString(
-                            "ar-EG",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )}
+                          {new Date(
+                            user.created_at as string
+                          ).toLocaleDateString("ar-EG", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
                         </span>
                       </td>
                     </tr>
@@ -259,7 +254,9 @@ const UsersPage: React.FC = () => {
                     key={i + 1}
                     onClick={() => setCurrentPage(i + 1)}
                     className={`px-3 py-1 border border-gray-100 dark:border-[#172036] rounded text-black dark:text-white hover:bg-[#DFF3E3] dark:hover:bg-[#0E1625] transition-colors ${
-                      currentPage === i + 1 ? "bg-[#6A4CFF] text-white border-[#6A4CFF] hover:bg-[#5a3ce6]" : ""
+                      currentPage === i + 1
+                        ? "bg-[#6A4CFF] text-white border-[#6A4CFF] hover:bg-[#5a3ce6]"
+                        : ""
                     }`}
                   >
                     {i + 1}

@@ -1,10 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { login as loginApi } from "@/services/apiauth";
 
 export function useSignIn() {
-  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const lastRequestTimeRef = useRef<number>(0);
   const REQUEST_COOLDOWN = 2000; // 2 seconds cooldown between requests
@@ -24,24 +22,30 @@ export function useSignIn() {
       // Prevent rapid successive requests
       const now = Date.now();
       const timeSinceLastRequest = now - lastRequestTimeRef.current;
-      
+
       if (timeSinceLastRequest < REQUEST_COOLDOWN) {
         const waitTime = REQUEST_COOLDOWN - timeSinceLastRequest;
-        throw new Error(`يرجى الانتظار ${Math.ceil(waitTime / 1000)} ثانية قبل المحاولة مرة أخرى`);
+        throw new Error(
+          `يرجى الانتظار ${Math.ceil(
+            waitTime / 1000
+          )} ثانية قبل المحاولة مرة أخرى`
+        );
       }
-      
+
       lastRequestTimeRef.current = now;
-      
+
       // Clear previous error
       setErrorMessage("");
       return await loginApi({ email, password });
     },
     onSuccess: async () => {
-      router.refresh(); // ⭐ ضروري علشان توصل الكوكيز للـ server
-      router.push("/dashboard");
+      // استخدام window.location.href لضمان حدوث full page reload
+      // وتحميل الـ cookies والـ localStorage بشكل صحيح
+      window.location.href = "/dashboard";
     },
     onError: (error: unknown) => {
-      const message = error instanceof Error ? error.message : "فشل تسجيل الدخول";
+      const message =
+        error instanceof Error ? error.message : "فشل تسجيل الدخول";
       setErrorMessage(message);
       console.error("Login failed:", error);
     },
@@ -50,9 +54,9 @@ export function useSignIn() {
       if (
         error instanceof Error &&
         (error.message.includes("طلبات كثيرة") ||
-         error.message.includes("الانتظار") ||
-         error.message.includes("البريد الإلكتروني") ||
-         error.message.includes("يجب إدخال"))
+          error.message.includes("الانتظار") ||
+          error.message.includes("البريد الإلكتروني") ||
+          error.message.includes("يجب إدخال"))
       ) {
         return false;
       }

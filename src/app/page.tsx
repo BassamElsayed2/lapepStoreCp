@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import SignInForm from "@/components/Authentication/SignInForm";
 import { isAuthenticated } from "@/services/apiauth";
 
 export default function Home() {
-  const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
@@ -15,7 +13,7 @@ export default function Home() {
       try {
         if (isAuthenticated()) {
           // User has token, redirect to dashboard
-          router.replace("/dashboard");
+          window.location.href = "/dashboard";
           return;
         }
         setIsChecking(false);
@@ -26,7 +24,7 @@ export default function Home() {
     };
 
     checkAuth();
-  }, [router]);
+  }, []);
 
   // Show loading while checking authentication
   if (isChecking) {

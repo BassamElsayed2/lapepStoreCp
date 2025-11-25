@@ -60,12 +60,6 @@ export async function getUsers(
   }
 ): Promise<{ users: User[]; total: number }> {
   try {
-    // TODO: Implement backend endpoint GET /api/admin/users
-    // For now, return empty array
-    console.warn(
-      "getUsers: Backend endpoint /api/admin/users not implemented yet"
-    );
-
     const params = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
