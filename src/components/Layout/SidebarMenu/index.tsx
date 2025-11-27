@@ -271,6 +271,16 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               <span>المستخدمين</span>
             </Link>
 
+            <Link
+              href="/dashboard/vouchers"
+              className={`${menuLinkBaseClasses} ${
+                pathname === "/dashboard/vouchers" || pathname === "/dashboard/vouchers/" ? "active font-medium dark:bg-[#21123da7]" : ""
+              }`}
+            >
+              <i className={iconBaseClasses}>confirmation_number</i>
+              <span>كوبونات الخصم</span>
+            </Link>
+
             <span className={sectionTitleClasses}>
               أخري
             </span>
