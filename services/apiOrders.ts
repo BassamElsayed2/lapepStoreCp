@@ -92,6 +92,11 @@ export interface Order {
   user_id?: string | null;
   status: 'pending' | 'paid' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
   total_price: number;
+  original_price?: number;
+  discount_amount?: number;
+  voucher_code?: string;
+  voucher_discount_type?: 'percentage' | 'fixed';
+  voucher_discount_value?: number;
   // Guest customer fields
   customer_first_name?: string;
   customer_last_name?: string;
@@ -197,8 +202,14 @@ export async function getOrders(
       data: { orders: Order[]; total: number; page: number; limit: number; totalPages: number };
     }>(`/admin/orders?${params.toString()}`);
 
+    // Remove duplicate orders based on order ID
+    const uniqueOrders = (response.data.orders || []).filter(
+      (order, index, self) =>
+        index === self.findIndex((o) => o.id === order.id)
+    );
+
     return {
-      orders: response.data.orders || [],
+      orders: uniqueOrders,
       total: response.data.total || 0,
     };
   } catch (error: any) {

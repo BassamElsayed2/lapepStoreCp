@@ -82,12 +82,21 @@ export default function DashboardPage() {
         setIsLoading(true);
 
         // Fetch all data in parallel
-        const [orderStats, orders, products, userStats] = await Promise.all([
+        const [orderStats, ordersData, products, userStats] = await Promise.all([
           getOrderStats(),
           getOrders(1, 1000),
           getProducts(1, 1000),
           getUserStats(),
         ]);
+
+        // Remove duplicate orders based on order ID
+        const orders = {
+          ...ordersData,
+          orders: ordersData.orders.filter(
+            (order, index, self) =>
+              index === self.findIndex((o) => o.id === order.id)
+          ),
+        };
 
         // Calculate date ranges
         const today = new Date();
@@ -146,7 +155,7 @@ export default function DashboardPage() {
           );
         });
 
-        const ordersData = last7Days.map((date) => {
+        const ordersCountData = last7Days.map((date) => {
           return orders.orders.filter((order: Order) =>
             order.created_at?.startsWith(date)
           ).length;
@@ -173,7 +182,7 @@ export default function DashboardPage() {
 
         setChartData({
           salesData,
-          ordersData,
+          ordersData: ordersCountData,
           labels: last7Days.map((date) =>
             new Date(date).toLocaleDateString("ar-EG", {
               month: "short",
@@ -235,12 +244,12 @@ export default function DashboardPage() {
             : "#6B6B6B", 
           fontFamily: "inherit" 
         },
-        formatter: (value) => `$${value.toFixed(0)}`,
+        formatter: (value) => `${value.toFixed(0)} ج.م`,
       },
     },
     tooltip: {
       theme: typeof window !== "undefined" && document.documentElement.classList.contains("dark") ? "dark" : "light",
-      y: { formatter: (value) => `$${value.toFixed(2)}` },
+      y: { formatter: (value) => `${value.toFixed(2)} ج.م` },
     },
     grid: { 
       borderColor: typeof window !== "undefined" && document.documentElement.classList.contains("dark") 
@@ -425,10 +434,10 @@ export default function DashboardPage() {
           </div>
           <h3 className="text-xs font-normal opacity-90">إجمالي المبيعات</h3>
           <p className="text-xl font-bold mt-2">
-            ${stats.totalSales.toFixed(2)}
+            {stats.totalSales.toFixed(2)} ج.م
           </p>
           <div className="mt-4 flex items-center gap-2 text-sm opacity-90">
-            <span>اليوم: ${stats.todaySales.toFixed(2)}</span>
+            <span>اليوم: {stats.todaySales.toFixed(2)} ج.م</span>
           </div>
         </div>
 
@@ -532,7 +541,7 @@ export default function DashboardPage() {
                 متوسط الطلب
               </p>
               <p className="text-xl font-bold text-[#5A3FFF]">
-                ${stats.averageOrderValue.toFixed(2)}
+                {stats.averageOrderValue.toFixed(2)} ج.م
               </p>
             </div>
             <div className="p-3 bg-[#5A3FFF]/10 rounded-lg">
@@ -662,9 +671,21 @@ export default function DashboardPage() {
                     </p>
                   </td>
                   <td className="py-3 px-4">
-                    <span className="font-semibold text-green-600 dark:text-green-400">
-                      ${order.total_price.toFixed(2)}
-                    </span>
+                    <div className="flex flex-col items-end">
+                      {order.voucher_code && (
+                        <span className="text-xs text-blue-600 dark:text-blue-400 mb-1">
+                          🎫 {order.voucher_code}
+                        </span>
+                      )}
+                      {order.original_price && order.original_price !== order.total_price && (
+                        <span className="text-xs text-gray-400 line-through mb-1">
+                          {order.original_price.toFixed(2)} ج.م
+                        </span>
+                      )}
+                      <span className="font-semibold text-green-600 dark:text-green-400">
+                        {order.total_price.toFixed(2)} ج.م
+                      </span>
+                    </div>
                   </td>
                   <td className="py-3 px-4">
                     <span

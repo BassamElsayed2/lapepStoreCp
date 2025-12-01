@@ -435,9 +435,21 @@ const OrdersPage: React.FC = () => {
                       </td>
 
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                        <span className="font-medium text-green-600 dark:text-green-400">
-                          ${order.total_price}
-                        </span>
+                        <div className="flex flex-col items-end">
+                          {order.voucher_code && (
+                            <span className="text-xs text-blue-600 dark:text-blue-400 mb-1">
+                              🎫 {order.voucher_code}
+                            </span>
+                          )}
+                          {order.original_price && order.original_price !== order.total_price && (
+                            <span className="text-xs text-gray-400 line-through mb-1">
+                              {order.original_price.toFixed(2)} ج.م
+                            </span>
+                          )}
+                          <span className="font-medium text-green-600 dark:text-green-400">
+                            {order.total_price.toFixed(2)} ج.م
+                          </span>
+                        </div>
                       </td>
 
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">

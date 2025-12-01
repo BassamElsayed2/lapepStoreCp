@@ -254,7 +254,7 @@ const OrderDetailsPage: React.FC = () => {
                     السعر الإجمالي
                   </h4>
                   <p className="text-lg font-semibold text-green-600 dark:text-green-400">
-                    ${order.total_price}
+                    {order.total_price} ج.م
                   </p>
                 </div>
 
@@ -345,12 +345,40 @@ const OrderDetailsPage: React.FC = () => {
                       {order.customer_state || "غير محدد"}
                     </span>
                   </div>
+                  {order.voucher_code && (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        كود الخصم:
+                      </span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-mono text-blue-600 dark:text-blue-400">
+                          {order.voucher_code}
+                        </span>
+                        {order.discount_amount && order.discount_amount > 0 && (
+                          <span className="text-red-600 dark:text-red-400 mr-2">
+                            {" "}
+                            (- {order.discount_amount.toFixed(2)} ج.م)
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  )}
+                  {order.original_price && order.original_price !== order.total_price && (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        السعر الأصلي:
+                      </span>
+                      <span className="font-medium text-gray-500 dark:text-gray-400 line-through">
+                        {order.original_price.toFixed(2)} ج.م
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-center py-2">
                     <span className="text-gray-600 dark:text-gray-400">
                       المبلغ الإجمالي:
                     </span>
                     <span className="font-semibold text-lg text-green-600 dark:text-green-400">
-                      ${order.total_price}
+                      {order.total_price.toFixed(2)} ج.م
                     </span>
                   </div>
                 </div>
@@ -436,12 +464,12 @@ const OrderDetailsPage: React.FC = () => {
                               </td>
                               <td className="py-3 text-right">
                                 <span className="text-sm font-medium text-gray-900 dark:text-white">
-                                  ${item.price}
+                                  {item.price} ج.م
                                 </span>
                               </td>
                               <td className="py-3 text-right">
                                 <span className="text-sm font-semibold text-green-600 dark:text-green-400">
-                                  ${(item.price * item.quantity).toFixed(2)}
+                                  {(item.price * item.quantity).toFixed(2)} ج.م
                                 </span>
                               </td>
                             </tr>
@@ -457,7 +485,6 @@ const OrderDetailsPage: React.FC = () => {
                             </td>
                             <td className="py-2 text-right">
                               <span className="text-sm font-medium text-gray-900 dark:text-white">
-                                $
                                 {order.order_items
                                   ? order.order_items
                                       .reduce(
@@ -466,10 +493,25 @@ const OrderDetailsPage: React.FC = () => {
                                         0
                                       )
                                       .toFixed(2)
-                                  : "0.00"}
+                                  : "0.00"} ج.م
                               </span>
                             </td>
                           </tr>
+                          {order.voucher_code && order.discount_amount && order.discount_amount > 0 && (
+                            <tr className="border-t border-gray-200 dark:border-gray-700">
+                              <td
+                                colSpan={3}
+                                className="py-2 text-right text-sm text-gray-600 dark:text-gray-400"
+                              >
+                                كود الخصم ({order.voucher_code}):
+                              </td>
+                              <td className="py-2 text-right">
+                                <span className="text-sm font-medium text-red-600 dark:text-red-400">
+                                  - {order.discount_amount.toFixed(2)} ج.م
+                                </span>
+                              </td>
+                            </tr>
+                          )}
                           <tr className="border-t border-gray-200 dark:border-gray-700">
                             <td
                               colSpan={3}
@@ -479,17 +521,17 @@ const OrderDetailsPage: React.FC = () => {
                             </td>
                             <td className="py-2 text-right">
                               <span className="text-sm font-medium text-gray-900 dark:text-white">
-                                $
                                 {order.order_items
                                   ? (
-                                      order.total_price -
+                                      (order.original_price || order.total_price) -
                                       order.order_items.reduce(
                                         (sum, item) =>
                                           sum + item.price * item.quantity,
                                         0
-                                      )
+                                      ) -
+                                      (order.discount_amount || 0)
                                     ).toFixed(2)
-                                  : "0.00"}
+                                  : "0.00"} ج.م
                               </span>
                             </td>
                           </tr>
@@ -502,7 +544,7 @@ const OrderDetailsPage: React.FC = () => {
                             </td>
                             <td className="py-3 text-right">
                               <span className="text-lg font-bold text-green-600 dark:text-green-400">
-                                ${order.total_price}
+                                {order.total_price} ج.م
                               </span>
                             </td>
                           </tr>
@@ -615,7 +657,7 @@ const OrderDetailsPage: React.FC = () => {
                                 </td>
                                 <td className="py-3 text-center">
                                   <span className="text-sm font-semibold text-green-600 dark:text-green-400">
-                                    ${payment.amount}
+                                    {payment.amount} ج.م
                                   </span>
                                 </td>
                                 <td className="py-3 text-right">
@@ -646,7 +688,6 @@ const OrderDetailsPage: React.FC = () => {
                             </td>
                             <td className="py-3 text-center">
                               <span className="text-lg font-bold text-green-600 dark:text-green-400">
-                                $
                                 {order.payments
                                   .filter(
                                     (payment, index, self) =>
@@ -672,7 +713,7 @@ const OrderDetailsPage: React.FC = () => {
                                     (sum, payment) => sum + payment.amount,
                                     0
                                   )
-                                  .toFixed(2)}
+                                  .toFixed(2)} ج.م
                               </span>
                             </td>
                             <td></td>
