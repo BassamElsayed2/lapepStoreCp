@@ -78,12 +78,12 @@ const ChangePasswordForm: React.FC = () => {
 
   return (
     <>
-      <form className="trezo-card mb-[25px] p-[20px] md:p-[25px] rounded-md 
+      <form
+        className="trezo-card mb-[25px] p-[20px] md:p-[25px] rounded-md 
         bg-[linear-gradient(90deg,rgba(158,130,255,0.08),rgba(67,38,204,0.12))] 
-        dark:bg-[#141414] shadow-md border border-[#6A4CFF22]">
-
+        dark:bg-[#141414] shadow-md border border-[#6A4CFF22]"
+      >
         <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
-
           {/* حقل كلمة السر الحالية */}
           <div className="mb-[20px] sm:mb-0 relative">
             <label className="mb-[10px] text-black dark:text-white font-medium block">
@@ -152,9 +152,7 @@ const ChangePasswordForm: React.FC = () => {
         </div>
 
         {/* رسالة الخطأ */}
-        {message && (
-          <div className="text-sm text-red-500 mt-4">{message}</div>
-        )}
+        {message && <div className="text-sm text-red-500 mt-4">{message}</div>}
 
         {/* زر التأكيد */}
         <div className="mt-[20px] md:mt-[25px]">
@@ -177,7 +175,6 @@ const ChangePasswordForm: React.FC = () => {
             </span>
           </button>
         </div>
-
       </form>
     </>
   );

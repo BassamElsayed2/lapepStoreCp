@@ -1,24 +1,24 @@
 /**
- * About Us / Site Settings API Service - Uses Backend API
+ * About Us / Site Settings API Service - Uses Backend API for data and image storage
  */
 
-import { createClient } from "@supabase/supabase-js";
-
-// Supabase client for image storage
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { extractPathFromUrl } from "./supabase";
 
 // Backend API URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
+}
+
 // Helper function for API calls
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const token = getToken();
 
   const config: RequestInit = {
     ...options,
@@ -105,7 +105,7 @@ export async function getAboutUs(): Promise<SiteSettings> {
  * Update site settings
  */
 export async function updateSiteSettings(
-  data: UpdateSiteSettingsData
+  data: UpdateSiteSettingsData,
 ): Promise<SiteSettings> {
   try {
     const response = await apiFetch<{
@@ -124,29 +124,29 @@ export async function updateSiteSettings(
 }
 
 /**
- * Upload logo to Supabase Storage
+ * Upload logo to backend server
  */
 export async function uploadLogo(file: File): Promise<string> {
   try {
-    const fileName = `logo_${Date.now()}_${file.name}`;
-    const filePath = `site-settings/${fileName}`;
+    const token = getToken();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "site-settings");
 
-    const { error } = await supabase.storage
-      .from("images")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const response = await fetch(`${API_URL}/upload/single`, {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
 
-    if (error) {
-      throw new Error(`فشل رفع الشعار: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل رفع الشعار");
     }
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("images").getPublicUrl(filePath);
-
-    return publicUrl;
+    const result = await response.json();
+    return result.data.url;
   } catch (error) {
     console.error("Error uploading logo:", error);
     throw error;
@@ -154,29 +154,29 @@ export async function uploadLogo(file: File): Promise<string> {
 }
 
 /**
- * Upload favicon to Supabase Storage
+ * Upload favicon to backend server
  */
 export async function uploadFavicon(file: File): Promise<string> {
   try {
-    const fileName = `favicon_${Date.now()}_${file.name}`;
-    const filePath = `site-settings/${fileName}`;
+    const token = getToken();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "site-settings");
 
-    const { error } = await supabase.storage
-      .from("images")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const response = await fetch(`${API_URL}/upload/single`, {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
 
-    if (error) {
-      throw new Error(`فشل رفع الأيقونة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل رفع الأيقونة");
     }
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("images").getPublicUrl(filePath);
-
-    return publicUrl;
+    const result = await response.json();
+    return result.data.url;
   } catch (error) {
     console.error("Error uploading favicon:", error);
     throw error;
@@ -184,22 +184,27 @@ export async function uploadFavicon(file: File): Promise<string> {
 }
 
 /**
- * Delete image from Supabase Storage
+ * Delete image from backend server
  */
 export async function deleteSiteImage(imageUrl: string): Promise<void> {
   try {
-    // Extract file path from URL
-    const url = new URL(imageUrl);
-    const pathParts = url.pathname.split("/images/");
-    if (pathParts.length < 2) {
+    const filePath = extractPathFromUrl(imageUrl);
+    if (!filePath) {
       throw new Error("Invalid image URL");
     }
-    const filePath = pathParts[1];
 
-    const { error } = await supabase.storage.from("images").remove([filePath]);
+    const token = getToken();
+    const response = await fetch(`${API_URL}/upload`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ path: filePath }),
+    });
 
-    if (error) {
-      throw new Error(`فشل حذف الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل حذف الصورة");
     }
   } catch (error) {
     console.error("Error deleting site image:", error);

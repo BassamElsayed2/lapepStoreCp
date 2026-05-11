@@ -1,25 +1,22 @@
 /**
- * News API Service - Uses Backend API
+ * News API Service - Uses Backend API for data and image storage
  */
-
-import { decode } from "base64-arraybuffer";
-import { createClient } from "@supabase/supabase-js";
-
-// Supabase client for image storage
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Backend API URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
+}
+
 // Helper function for API calls
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const token = getToken();
 
   const config: RequestInit = {
     ...options,
@@ -81,7 +78,7 @@ export async function getNews(
     status?: string;
     search?: string;
     date?: string;
-  }
+  },
 ): Promise<{ news: News[]; total: number }> {
   try {
     const params = new URLSearchParams({
@@ -139,7 +136,7 @@ export async function getNewsById(id: string): Promise<News> {
  * Create new news
  */
 export async function CreateNews(
-  newNews: CreateNewsInput | News
+  newNews: CreateNewsInput | News,
 ): Promise<News> {
   try {
     const response = await apiFetch<{
@@ -162,7 +159,7 @@ export async function CreateNews(
  */
 export async function updateNews(
   id: string,
-  updatedNews: Partial<News>
+  updatedNews: Partial<News>,
 ): Promise<News> {
   try {
     const response = await apiFetch<{
@@ -195,51 +192,45 @@ export async function deleteNews(id: string): Promise<void> {
 }
 
 /**
- * Upload images to Supabase Storage
+ * Upload images to backend server
  */
 export async function uploadImages(
   files: (File | { base64: string; name: string })[],
-  folder = "news"
+  folder = "news",
 ): Promise<string[]> {
-  const uploadedUrls: string[] = [];
+  const token = getToken();
+  const formData = new FormData();
 
   for (const file of files) {
-    let fileExt: string;
-    let fileName: string;
-    let fileData: File | ArrayBuffer;
-
     if (file instanceof File) {
-      fileExt = file.name.split(".").pop()!;
-      fileName = `${folder}/${Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2)}.${fileExt}`;
-      fileData = file;
+      formData.append("files", file);
     } else {
-      // base64 case
-      fileExt = file.name.split(".").pop()!;
-      fileName = `${folder}/${Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2)}.${fileExt}`;
-      fileData = decode(file.base64);
+      const byteString = atob(file.base64);
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      const ext = file.name.split(".").pop() || "jpg";
+      const blob = new Blob([ab], { type: `image/${ext}` });
+      formData.append("files", blob, file.name);
     }
-
-    const { error } = await supabase.storage
-      .from("news-images")
-      .upload(fileName, fileData, {
-        contentType: file instanceof File ? file.type : `image/${fileExt}`,
-      });
-
-    if (error) {
-      console.error("Error uploading image:", error.message);
-      continue;
-    }
-
-    const { data: publicUrlData } = supabase.storage
-      .from("news-images")
-      .getPublicUrl(fileName);
-
-    uploadedUrls.push(publicUrlData.publicUrl);
   }
 
-  return uploadedUrls;
+  formData.append("folder", folder);
+
+  const response = await fetch(`${API_URL}/upload/multiple`, {
+    method: "POST",
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("فشل رفع الصور");
+  }
+
+  const result = await response.json();
+  return result.data.map((f: any) => f.url);
 }

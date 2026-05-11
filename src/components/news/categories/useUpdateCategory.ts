@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import supabase from "../../../../services/supabase";
+import { uploadImage } from "../../../../services/supabase";
 import { updateCategory as updateCategoryAPI } from "../../../../services/apiCategories";
 
 interface UpdateCategoryPayload {
@@ -22,29 +22,26 @@ export function useUpdateCategory() {
     }: UpdateCategoryPayload) => {
       let image_url = undefined;
 
-      // 1. رفع الصورة على Supabase (cat-img bucket) إذا كانت موجودة
       if (image) {
-        const fileExt = image.name.split(".").pop();
-        const fileName = `${id}-${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
-          .from("cat-img")
-          .upload(fileName, image);
+        const { url, error: uploadError } = await uploadImage(
+          "categories",
+          "",
+          image,
+        );
 
-        if (uploadError) throw new Error(uploadError.message);
-
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("cat-img").getPublicUrl(fileName);
-
-        image_url = publicUrl;
+        if (uploadError) throw new Error("فشل رفع الصورة");
+        image_url = url || undefined;
       }
 
-      // 2. تحديث البيانات عبر Backend API (SQL Server)
-      const updateData: { name_ar: string; name_en: string; image_url?: string } = { name_ar, name_en };
+      const updateData: {
+        name_ar: string;
+        name_en: string;
+        image_url?: string;
+      } = { name_ar, name_en };
       if (image_url) {
         updateData.image_url = image_url;
       }
-      
+
       await updateCategoryAPI(id, updateData);
     },
     onSuccess: () => {

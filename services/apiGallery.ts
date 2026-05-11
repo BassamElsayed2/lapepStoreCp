@@ -1,24 +1,24 @@
 /**
- * Gallery API Service - Uses Backend API
+ * Gallery API Service - Uses Backend API for data and image storage
  */
 
-import { createClient } from "@supabase/supabase-js";
-
-// Supabase client for image storage
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { extractPathFromUrl } from "./supabase";
 
 // Backend API URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
+}
+
 // Helper function for API calls
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const token = getToken();
 
   const config: RequestInit = {
     ...options,
@@ -107,34 +107,30 @@ export async function getGalleryById(id: string): Promise<Gallery> {
 }
 
 /**
- * Upload multiple images to Supabase Storage
+ * Upload multiple images to backend server
  */
 async function uploadGalleryImages(files: File[]): Promise<string[]> {
-  const uploadPromises = files.map(async (file) => {
-    const fileName = `${Date.now()}_${Math.random()
-      .toString(36)
-      .substring(7)}_${file.name}`;
-    const filePath = `galleries/${fileName}`;
+  const token = getToken();
+  const formData = new FormData();
+  for (const file of files) {
+    formData.append("files", file);
+  }
+  formData.append("folder", "galleries");
 
-    const { error } = await supabase.storage
-      .from("images")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-
-    if (error) {
-      throw new Error(`فشل رفع الصورة ${file.name}: ${error.message}`);
-    }
-
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("images").getPublicUrl(filePath);
-
-    return publicUrl;
+  const response = await fetch(`${API_URL}/upload/multiple`, {
+    method: "POST",
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: formData,
   });
 
-  return Promise.all(uploadPromises);
+  if (!response.ok) {
+    throw new Error("فشل رفع الصور");
+  }
+
+  const result = await response.json();
+  return result.data.map((f: any) => f.url);
 }
 
 /**
@@ -142,7 +138,6 @@ async function uploadGalleryImages(files: File[]): Promise<string[]> {
  */
 export async function CreateGallery(data: CreateGalleryData): Promise<Gallery> {
   try {
-    // Upload images first
     const imageUrls = await uploadGalleryImages(data.image_urls);
 
     const galleryData = {
@@ -173,7 +168,7 @@ export async function CreateGallery(data: CreateGalleryData): Promise<Gallery> {
  */
 export async function updateGallery(
   id: string,
-  data: UpdateGalleryData
+  data: UpdateGalleryData,
 ): Promise<Gallery> {
   try {
     const response = await apiFetch<{
@@ -206,29 +201,29 @@ export async function deleteGallery(id: string): Promise<void> {
 }
 
 /**
- * Upload single gallery image to Supabase Storage
+ * Upload single gallery image to backend server
  */
 export async function uploadGalleryImage(file: File): Promise<string> {
   try {
-    const fileName = `${Date.now()}_${file.name}`;
-    const filePath = `galleries/${fileName}`;
+    const token = getToken();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "galleries");
 
-    const { error } = await supabase.storage
-      .from("images")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const response = await fetch(`${API_URL}/upload/single`, {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
 
-    if (error) {
-      throw new Error(`فشل رفع الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل رفع الصورة");
     }
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("images").getPublicUrl(filePath);
-
-    return publicUrl;
+    const result = await response.json();
+    return result.data.url;
   } catch (error) {
     console.error("Error uploading gallery image:", error);
     throw error;
@@ -236,22 +231,27 @@ export async function uploadGalleryImage(file: File): Promise<string> {
 }
 
 /**
- * Delete gallery image from Supabase Storage
+ * Delete gallery image from backend server
  */
 export async function deleteGalleryImage(imageUrl: string): Promise<void> {
   try {
-    // Extract file path from URL
-    const url = new URL(imageUrl);
-    const pathParts = url.pathname.split("/images/");
-    if (pathParts.length < 2) {
+    const filePath = extractPathFromUrl(imageUrl);
+    if (!filePath) {
       throw new Error("Invalid image URL");
     }
-    const filePath = pathParts[1];
 
-    const { error } = await supabase.storage.from("images").remove([filePath]);
+    const token = getToken();
+    const response = await fetch(`${API_URL}/upload`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ path: filePath }),
+    });
 
-    if (error) {
-      throw new Error(`فشل حذف الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل حذف الصورة");
     }
   } catch (error) {
     console.error("Error deleting gallery image:", error);
@@ -264,19 +264,13 @@ export async function deleteGalleryImage(imageUrl: string): Promise<void> {
  */
 export async function addImagesToGallery(
   galleryId: string,
-  files: File[]
+  files: File[],
 ): Promise<Gallery> {
   try {
-    // Get current gallery
     const gallery = await getGalleryById(galleryId);
-
-    // Upload new images
     const newImageUrls = await uploadGalleryImages(files);
-
-    // Combine with existing images
     const allImageUrls = [...gallery.image_urls, ...newImageUrls];
 
-    // Update gallery
     return await updateGallery(galleryId, {
       image_urls: allImageUrls,
     });
@@ -291,21 +285,16 @@ export async function addImagesToGallery(
  */
 export async function removeImageFromGallery(
   galleryId: string,
-  imageUrl: string
+  imageUrl: string,
 ): Promise<Gallery> {
   try {
-    // Get current gallery
     const gallery = await getGalleryById(galleryId);
-
-    // Remove image from storage
     await deleteGalleryImage(imageUrl);
 
-    // Remove from gallery's image_urls array
     const updatedImageUrls = gallery.image_urls.filter(
-      (url) => url !== imageUrl
+      (url) => url !== imageUrl,
     );
 
-    // Update gallery
     return await updateGallery(galleryId, {
       image_urls: updatedImageUrls,
     });
@@ -315,6 +304,5 @@ export async function removeImageFromGallery(
   }
 }
 
-// Export aliases for backward compatibility
 export const getGalleriesById = getGalleryById;
 export const deleteGalleries = deleteGallery;

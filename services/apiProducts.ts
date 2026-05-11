@@ -1,11 +1,4 @@
-import { decode } from "base64-arraybuffer";
-import { createClient } from "@supabase/supabase-js";
-import supabaseStorage from "./supabase";
-
-// إنشاء Supabase client للصور فقط
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { extractPathFromUrl } from "./supabase";
 
 // Backend API URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -13,7 +6,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 // Helper function للاتصال بـ Backend API
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
@@ -33,15 +26,20 @@ async function apiFetch<T>(
     const errorData = await response.json().catch(() => ({
       message: "حدث خطأ في الاتصال بالخادم",
     }));
-    // Backend returns error in 'error' field, but also check 'message' for compatibility
     throw new Error(
       errorData.error ||
         errorData.message ||
-        `خطأ في الخادم: ${response.status}`
+        `خطأ في الخادم: ${response.status}`,
     );
   }
 
   return response.json();
+}
+
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
 }
 
 export interface ProductAttribute {
@@ -53,25 +51,24 @@ export interface ProductAttribute {
 
 export interface Product {
   id?: string;
-  name_ar: string; // Required field
-  name_en: string; // Required field
-  price: number; // Required field
+  name_ar: string;
+  name_en: string;
+  price: number;
   offer_price?: number;
-  images?: string[]; // URLs من Supabase Storage
+  images?: string[];
   description_ar?: string;
   description_en?: string;
   category_id?: string;
-  quantity?: number; // integer with default 0 (replaces stock_quantity)
-  is_best_seller?: boolean; // boolean with default false
-  limited_time_offer?: boolean; // boolean with default false
+  quantity?: number;
+  is_best_seller?: boolean;
+  limited_time_offer?: boolean;
   created_at?: string;
   updated_at?: string;
-  // Keep for backward compatibility
-  title?: string; // old field
-  stock_quantity?: number; // old field
-  image_url?: string[]; // old field
-  stock?: number; // old field
-  description?: string; // old field
+  title?: string;
+  stock_quantity?: number;
+  image_url?: string[];
+  stock?: number;
+  description?: string;
   attributes?: ProductAttribute[];
 }
 
@@ -84,11 +81,9 @@ export async function getProducts(
     date?: string;
     isBestSeller?: boolean;
     limitedTimeOffer?: boolean;
-  }
+  },
 ): Promise<{ products: Product[]; total: number }> {
   try {
-    // If search is active, fetch more data to filter on frontend
-    // This is a temporary solution until backend is fixed to search in name_ar/name_en
     const fetchLimit = filters?.search && filters.search.trim() ? 1000 : limit;
     const fetchPage = filters?.search && filters.search.trim() ? 1 : page;
 
@@ -96,9 +91,6 @@ export async function getProducts(
       page: fetchPage.toString(),
       limit: fetchLimit.toString(),
       ...(filters?.categoryId && { categoryId: filters.categoryId }),
-      // Temporarily disable search parameter to avoid 'title' column error
-      // Backend needs to be fixed to search in name_ar and name_en instead of title
-      // We'll filter on frontend instead
       ...(filters?.isBestSeller !== undefined && {
         isBestSeller: filters.isBestSeller.toString(),
       }),
@@ -118,19 +110,14 @@ export async function getProducts(
       };
     }>(`/products?${params}`);
 
-    // Map images to image_url for backward compatibility
     let products = (response.data || []).map((product) => ({
       ...product,
-      image_url: product.images || product.image_url, // Ensure compatibility
-      stock: product.stock_quantity || product.quantity, // Map stock_quantity to stock
+      image_url: product.images || product.image_url,
+      stock: product.stock_quantity || product.quantity,
     }));
 
-    // Get total from API pagination (this is the real total count from database)
-    // The API already applies pagination, so we use the total from pagination object
     let total = response.pagination?.total || 0;
 
-    // Filter by search term on frontend (search in name_ar and name_en)
-    // This is a temporary solution until backend is fixed
     if (filters?.search && filters.search.trim()) {
       const searchTerm = filters.search.trim().toLowerCase();
       products = products.filter((product) => {
@@ -138,16 +125,12 @@ export async function getProducts(
         const nameEn = (product.name_en || "").toLowerCase();
         return nameAr.includes(searchTerm) || nameEn.includes(searchTerm);
       });
-      // When filtering on frontend, use filtered length as total
       total = products.length;
-      
-      // Apply pagination after filtering (since we fetched all data for search)
+
       const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
       products = products.slice(startIndex, endIndex);
     }
-    // If no search, API already applied pagination, so we use products as-is
-    // and total from pagination object
 
     return {
       products: products,
@@ -162,11 +145,10 @@ export async function getProducts(
 export async function getProductById(id: string): Promise<Product> {
   try {
     const response = await apiFetch<{ success: boolean; data: Product }>(
-      `/products/${id}`
+      `/products/${id}`,
     );
     const product = response.data;
 
-    // Map for backward compatibility
     return {
       ...product,
       image_url: product.images || product.image_url,
@@ -181,19 +163,17 @@ export async function getProductById(id: string): Promise<Product> {
 
 export async function createProduct(productData: Product): Promise<Product> {
   try {
-    // Prepare data without null values for optional fields
     const payload: any = {
       name_ar: productData.name_ar,
       name_en: productData.name_en,
       price: Number(productData.price),
       stock_quantity: Number(
-        productData.quantity || productData.stock_quantity || 0
+        productData.quantity || productData.stock_quantity || 0,
       ),
       is_best_seller: productData.is_best_seller ?? false,
       limited_time_offer: productData.limited_time_offer ?? false,
     };
 
-    // Only add optional fields if they have values
     if (
       productData.offer_price !== null &&
       productData.offer_price !== undefined
@@ -218,7 +198,7 @@ export async function createProduct(productData: Product): Promise<Product> {
       {
         method: "POST",
         body: JSON.stringify(payload),
-      }
+      },
     );
 
     return response.data;
@@ -230,84 +210,74 @@ export async function createProduct(productData: Product): Promise<Product> {
 
 export async function uploadProductImage(
   file: File | { base64: string; name: string },
-  folder = "products"
+  folder = "products",
 ): Promise<string> {
-  let fileExt: string;
-  let fileName: string;
-  let fileData: File | ArrayBuffer;
+  const token = getToken();
+  const formData = new FormData();
 
   if (file instanceof File) {
-    fileExt = file.name.split(".").pop()!;
-    fileName = `${folder}/${Date.now()}-${Math.random()
-      .toString(36)
-      .substring(2)}.${fileExt}`;
-    fileData = file;
+    formData.append("file", file);
   } else {
-    // Base64 case
-    fileExt = file.name.split(".").pop()!;
-    fileName = `${folder}/${Date.now()}-${Math.random()
-      .toString(36)
-      .substring(2)}.${fileExt}`;
-    fileData = decode(file.base64);
+    const byteString = atob(file.base64);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const ext = file.name.split(".").pop() || "jpg";
+    const blob = new Blob([ab], { type: `image/${ext}` });
+    formData.append("file", blob, file.name);
   }
 
-  const { error } = await supabase.storage
-    .from("product-images")
-    .upload(fileName, fileData, {
-      contentType: file instanceof File ? file.type : `image/${fileExt}`,
-    });
+  formData.append("folder", folder);
 
-  if (error) {
-    console.error("خطأ أثناء رفع صورة المنتج:", error.message);
-    throw new Error("تعذر رفع صورة المنتج");
+  const response = await fetch(`${API_URL}/upload/single`, {
+    method: "POST",
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorData = await response
+      .json()
+      .catch(() => ({ message: "تعذر رفع صورة المنتج" }));
+    throw new Error(errorData.message || "تعذر رفع صورة المنتج");
   }
 
-  const { data: publicUrlData } = supabase.storage
-    .from("product-images")
-    .getPublicUrl(fileName);
-
-  return publicUrlData.publicUrl;
+  const result = await response.json();
+  return result.data.url;
 }
 
 export async function deleteProduct(id: string) {
   try {
-    // First, get the product to check if it has images
     const product = await getProductById(id);
 
-    // Delete the images from Supabase Storage if they exist
     if (product?.images && product.images.length > 0) {
+      const token = getToken();
       for (const imageUrl of product.images) {
         try {
-          const path = new URL(imageUrl).pathname;
-          // استخراج اسم الملف من URL - bucket: product-images
-          const match = path.match(
-            /\/storage\/v1\/object\/public\/product-images\/(.+)/
-          );
-          const filePath = match?.[1];
-
+          const filePath = extractPathFromUrl(imageUrl);
           if (filePath) {
-            const { error: storageError } = await supabase.storage
-              .from("product-images")
-              .remove([filePath]);
-
-            if (storageError) {
-              console.error("⚠️ فشل حذف صورة المنتج:", storageError);
-            } else {
-              console.log("✅ تم حذف الصورة:", filePath);
-            }
+            await fetch(`${API_URL}/upload`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                ...(token && { Authorization: `Bearer ${token}` }),
+              },
+              body: JSON.stringify({ path: filePath }),
+            });
           }
         } catch (error) {
-          console.error("⚠️ خطأ في معالجة URL الصورة:", error);
+          console.error("⚠️ خطأ في حذف صورة المنتج:", error);
         }
       }
     }
 
-    // Delete the product from SQL Server
     await apiFetch<{ success: boolean }>(`/products/${id}`, {
       method: "DELETE",
     });
-
-    console.log("✅ تم حذف المنتج بنجاح");
   } catch (error: any) {
     console.error("❌ خطأ في حذف المنتج:", error);
     throw new Error(error.message || "حدث خطأ أثناء حذف المنتج");
@@ -316,18 +286,16 @@ export async function deleteProduct(id: string) {
 
 export async function updateProduct(
   id: string,
-  updatedProduct: Partial<Product>
+  updatedProduct: Partial<Product>,
 ) {
   try {
     const { stock, image_url, quantity, ...product } = updatedProduct;
 
-    // Map data for backend
     const updateData: any = {
       ...product,
-      stock_quantity: quantity || stock || undefined, // Backend uses stock_quantity
+      stock_quantity: quantity || stock || undefined,
     };
 
-    // Convert numeric fields
     if (updateData.price !== undefined) {
       updateData.price = Number(updateData.price);
     }
@@ -341,14 +309,12 @@ export async function updateProduct(
       updateData.stock_quantity = Number(updateData.stock_quantity);
     }
 
-    // Clean up undefined and null values
     Object.keys(updateData).forEach((key) => {
       if (updateData[key] === undefined || updateData[key] === null) {
         delete updateData[key];
       }
     });
 
-    // Convert category_id to integer if exists
     if (updateData.category_id) {
       updateData.category_id = parseInt(updateData.category_id);
     }
@@ -358,7 +324,7 @@ export async function updateProduct(
       {
         method: "PUT",
         body: JSON.stringify(updateData),
-      }
+      },
     );
 
     return response.data;

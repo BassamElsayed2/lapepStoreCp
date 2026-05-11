@@ -11,7 +11,6 @@ import { uploadImage } from "@/services/supabase";
 import { updateAdminProfile } from "@/services/apiauth";
 import { profileSchema } from "./lib/validations/schema";
 import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
 
 const SettingsForm: React.FC = () => {
   const { data: profile } = useAdminProfile();
@@ -56,14 +55,10 @@ const SettingsForm: React.FC = () => {
       let image_url = profile?.image_url;
 
       if (profilePicture) {
-        const fileExt = profilePicture.name.split(".").pop();
-        const fileName = `${uuidv4()}.${fileExt}`;
-        const filePath = `avatars/${fileName}`;
-
         const { url, error: uploadError } = await uploadImage(
           "avatars",
-          filePath,
-          profilePicture
+          "",
+          profilePicture,
         );
 
         if (uploadError) throw new Error("فشل رفع الصورة");

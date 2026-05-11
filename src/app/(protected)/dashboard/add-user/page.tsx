@@ -7,7 +7,6 @@ import { uploadImage } from "@/services/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "@/components/Social/SettingsForm/lib/validations/schema";
 import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -46,14 +45,10 @@ export default function SignUpForm() {
       let imageUrl = "";
 
       if (profilePicture) {
-        const fileExt = profilePicture.name.split(".").pop();
-        const fileName = `${uuidv4()}.${fileExt}`;
-        const filePath = `avatars/${fileName}`;
-
         const { url, error: uploadError } = await uploadImage(
           "avatars",
-          filePath,
-          profilePicture
+          "",
+          profilePicture,
         );
 
         if (uploadError || !url) {

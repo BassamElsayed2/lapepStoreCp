@@ -1,39 +1,39 @@
 /**
- * Testimonials API Service - Uses Backend API
+ * Testimonials API Service - Uses Backend API for data and image storage
  */
 
-import { decode } from "base64-arraybuffer";
-import { createClient } from "@supabase/supabase-js";
-
-// Supabase client for image storage
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { extractPathFromUrl } from "./supabase";
 
 // Backend API URL
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
+}
 
 // Helper function for API calls
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
-  
+  const token = getToken();
+
   const config: RequestInit = {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
   };
 
   const response = await fetch(`${API_URL}${endpoint}`, config);
-  
+
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({
-      message: 'حدث خطأ في الاتصال بالخادم',
+      message: "حدث خطأ في الاتصال بالخادم",
     }));
     throw new Error(errorData.message || `خطأ في الخادم: ${response.status}`);
   }
@@ -76,8 +76,8 @@ export async function getTestemonial(
   filters?: {
     search?: string;
     date?: string;
-    status?: 'draft' | 'published';
-  }
+    status?: "draft" | "published";
+  },
 ): Promise<{ testimonials: Testimonial[]; total: number }> {
   try {
     const params = new URLSearchParams({
@@ -88,18 +88,23 @@ export async function getTestemonial(
       ...(filters?.status && { status: filters.status }),
     });
 
-    const response = await apiFetch<{ 
-      success: boolean; 
+    const response = await apiFetch<{
+      success: boolean;
       data: Testimonial[];
-      pagination: { total: number; totalPages: number; page: number; limit: number };
+      pagination: {
+        total: number;
+        totalPages: number;
+        page: number;
+        limit: number;
+      };
     }>(`/content/testimonials?${params}`);
-    
+
     return {
       testimonials: response.data || [],
       total: response.pagination?.total || 0,
     };
   } catch (error) {
-    console.error('Error fetching testimonials:', error);
+    console.error("Error fetching testimonials:", error);
     throw error;
   }
 }
@@ -109,18 +114,18 @@ export async function getTestemonial(
  */
 export async function getTestemonialById(id: string): Promise<Testimonial> {
   try {
-    const response = await apiFetch<{ 
-      success: boolean; 
+    const response = await apiFetch<{
+      success: boolean;
       data: Testimonial;
     }>(`/content/testimonials/${id}`);
-    
+
     if (!response.data) {
-      throw new Error('Testimonial not found');
+      throw new Error("Testimonial not found");
     }
-    
+
     return response.data;
   } catch (error) {
-    console.error('Error fetching testimonial:', error);
+    console.error("Error fetching testimonial:", error);
     throw error;
   }
 }
@@ -128,19 +133,21 @@ export async function getTestemonialById(id: string): Promise<Testimonial> {
 /**
  * Create new testimonial
  */
-export async function createTestemonial(data: CreateTestimonialData): Promise<Testimonial> {
+export async function createTestemonial(
+  data: CreateTestimonialData,
+): Promise<Testimonial> {
   try {
-    const response = await apiFetch<{ 
-      success: boolean; 
+    const response = await apiFetch<{
+      success: boolean;
       data: Testimonial;
-    }>('/content/testimonials', {
-      method: 'POST',
+    }>("/content/testimonials", {
+      method: "POST",
       body: JSON.stringify(data),
     });
-    
+
     return response.data;
   } catch (error) {
-    console.error('Error creating testimonial:', error);
+    console.error("Error creating testimonial:", error);
     throw error;
   }
 }
@@ -150,20 +157,20 @@ export async function createTestemonial(data: CreateTestimonialData): Promise<Te
  */
 export async function updateTestemonial(
   id: string,
-  data: UpdateTestimonialData
+  data: UpdateTestimonialData,
 ): Promise<Testimonial> {
   try {
-    const response = await apiFetch<{ 
-      success: boolean; 
+    const response = await apiFetch<{
+      success: boolean;
       data: Testimonial;
     }>(`/content/testimonials/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
-    
+
     return response.data;
   } catch (error) {
-    console.error('Error updating testimonial:', error);
+    console.error("Error updating testimonial:", error);
     throw error;
   }
 }
@@ -174,70 +181,71 @@ export async function updateTestemonial(
 export async function deleteTestemonial(id: string): Promise<void> {
   try {
     await apiFetch<{ success: boolean }>(`/content/testimonials/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   } catch (error) {
-    console.error('Error deleting testimonial:', error);
+    console.error("Error deleting testimonial:", error);
     throw error;
   }
 }
 
 /**
- * Upload testimonial image to Supabase Storage
+ * Upload testimonial image to backend server
  */
 export async function uploadTestimonialImage(file: File): Promise<string> {
   try {
-    const fileName = `${Date.now()}_${file.name}`;
-    const filePath = `testimonials/${fileName}`;
+    const token = getToken();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "testimonials");
 
-    const { data, error } = await supabase.storage
-      .from('testmonial-img')
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
+    const response = await fetch(`${API_URL}/upload/single`, {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
 
-    if (error) {
-      throw new Error(`فشل رفع الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل رفع الصورة");
     }
 
-    const { data: { publicUrl } } = supabase.storage
-      .from('testmonial-img')
-      .getPublicUrl(filePath);
-
-    return publicUrl;
+    const result = await response.json();
+    return result.data.url;
   } catch (error) {
-    console.error('Error uploading testimonial image:', error);
+    console.error("Error uploading testimonial image:", error);
     throw error;
   }
 }
 
 /**
- * Delete testimonial image from Supabase Storage
+ * Delete testimonial image from backend server
  */
 export async function deleteTestimonialImage(imageUrl: string): Promise<void> {
   try {
-    // Extract file path from URL
-    const url = new URL(imageUrl);
-    const pathParts = url.pathname.split('/testmonial-img/');
-    if (pathParts.length < 2) {
-      throw new Error('Invalid image URL');
+    const filePath = extractPathFromUrl(imageUrl);
+    if (!filePath) {
+      throw new Error("Invalid image URL");
     }
-    const filePath = pathParts[1];
 
-    const { error } = await supabase.storage
-      .from('testmonial-img')
-      .remove([filePath]);
+    const token = getToken();
+    const response = await fetch(`${API_URL}/upload`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ path: filePath }),
+    });
 
-    if (error) {
-      throw new Error(`فشل حذف الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل حذف الصورة");
     }
   } catch (error) {
-    console.error('Error deleting testimonial image:', error);
+    console.error("Error deleting testimonial image:", error);
     throw error;
   }
 }
 
-// Export alias for backward compatibility
 export const CreateTestemonial = createTestemonial;
-

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import supabase from "../../../../services/supabase";
+import { uploadImage } from "../../../../services/supabase";
 import { createCategory } from "../../../../services/apiCategories";
 
 export function useAddCategory() {
@@ -18,24 +18,17 @@ export function useAddCategory() {
     }) => {
       let image_url = undefined;
 
-      // 1. رفع الصورة على Supabase (cat-img bucket)
       if (image) {
-        const fileExt = image.name.split(".").pop();
-        const fileName = `${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
-          .from("cat-img")
-          .upload(fileName, image);
+        const { url, error: uploadError } = await uploadImage(
+          "categories",
+          "",
+          image,
+        );
 
-        if (uploadError) throw new Error(uploadError.message);
-
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("cat-img").getPublicUrl(fileName);
-
-        image_url = publicUrl;
+        if (uploadError) throw new Error("فشل رفع الصورة");
+        image_url = url || undefined;
       }
 
-      // 2. إضافة البيانات عبر Backend API (SQL Server)
       await createCategory({ name_ar, name_en, image_url });
     },
     onSuccess: () => {

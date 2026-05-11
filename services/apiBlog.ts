@@ -3,13 +3,17 @@
  *
  * This service handles blog operations:
  * - Blog data: Stored in SQL database via backend API
- * - Images: Uploaded to Supabase Storage (blog-images bucket)
+ * - Images: Uploaded to backend server
  */
-
-import { uploadImage } from "./supabase";
 
 // Base API URL from environment variable
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
+}
 
 export interface Blog {
   id?: string;
@@ -30,10 +34,9 @@ export interface Blog {
  */
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const token = getToken();
 
   const config: RequestInit = {
     ...options,
@@ -66,7 +69,7 @@ export async function getBlog(
     search?: string;
     date?: string;
     status?: string;
-  }
+  },
 ): Promise<{ blogs: Blog[]; total: number }> {
   try {
     const params = new URLSearchParams({
@@ -99,7 +102,7 @@ export async function getBlog(
 export async function getBlogById(id: string): Promise<Blog> {
   try {
     const response = await apiFetch<{ success: boolean; data: Blog }>(
-      `/content/blogs/${id}`
+      `/content/blogs/${id}`,
     );
     return response.data;
   } catch (error: any) {
@@ -109,7 +112,7 @@ export async function getBlogById(id: string): Promise<Blog> {
 }
 
 /**
- * Create new blog (stores data in SQL database)
+ * Create new blog
  */
 export async function Createblog(newBlog: Blog): Promise<Blog> {
   try {
@@ -118,10 +121,9 @@ export async function Createblog(newBlog: Blog): Promise<Blog> {
       {
         method: "POST",
         body: JSON.stringify(newBlog),
-      }
+      },
     );
 
-    console.log("✅ تم إنشاء المقال بنجاح:", response.data);
     return response.data;
   } catch (error: any) {
     console.error("❌ خطأ في إنشاء المقال:", error);
@@ -130,11 +132,11 @@ export async function Createblog(newBlog: Blog): Promise<Blog> {
 }
 
 /**
- * Update blog (stores data in SQL database)
+ * Update blog
  */
 export async function updateBlog(
   id: string,
-  updatedBlog: Partial<Blog>
+  updatedBlog: Partial<Blog>,
 ): Promise<Blog> {
   try {
     const response = await apiFetch<{ success: boolean; data: Blog }>(
@@ -142,10 +144,9 @@ export async function updateBlog(
       {
         method: "PUT",
         body: JSON.stringify(updatedBlog),
-      }
+      },
     );
 
-    console.log("✅ تم تحديث المقال بنجاح:", response.data);
     return response.data;
   } catch (error: any) {
     console.error("❌ خطأ في تحديث المقال:", error);
@@ -161,8 +162,6 @@ export async function deleteBlog(id: string): Promise<void> {
     await apiFetch<{ success: boolean }>(`/content/blogs/${id}`, {
       method: "DELETE",
     });
-
-    console.log("✅ تم حذف المقال بنجاح");
   } catch (error: any) {
     console.error("❌ خطأ في حذف المقال:", error);
     throw new Error(error.message || "فشل حذف المقال");
@@ -170,41 +169,32 @@ export async function deleteBlog(id: string): Promise<void> {
 }
 
 /**
- * Upload images to Supabase Storage (blog-images bucket)
+ * Upload images to backend server
  * Returns array of public URLs
  */
 export async function uploadImages(
   files: File[],
-  folder = "blog"
+  folder = "blog",
 ): Promise<string[]> {
-  const uploadedUrls: string[] = [];
-
+  const token = getToken();
+  const formData = new FormData();
   for (const file of files) {
-    try {
-      const fileExt = file.name.split(".").pop()!;
-      const fileName = `${folder}/${Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2)}.${fileExt}`;
-
-      const result = await uploadImage("blog-images", fileName, file);
-
-      if (result.error) {
-        console.error("خطأ أثناء رفع الصورة:", result.error);
-        continue;
-      }
-
-      if (result.url) {
-        uploadedUrls.push(result.url);
-      }
-    } catch (error) {
-      console.error("خطأ أثناء رفع الصورة:", error);
-      continue;
-    }
+    formData.append("files", file);
   }
+  formData.append("folder", folder);
 
-  if (uploadedUrls.length === 0) {
+  const response = await fetch(`${API_URL}/upload/multiple`, {
+    method: "POST",
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
     throw new Error("فشل في رفع جميع الصور");
   }
 
-  return uploadedUrls;
+  const result = await response.json();
+  return result.data.map((f: any) => f.url);
 }

@@ -51,12 +51,12 @@ const ProfileInformation: React.FC<ProfileIntroProps> = ({ profile }) => {
         {/* Content */}
         <div className="trezo-card-content">
           <ul className="text-[15px] leading-[1.9] text-[#333] dark:text-[#dcdcdc]">
-            <li className="mb-[12.5px] last:mb-0">
+            {/* <li className="mb-[12.5px] last:mb-0">
               رقم المستخدم الخاص:
               <span className="text-black dark:text-white font-medium ml-1">
                 {profile?.user_id}
               </span>
-            </li>
+            </li> */}
 
             <li className="mb-[12.5px] last:mb-0">
               الاسم الكامل:

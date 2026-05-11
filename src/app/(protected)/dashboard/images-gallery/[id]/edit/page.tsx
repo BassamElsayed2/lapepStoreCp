@@ -10,8 +10,10 @@ import { gallerySchema } from "@/components/Social/SettingsForm/lib/validations/
 import toast from "react-hot-toast";
 import { useRouter, useParams } from "next/navigation";
 
-import { v4 as uuidv4 } from "uuid";
-import supabase from "../../../../../../../services/supabase";
+import {
+  uploadGalleryImage,
+  deleteGalleryImage,
+} from "../../../../../../../services/apiGallery";
 import {
   getGalleriesById,
   updateGallery,
@@ -38,7 +40,6 @@ export default function EditGalleryPage() {
     resolver: zodResolver(gallerySchema),
   });
 
-  // جلب بيانات المعرض
   const { data: gallery, isLoading } = useQuery({
     queryKey: ["gallery", id],
     queryFn: () => getGalleriesById(id!),
@@ -59,13 +60,11 @@ export default function EditGalleryPage() {
     }
   }, [gallery, reset]);
 
-  // حذف صورة من الصور الحالية
   const handleRemoveCurrentImage = (url: string) => {
     setCurrentImages((prev) => prev.filter((img) => img !== url));
     setDeletedImages((prev) => [...prev, url]);
   };
 
-  // إضافة صور جديدة
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
@@ -73,35 +72,8 @@ export default function EditGalleryPage() {
     }
   };
 
-  // حذف صورة من الصور الجديدة قبل الرفع
   const handleRemoveNewImage = (index: number) => {
     setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
-
-  // رفع صورة جديدة إلى supabase
-  const uploadImageToSupabase = async (image: File) => {
-    const ext = image.name.split(".").pop();
-    const fileName = `galleries/${Date.now()}-${uuidv4()}.${ext}`;
-    const { error: uploadError } = await supabase.storage
-      .from("gallery")
-      .upload(fileName, image, {
-        contentType: image.type,
-      });
-    if (uploadError) throw new Error("فشل رفع الصور");
-    const { data: publicUrlData } = supabase.storage
-      .from("gallery")
-      .getPublicUrl(fileName);
-    return publicUrlData.publicUrl;
-  };
-
-  // حذف صورة من supabase
-  const deleteImageFromSupabase = async (url: string) => {
-    const parts = url.split("/");
-    const path = decodeURIComponent(
-      parts.slice(parts.indexOf("gallery") + 1).join("/")
-    );
-    const { error } = await supabase.storage.from("gallery").remove([path]);
-    if (error) throw new Error("فشل حذف الصورة من التخزين");
   };
 
   const mutation = useMutation({
@@ -110,17 +82,21 @@ export default function EditGalleryPage() {
       const title_en = formData.get("title_en") as string;
       const description_ar = formData.get("description_ar") as string;
       const description_en = formData.get("description_en") as string;
-      // حذف الصور من supabase
+
       for (const url of deletedImages) {
-        await deleteImageFromSupabase(url);
+        try {
+          await deleteGalleryImage(url);
+        } catch (error) {
+          console.error("فشل حذف الصورة:", error);
+        }
       }
-      // رفع الصور الجديدة
+
       const uploadedUrls: string[] = [];
       for (const file of selectedImages) {
-        const url = await uploadImageToSupabase(file);
+        const url = await uploadGalleryImage(file);
         uploadedUrls.push(url);
       }
-      // جمع الصور النهائية
+
       const finalImageUrls = [...currentImages, ...uploadedUrls];
       await updateGallery(id!, {
         title_ar,
@@ -164,7 +140,6 @@ export default function EditGalleryPage() {
               </div>
             </div>
             <div className="trezo-card-content sm:grid sm:grid-cols-2 sm:gap-[25px]">
-              {/* العنوان بالعربية */}
               <div className="mb-[20px]">
                 <label className="mb-[10px] block font-medium text-black dark:text-white">
                   العنوان (ar) *
@@ -180,7 +155,6 @@ export default function EditGalleryPage() {
                 )}
               </div>
 
-              {/* العنوان بالإنجليزية */}
               <div className="mb-[20px]">
                 <label className="mb-[10px] block font-medium text-black dark:text-white">
                   العنوان (en) *
@@ -196,7 +170,6 @@ export default function EditGalleryPage() {
                 )}
               </div>
 
-              {/* التفاصيل بالعربية */}
               <div className="sm:col-span-2 mb-[20px]">
                 <label className="mb-[10px] block font-medium text-black dark:text-white">
                   تفاصيل (ar)
@@ -207,7 +180,6 @@ export default function EditGalleryPage() {
                 />
               </div>
 
-              {/* التفاصيل بالإنجليزية */}
               <div className="sm:col-span-2 mb-[20px]">
                 <label className="mb-[10px] block font-medium text-black dark:text-white">
                   تفاصيل (en)
@@ -218,7 +190,6 @@ export default function EditGalleryPage() {
                 />
               </div>
 
-              {/* الصور الحالية */}
               <div className="sm:col-span-2 mb-[20px]">
                 <label className="mb-[10px] block font-medium text-black dark:text-white">
                   الصور الحالية
@@ -245,7 +216,6 @@ export default function EditGalleryPage() {
                 </div>
               </div>
 
-              {/* رفع الصور الجديدة */}
               <div className="sm:col-span-2">
                 <label className="mb-[10px] block font-medium text-black dark:text-white">
                   إضافة صور جديدة

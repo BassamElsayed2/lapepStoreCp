@@ -1,24 +1,24 @@
 /**
- * Branches API Service - Uses Backend API
+ * Branches API Service - Uses Backend API for data and image storage
  */
 
-import { createClient } from "@supabase/supabase-js";
-
-// Supabase client for image storage
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { extractPathFromUrl } from "./supabase";
 
 // Backend API URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
+}
+
 // Helper function for API calls
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const token = getToken();
 
   const config: RequestInit = {
     ...options,
@@ -145,7 +145,7 @@ export async function createBranch(data: CreateBranchData): Promise<Branch> {
  */
 export async function updateBranch(
   id: number,
-  data: UpdateBranchData
+  data: UpdateBranchData,
 ): Promise<Branch> {
   try {
     const response = await apiFetch<{
@@ -178,29 +178,29 @@ export async function deleteBranch(id: number): Promise<void> {
 }
 
 /**
- * Upload branch image to Supabase Storage
+ * Upload branch image to backend server
  */
 export async function uploadBranchImage(file: File): Promise<string> {
   try {
-    const fileName = `${Date.now()}_${file.name}`;
-    const filePath = `branches/${fileName}`;
+    const token = getToken();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "branches");
 
-    const { error } = await supabase.storage
-      .from("branches")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const response = await fetch(`${API_URL}/upload/single`, {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
 
-    if (error) {
-      throw new Error(`فشل رفع الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل رفع الصورة");
     }
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("branches").getPublicUrl(filePath);
-
-    return publicUrl;
+    const result = await response.json();
+    return result.data.url;
   } catch (error) {
     console.error("Error uploading branch image:", error);
     throw error;
@@ -208,24 +208,27 @@ export async function uploadBranchImage(file: File): Promise<string> {
 }
 
 /**
- * Delete branch image from Supabase Storage
+ * Delete branch image from backend server
  */
 export async function deleteBranchImage(imageUrl: string): Promise<void> {
   try {
-    // Extract file path from URL
-    const url = new URL(imageUrl);
-    const pathParts = url.pathname.split("/images/");
-    if (pathParts.length < 2) {
+    const filePath = extractPathFromUrl(imageUrl);
+    if (!filePath) {
       throw new Error("Invalid image URL");
     }
-    const filePath = pathParts[1];
 
-    const { error } = await supabase.storage
-      .from("branches")
-      .remove([filePath]);
+    const token = getToken();
+    const response = await fetch(`${API_URL}/upload`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ path: filePath }),
+    });
 
-    if (error) {
-      throw new Error(`فشل حذف الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل حذف الصورة");
     }
   } catch (error) {
     console.error("Error deleting branch image:", error);

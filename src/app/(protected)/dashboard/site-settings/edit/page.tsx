@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
+import { uploadLogo, updateSiteSettings } from "@/services/apiAboutUs";
 import {
   Editor,
   EditorProvider,
@@ -26,15 +26,13 @@ import {
 import { useRouter } from "next/navigation";
 
 const SiteSettings: React.FC = () => {
-  const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  // Text Editor
   const [aboutUsAr, setAboutUsAr] = useState<string>(
-    "Type your message here..."
+    "Type your message here...",
   );
   const [aboutUsEn, setAboutUsEn] = useState<string>(
-    "Type your message here..."
+    "Type your message here...",
   );
   const [siteNameAr, setSiteNameAr] = useState("");
   const [siteNameEn, setSiteNameEn] = useState("");
@@ -47,7 +45,6 @@ const SiteSettings: React.FC = () => {
     setAboutUsEn(e.target.value);
   }
 
-  // Upload Image
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +61,6 @@ const SiteSettings: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate required fields
     if (
       !siteNameAr.trim() ||
       !siteNameEn.trim() ||
@@ -80,41 +76,17 @@ const SiteSettings: React.FC = () => {
     try {
       let logoUrl = "";
 
-      // Upload logo if exists
       if (selectedImages.length > 0) {
-        const file = selectedImages[0];
-        const fileExt = file.name.split(".").pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from("logo")
-          .upload(fileName, file, {
-            cacheControl: "3600",
-            upsert: false,
-          });
-
-        if (uploadError) throw new Error(uploadError.message);
-
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("logo").getPublicUrl(fileName);
-
-        logoUrl = publicUrl;
+        logoUrl = await uploadLogo(selectedImages[0]);
       }
 
-      // Insert site settings
-      const { error: insertError } = await supabase
-        .from("site_settings")
-        .upsert({
-          site_name_ar: siteNameAr,
-          site_name_en: siteNameEn,
-          about_us_ar: aboutUsAr,
-          about_us_en: aboutUsEn,
-          logo_url: logoUrl,
-          updated_at: new Date().toISOString(),
-        });
-
-      if (insertError) throw new Error(insertError.message);
+      await updateSiteSettings({
+        title_ar: siteNameAr,
+        title_en: siteNameEn,
+        about_us_ar: aboutUsAr,
+        about_us_en: aboutUsEn,
+        ...(logoUrl && { logo_url: logoUrl }),
+      });
 
       toast.success("تم حفظ الإعدادات بنجاح");
       router.push("/dashboard/site-settings");

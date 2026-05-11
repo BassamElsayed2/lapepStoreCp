@@ -1,23 +1,24 @@
 /**
- * Banners API Service - Uses Backend API
+ * Banners API Service - Uses Backend API for data and image storage
  */
-import { createClient } from "@supabase/supabase-js";
 
-// Supabase client for image storage
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { extractPathFromUrl } from "./supabase";
 
 // Backend API URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+function getToken(): string | null {
+  return typeof window !== "undefined"
+    ? localStorage.getItem("admin_token")
+    : null;
+}
+
 // Helper function for API calls
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const token = getToken();
 
   const config: RequestInit = {
     ...options,
@@ -129,7 +130,7 @@ export async function createBanner(data: CreateBannerData): Promise<Banner> {
  */
 export async function updateBanner(
   id: number,
-  data: UpdateBannerData
+  data: UpdateBannerData,
 ): Promise<Banner> {
   try {
     const response = await apiFetch<{
@@ -162,29 +163,29 @@ export async function deleteBanner(id: number): Promise<void> {
 }
 
 /**
- * Upload banner image to Supabase Storage
+ * Upload banner image to backend server
  */
 export async function uploadBannerImage(file: File): Promise<string> {
   try {
-    const fileName = `${Date.now()}_${file.name}`;
-    const filePath = `banners/${fileName}`;
+    const token = getToken();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "banners");
 
-    const { error } = await supabase.storage
-      .from("banners-images")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const response = await fetch(`${API_URL}/upload/single`, {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
 
-    if (error) {
-      throw new Error(`فشل رفع الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل رفع الصورة");
     }
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("banners-images").getPublicUrl(filePath);
-
-    return publicUrl;
+    const result = await response.json();
+    return result.data.url;
   } catch (error) {
     console.error("Error uploading banner image:", error);
     throw error;
@@ -192,24 +193,27 @@ export async function uploadBannerImage(file: File): Promise<string> {
 }
 
 /**
- * Delete banner image from Supabase Storage
+ * Delete banner image from backend server
  */
 export async function deleteBannerImage(imageUrl: string): Promise<void> {
   try {
-    // Extract file path from URL
-    const url = new URL(imageUrl);
-    const pathParts = url.pathname.split("/images/");
-    if (pathParts.length < 2) {
+    const filePath = extractPathFromUrl(imageUrl);
+    if (!filePath) {
       throw new Error("Invalid image URL");
     }
-    const filePath = pathParts[1];
 
-    const { error } = await supabase.storage
-      .from("banners-images")
-      .remove([filePath]);
+    const token = getToken();
+    const response = await fetch(`${API_URL}/upload`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ path: filePath }),
+    });
 
-    if (error) {
-      throw new Error(`فشل حذف الصورة: ${error.message}`);
+    if (!response.ok) {
+      throw new Error("فشل حذف الصورة");
     }
   } catch (error) {
     console.error("Error deleting banner image:", error);
@@ -222,7 +226,7 @@ export async function deleteBannerImage(imageUrl: string): Promise<void> {
  */
 export async function toggleBannerStatus(
   id: number,
-  is_active: boolean
+  is_active: boolean,
 ): Promise<Banner> {
   return updateBanner(id, { is_active });
 }
@@ -232,7 +236,7 @@ export async function toggleBannerStatus(
  */
 export async function updateBannerOrder(
   id: number,
-  display_order: number
+  display_order: number,
 ): Promise<Banner> {
   return updateBanner(id, { display_order });
 }

@@ -24,10 +24,14 @@ async function apiFetch<T>(
   const response = await fetch(`${API_URL}${endpoint}`, config);
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({
+    const errorData = (await response.json().catch(() => ({
       message: "حدث خطأ في الاتصال بالخادم",
-    }));
-    throw new Error(errorData.message || `خطأ في الخادم: ${response.status}`);
+    }))) as { message?: string; error?: string };
+    throw new Error(
+      errorData.message ||
+        errorData.error ||
+        `خطأ في الخادم: ${response.status}`,
+    );
   }
 
   return response.json();
