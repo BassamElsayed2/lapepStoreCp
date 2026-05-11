@@ -72,6 +72,48 @@ export interface Product {
   attributes?: ProductAttribute[];
 }
 
+/**
+ * `images || image_url` breaks when `images` is [] (truthy) or when URLs are a single string
+ * (then `url[0]` is only the first character). Normalize to a list of absolute URLs.
+ */
+export function normalizeProductImageList(product: {
+  images?: unknown;
+  image_url?: unknown;
+}): string[] {
+  const coerce = (raw: unknown): string[] | null => {
+    if (raw == null) return null;
+    if (Array.isArray(raw)) {
+      const urls = raw
+        .map((x) => (typeof x === "string" ? x.trim() : ""))
+        .filter(Boolean);
+      return urls.length ? urls : null;
+    }
+    if (typeof raw === "string") {
+      const t = raw.trim();
+      if (!t) return null;
+      if (t.startsWith("[")) {
+        try {
+          const parsed = JSON.parse(t) as unknown;
+          if (Array.isArray(parsed)) {
+            const urls = parsed
+              .filter((x): x is string => typeof x === "string")
+              .map((x) => x.trim())
+              .filter(Boolean);
+            return urls.length ? urls : null;
+          }
+        } catch {
+          return null;
+        }
+        return null;
+      }
+      return [t];
+    }
+    return null;
+  };
+
+  return coerce(product.images) ?? coerce(product.image_url) ?? [];
+}
+
 export async function getProducts(
   page = 1,
   limit = 10,
@@ -110,11 +152,15 @@ export async function getProducts(
       };
     }>(`/products?${params}`);
 
-    let products = (response.data || []).map((product) => ({
-      ...product,
-      image_url: product.images || product.image_url,
-      stock: product.stock_quantity || product.quantity,
-    }));
+    let products = (response.data || []).map((product) => {
+      const imageList = normalizeProductImageList(product);
+      return {
+        ...product,
+        images: imageList,
+        image_url: imageList,
+        stock: product.stock_quantity || product.quantity,
+      };
+    });
 
     let total = response.pagination?.total || 0;
 
@@ -148,10 +194,12 @@ export async function getProductById(id: string): Promise<Product> {
       `/products/${id}`,
     );
     const product = response.data;
+    const imageList = normalizeProductImageList(product);
 
     return {
       ...product,
-      image_url: product.images || product.image_url,
+      images: imageList,
+      image_url: imageList,
       stock: product.quantity,
       description: product.description_ar || product.description_en,
     };

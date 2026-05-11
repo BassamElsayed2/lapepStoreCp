@@ -26,6 +26,7 @@ import {
   getProductById,
   updateProduct,
   uploadProductImage,
+  normalizeProductImageList,
   Product,
 } from "../../../../../../services/apiProducts";
 import { useEffect, useState } from "react";
@@ -102,8 +103,7 @@ export default function EditProductPage() {
         limited_time_offer: product.limited_time_offer || false,
       });
 
-      // استخدام images أو image_url للتوافقية
-      const productImages = product.images || product.image_url || [];
+      const productImages = normalizeProductImageList(product);
       if (productImages.length > 0) {
         setServerImages(productImages);
       }
