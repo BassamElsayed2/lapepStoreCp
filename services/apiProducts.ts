@@ -258,7 +258,7 @@ export async function createProduct(productData: Product): Promise<Product> {
 
 export async function uploadProductImage(
   file: File | { base64: string; name: string },
-  folder = "products",
+  folder = "product-images/products",
 ): Promise<string> {
   const token = getToken();
   const formData = new FormData();
@@ -291,7 +291,11 @@ export async function uploadProductImage(
     const errorData = await response
       .json()
       .catch(() => ({ message: "تعذر رفع صورة المنتج" }));
-    throw new Error(errorData.message || "تعذر رفع صورة المنتج");
+    const msg =
+      (typeof errorData.error === "string" && errorData.error) ||
+      (typeof errorData.message === "string" && errorData.message) ||
+      "تعذر رفع صورة المنتج";
+    throw new Error(msg);
   }
 
   const result = await response.json();
