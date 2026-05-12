@@ -6,7 +6,9 @@
  *
  * روابط عرض الملفات: نفس فكرة الـ backend `PUBLIC_UPLOAD_BASE_URL` — في الـ CP:
  *   NEXT_PUBLIC_PUBLIC_UPLOAD_BASE_URL=https://api.lapip.net
- * (بدون /uploads). إن لم يُعرَّف، يُستخرج الأصل من NEXT_PUBLIC_API_URL بإزالة /api.
+ * (بدون /uploads). إن لم يُعرَّف، يُستخرج الأصل من NEXT_PUBLIC_API_URL بإزالة /api؛
+ * وإذا كان الناتج https://lapip.net يُستخدم افتراضياً https://api.lapip.net (مثل الـ backend).
+ * تعطيل إعادة التوجيه في الـ CP: NEXT_PUBLIC_PUBLIC_UPLOAD_USE_API_SUBDOMAIN=0
  */
 
 function getApiBaseUrl(): string | null {
@@ -36,7 +38,14 @@ export function getUploadsPublicOrigin(): string {
   }
   const api = process.env.NEXT_PUBLIC_API_URL?.trim();
   if (!api) return "";
-  return api.replace(/\/api\/?$/i, "").replace(/\/+$/, "");
+  const derived = api.replace(/\/api\/?$/i, "").replace(/\/+$/, "");
+  if (/^https:\/\/lapip\.net$/i.test(derived)) {
+    if (process.env.NEXT_PUBLIC_PUBLIC_UPLOAD_USE_API_SUBDOMAIN === "0") {
+      return derived;
+    }
+    return "https://api.lapip.net";
+  }
+  return derived;
 }
 
 /**
