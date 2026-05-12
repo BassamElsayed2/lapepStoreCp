@@ -3,14 +3,40 @@
  *
  * Note: Supabase has been completely removed.
  * All image uploads/deletes now go through the backend server.
+ *
+ * روابط عرض الملفات: نفس فكرة الـ backend `PUBLIC_UPLOAD_BASE_URL` — في الـ CP:
+ *   NEXT_PUBLIC_PUBLIC_UPLOAD_BASE_URL=https://api.lapip.net
+ * (بدون /uploads). إن لم يُعرَّف، يُستخرج الأصل من NEXT_PUBLIC_API_URL بإزالة /api.
  */
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+function getApiBaseUrl(): string | null {
+  const raw = process.env.NEXT_PUBLIC_API_URL?.trim();
+  if (!raw) return null;
+  return raw.replace(/\/+$/, "");
+}
 
 function getToken(): string | null {
   return typeof window !== "undefined"
     ? localStorage.getItem("admin_token")
     : null;
+}
+
+/** أصل GET /uploads/* في الواجهة (يطابق backend PUBLIC_UPLOAD_BASE_URL / ASSET_PUBLIC_URL). */
+export function getUploadsPublicOrigin(): string {
+  const dedicated =
+    process.env.NEXT_PUBLIC_PUBLIC_UPLOAD_BASE_URL?.trim() ||
+    process.env.NEXT_PUBLIC_ASSET_PUBLIC_URL?.trim();
+  if (dedicated) {
+    try {
+      const u = new URL(dedicated);
+      return `${u.protocol}//${u.host}`;
+    } catch {
+      return dedicated.replace(/\/+$/, "");
+    }
+  }
+  const api = process.env.NEXT_PUBLIC_API_URL?.trim();
+  if (!api) return "";
+  return api.replace(/\/api\/?$/i, "").replace(/\/+$/, "");
 }
 
 /**
@@ -27,7 +53,12 @@ export async function uploadImage(
     formData.append("file", file);
     formData.append("folder", folder);
 
-    const response = await fetch(`${API_URL}/upload/single`, {
+    const base = getApiBaseUrl();
+    if (!base) {
+      return { url: null, error: "NEXT_PUBLIC_API_URL غير مُعرّف" };
+    }
+
+    const response = await fetch(`${base}/upload/single`, {
       method: "POST",
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -41,7 +72,10 @@ export async function uploadImage(
         .catch(() => ({ message: "فشل رفع الصورة" }));
       return {
         url: null,
-        error: errorData.message || "فشل رفع الصورة",
+        error:
+          (typeof errorData.error === "string" && errorData.error) ||
+          (typeof errorData.message === "string" && errorData.message) ||
+          "فشل رفع الصورة",
       };
     }
 
@@ -67,7 +101,12 @@ export async function uploadMultipleImages(
     }
     formData.append("folder", folder);
 
-    const response = await fetch(`${API_URL}/upload/multiple`, {
+    const base = getApiBaseUrl();
+    if (!base) {
+      return { urls: [], error: "NEXT_PUBLIC_API_URL غير مُعرّف" };
+    }
+
+    const response = await fetch(`${base}/upload/multiple`, {
       method: "POST",
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -79,7 +118,13 @@ export async function uploadMultipleImages(
       const errorData = await response
         .json()
         .catch(() => ({ message: "فشل رفع الصور" }));
-      return { urls: [], error: errorData.message || "فشل رفع الصور" };
+      return {
+        urls: [],
+        error:
+          (typeof errorData.error === "string" && errorData.error) ||
+          (typeof errorData.message === "string" && errorData.message) ||
+          "فشل رفع الصور",
+      };
     }
 
     const result = await response.json();
@@ -99,7 +144,12 @@ export async function deleteImage(
 ): Promise<{ success: boolean; error: any }> {
   try {
     const token = getToken();
-    const response = await fetch(`${API_URL}/upload`, {
+    const base = getApiBaseUrl();
+    if (!base) {
+      return { success: false, error: "NEXT_PUBLIC_API_URL غير مُعرّف" };
+    }
+
+    const response = await fetch(`${base}/upload`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +164,10 @@ export async function deleteImage(
         .catch(() => ({ message: "فشل حذف الصورة" }));
       return {
         success: false,
-        error: errorData.message || "فشل حذف الصورة",
+        error:
+          (typeof errorData.error === "string" && errorData.error) ||
+          (typeof errorData.message === "string" && errorData.message) ||
+          "فشل حذف الصورة",
       };
     }
 
@@ -139,11 +192,16 @@ export function extractPathFromUrl(imageUrl: string): string | null {
 }
 
 /**
- * Get public URL for a file path
+ * رابط عام لمسار تحت uploads/ (مثل product-images/products/uuid.jpg)
  */
 export function getPublicUrl(_bucket: string, path: string): string {
-  const baseUrl = API_URL?.replace(/\/api$/, "") || "";
-  return `${baseUrl}/uploads/${path}`;
+  const base = getUploadsPublicOrigin().replace(/\/+$/, "");
+  if (!base) return "";
+  const rel = path
+    .replace(/\\/g, "/")
+    .replace(/^\/+/, "")
+    .replace(/^uploads\/?/i, "");
+  return `${base}/uploads/${rel}`;
 }
 
 export default {
@@ -151,5 +209,6 @@ export default {
   uploadMultipleImages,
   deleteImage,
   getPublicUrl,
+  getUploadsPublicOrigin,
   extractPathFromUrl,
 };

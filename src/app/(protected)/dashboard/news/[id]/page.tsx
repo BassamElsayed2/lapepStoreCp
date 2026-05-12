@@ -29,7 +29,7 @@ import {
   normalizeProductImageList,
   Product,
 } from "../../../../../../services/apiProducts";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -51,6 +51,9 @@ interface ProductFormData {
 export default function EditProductPage() {
   const [serverImages, setServerImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImagePreviewUrl, setSelectedImagePreviewUrl] = useState<
+    string | null
+  >(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -115,6 +118,18 @@ export default function EditProductPage() {
     const file = e.target.files[0];
     setSelectedImage(file);
   };
+
+  useLayoutEffect(() => {
+    if (!selectedImage) {
+      setSelectedImagePreviewUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(selectedImage);
+    setSelectedImagePreviewUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [selectedImage]);
 
   const queryClient = useQueryClient();
 
@@ -461,10 +476,11 @@ export default function EditProductPage() {
                       ))}
 
                       {/* صورة الرفع الجديدة */}
-                      {selectedImage && (
+                      {selectedImage && selectedImagePreviewUrl && (
                         <div className="relative w-[50px] h-[50px]">
                           <Image
-                            src={URL.createObjectURL(selectedImage)}
+                            unoptimized
+                            src={selectedImagePreviewUrl}
                             alt="selected-img"
                             width={50}
                             height={50}

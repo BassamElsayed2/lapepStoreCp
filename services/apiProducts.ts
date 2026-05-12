@@ -279,7 +279,17 @@ export async function uploadProductImage(
 
   formData.append("folder", folder);
 
-  const response = await fetch(`${API_URL}/upload/single`, {
+  if (!API_URL) {
+    throw new Error("NEXT_PUBLIC_API_URL غير مُعرّف");
+  }
+  const base = API_URL.replace(/\/+$/, "");
+  if (!/\/api$/i.test(base)) {
+    console.warn(
+      "[uploadProductImage] NEXT_PUBLIC_API_URL يفضّل أن ينتهي بـ /api (مثال: https://lapip.net/api)",
+    );
+  }
+
+  const response = await fetch(`${base}/upload/single`, {
     method: "POST",
     headers: {
       ...(token && { Authorization: `Bearer ${token}` }),

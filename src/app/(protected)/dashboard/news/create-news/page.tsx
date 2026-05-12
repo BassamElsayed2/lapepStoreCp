@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import {
   Editor,
@@ -96,7 +96,17 @@ const CreateProductForm: React.FC = () => {
 
   // Upload multiple images
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  /** Stable blob URLs — avoid URL.createObjectURL() in render (canceled requests + memory leak on every re-render). */
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [isUploadingImages, setIsUploadingImages] = useState(false);
+
+  useLayoutEffect(() => {
+    const urls = selectedImages.map((file) => URL.createObjectURL(file));
+    setImagePreviewUrls(urls);
+    return () => {
+      urls.forEach((u) => URL.revokeObjectURL(u));
+    };
+  }, [selectedImages]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -586,14 +596,22 @@ const CreateProductForm: React.FC = () => {
 
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                             {selectedImages.map((image, index) => (
-                              <div key={index} className="relative group">
+                              <div
+                                key={`${image.name}-${image.size}-${image.lastModified}`}
+                                className="relative group"
+                              >
                                 <div className="relative w-full h-[100px] rounded-md overflow-hidden border border-[#6A4CFF]">
-                                  <Image
-                                    src={URL.createObjectURL(image)}
-                                    alt={`product-preview-${index}`}
-                                    fill
-                                    className="object-cover"
-                                  />
+                                  {imagePreviewUrls[index] ? (
+                                    <Image
+                                      unoptimized
+                                      src={imagePreviewUrls[index]}
+                                      alt={`product-preview-${index}`}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  ) : (
+                                    <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700" />
+                                  )}
                                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center">
                                     <button
                                       type="button"
